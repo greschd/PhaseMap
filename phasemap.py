@@ -5,7 +5,49 @@
 # Date:    25.08.2016 14:58:52 CEST
 # File:    phasemap.py
 
+import itertools
+
 import numpy as np
 from collections import namedtuple
 
 PhaseResult = namedtuple('PhaseResult', ['phase', 'virtual'])
+
+class PhaseMap:
+    """data container"""
+    def __init__(self, mesh, limits):
+        if len(mesh) != len(limits):
+            raise ValueError('inconsistent dimensions for mesh ({}) and limits ({})'.format(mesh, limits))
+        self.limits = tuple(limits)
+        self.mesh = np.empty(mesh, dtype=object)
+        
+    def extend(self):
+        """increases mesh density"""
+        
+    def indices(self):
+        """Returns an iterator over the indices in the mesh."""
+        return itertools.product(*[range(s) for s in self.mesh.shape])
+
+    def items(self):
+        """returns iterator over (index, position, value) of all elements"""
+        for idx in self.indices():
+            yield idx, self.index_to_position(idx), self.mesh[idx]
+        
+    def virtuals(self):
+        """returns iterator over virtual elements (index, position, value)."""
+        for idx, pos, val in self.items():
+            if isinstance(val, PhaseResult) and val.virtual:
+                yield idx, pos, val
+        
+    def new(self):
+        """returns iterator over new elements (index, position, value is None). May assume that they are at the correct (odd) indices."""
+        for idx, pos, val in self.items():
+            if not isinstance(val, PhaseResult):
+                yield idx, pos
+        
+    def index_to_position(self, idx):
+        """Returns the position on the phase map corresponding to a given index."""
+    
+def get_phase_map(fct, limits, init_mesh=5, num_steps=15):
+    """
+    init_mesh as int -> same in all dimensions. Otherwise as list of int.
+    """
