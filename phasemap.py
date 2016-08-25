@@ -6,9 +6,12 @@
 # File:    phasemap.py
 
 import itertools
+from collections import namedtuple
 
 import numpy as np
-from collections import namedtuple
+from fsc.export import export
+
+__version__ = '0.0.0a1'
 
 PhaseResult = namedtuple('PhaseResult', ['phase', 'virtual'])
 
