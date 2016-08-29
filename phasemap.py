@@ -26,23 +26,30 @@ class PhaseMap:
         if len(mesh) != len(limits):
             raise ValueError('inconsistent dimensions for mesh ({}) and limits ({})'.format(mesh, limits))
         self.limits = limits
-        self.mesh = np.empty(mesh, dtype=object)
+        self.data = np.empty(mesh, dtype=object)
         
     def __getitem__(self, *args):
-        return self.mesh.__getitem__(*args)
+        return self.data.__getitem__(*args)
+        
+    def __setitem__(self, *args):
+        self.data.__setitem__(*args)
 
     def extend(self):
         """increases mesh density"""
-        pass
+        new_data = np.empty([s * 2 - 1 for s in self.data.shape], dtype=object)
+        for idx in self.indices():
+            new_idx = tuple((i * 2) for i in idx)
+            new_data[new_idx] = self.data[idx]
+        self.data = new_data
         
     def indices(self):
         """Returns an iterator over the indices in the mesh."""
-        return itertools.product(*[range(s) for s in self.mesh.shape])
+        return itertools.product(*[range(s) for s in self.data.shape])
 
     def items(self):
         """returns iterator over (index, position, value) of all elements"""
         for idx in self.indices():
-            yield idx, self.index_to_position(idx), self.mesh[idx]
+            yield idx, self.index_to_position(idx), self.data[idx]
         
     def virtuals(self):
         """returns iterator over virtual elements (index, position, value)."""
