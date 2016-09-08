@@ -8,6 +8,7 @@
 from __future__ import division, print_function
 
 import math
+import numbers
 import itertools
 from collections import namedtuple
 
@@ -57,12 +58,16 @@ class PhaseMap(object):
     @property
     def mesh(self):
         """
-        A way of getting self.result.shape without the matrix copying
+        Returns the shape of the current result
         """
-        return [
-            ((m - 1) // s) + 1 
-            for m, s in zip(self._data.shape, self._step)
-        ]
+        # straight-forward way
+        return self.result.shape
+        # maybe this is more efficient?
+        # result doesn't actually copy, so it might be ok...
+        #~ return [
+            #~ ((m - 1) // s) + 1 
+            #~ for m, s in zip(self._data.shape, self._step)
+        #~ ]
 
     @mesh.setter
     def mesh(self, mesh):
@@ -114,12 +119,12 @@ class PhaseMap(object):
                 
     def indices(self):
         """Returns an iterator over the indices in the mesh."""
-        return itertools.product(*[range(s) for s in self._data.shape])
+        return itertools.product(*[range(s) for s in self.mesh])
 
     def items(self):
         """returns iterator over (index, position, value) of all elements"""
         for idx in self.indices():
-            yield idx, self.index_to_position(idx), self._data[idx]
+            yield idx, self.index_to_position(idx), self.result[idx]
         
     def virtuals(self):
         """returns iterator over virtual elements (index, position, value)."""
@@ -142,8 +147,25 @@ class PhaseMap(object):
         ]
         
 @export
-def get_phase_map(fct, limits, init_mesh=5, num_steps=15):
+def get_phase_map(fct, limits, init_mesh=5, num_steps=15, init_result=None):
     """
     init_mesh as int -> same in all dimensions. Otherwise as list of int.
     """
-    pass
+    # setting up the PhaseMap object
+    if isinstance(init_mesh, numbers.Integral):
+        init_mesh = [init_mesh] * len(limits)
+    
+    if init_result is not None:
+        result_map = init_result
+        result_map.mesh = init_mesh
+        if not np.isclose(np.array(limits), np.array(result.limits)).all():
+            raise ValueError("'init_result' limits {} do not match limits {}".format(result.limits, limits))
+    else:
+        result_map = PhaseMap(mesh=init_mesh, limits=limits)
+    
+    # initial calculation
+    for idx, pos in result_map.new():
+        result_map.result[idx] = PhaseResult(self.fct(pos), virtual=False)
+    
+    
+        

@@ -22,4 +22,6 @@ print(A.result)
 print(A.mesh)
 print(A._data)
 
+A.mesh = [5, 5]
+
 print(A.index_to_position([2, 2]))
