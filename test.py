@@ -10,10 +10,13 @@ from phasemap import *
 A = PhaseMap([2, 2], [(0, 1), (0, 2)])
 
 for idx in A.indices():
-    A[idx] = 2 * idx[0] + idx[1]
+    A.result[idx] = 2 * idx[0] + idx[1]
     
-print(A.data)
-A.extend()
-print(A.data)
+print(A.result)
+A.extend_mesh(0, 2)
+A.extend_mesh(1, 1)
+A.set_mesh([2, 2])
+print(A.result)
+print(A._data)
 
 print(A.index_to_position([2, 2]))

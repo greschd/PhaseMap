@@ -5,6 +5,7 @@
 # Date:    25.08.2016 14:58:52 CEST
 # File:    phasemap.py
 
+import math
 import itertools
 from collections import namedtuple
 
@@ -34,31 +35,73 @@ class PhaseMap:
                     'Limit {} does not have length 2.'.format(l)
                 )
 
+        self.dim = len(mesh)
+        self._step = [1] * self.dim
         self.limits = list(tuple(l) for l in limits)
-        self.data = np.empty(mesh, dtype=object)
-        
-    def __getitem__(self, *args):
-        return self.data.__getitem__(*args)
-        
-    def __setitem__(self, *args):
-        self.data.__setitem__(*args)
+        self._data = np.empty(mesh, dtype=object)
 
-    def extend(self):
-        """increases mesh density"""
-        new_data = np.empty([s * 2 - 1 for s in self.data.shape], dtype=object)
-        for idx in self.indices():
-            new_idx = tuple((i * 2) for i in idx)
-            new_data[new_idx] = self.data[idx]
-        self.data = new_data
+    @property
+    def result(self):
+        return self._data[[
+            slice(None, None, s) for s in self._step
+        ]]
         
+    def extend_all(self, k=1):
+        """increases mesh in all dimensions"""
+        for i in range(self.dim):
+            self.extend_mesh(i, k=k)
+                
+    def extend_mesh(self, dim, k=1):
+        """Extends the mesh in a given dimension (k-fold). For negative k, the mesh is reduced by increasing the step."""
+        # increase step for negative k
+        if k < 0:
+            self._step[dim] *= 2**-k
+            if (self._data.shape[dim] - 1) % self._step[dim] != 0:
+                 raise ValueError('Cannot reduce dimension {} with mesh size {}.'.format(dim, self._data.shape[dim]))
+        
+        # reduce step for positive k while possible
+        while k > 0 and self._step[dim] > 1:
+            assert self._step[dim] % 2 == 0
+            self._step[dim] //= 2
+            k -= 1
+        # extend data
+        if k > 0:
+            new_data = np.empty(
+                [
+                    m if j != dim else 2**k * (m - 1) + 1
+                    for j, m in enumerate(self._data.shape)
+                ],
+                dtype=object
+            )
+            new_data[[
+                slice(None) if j != dim else slice(None, None, 2**k)
+                for j in range(self.dim)
+            ]] = self._data
+            self._data = new_data
+                
+    def set_mesh(self, mesh):
+        current_mesh = self.result.shape
+        k_list = [self._get_k(m, n) for m, n in zip(mesh, current_mesh)]
+        for i, k in enumerate(k_list):
+            self.extend_mesh(i, k=k)
+            
+    @staticmethod
+    def _get_k(m, n):
+        k = math.log2((m - 1) / (n - 1))
+        # round to integer
+        res = math.floor(k + 0.5)
+        if not np.isclose(res, k):
+            raise ValueError('New mesh size {} is inconsistent with the given size {}.'.format(m, n))
+        return res
+                
     def indices(self):
         """Returns an iterator over the indices in the mesh."""
-        return itertools.product(*[range(s) for s in self.data.shape])
+        return itertools.product(*[range(s) for s in self._data.shape])
 
     def items(self):
         """returns iterator over (index, position, value) of all elements"""
         for idx in self.indices():
-            yield idx, self.index_to_position(idx), self.data[idx]
+            yield idx, self.index_to_position(idx), self._data[idx]
         
     def virtuals(self):
         """returns iterator over virtual elements (index, position, value)."""
@@ -74,7 +117,7 @@ class PhaseMap:
         
     def index_to_position(self, idx):
         """Returns the position on the phase map corresponding to a given index."""
-        pos_param = (i / (m - 1) for i, m in zip(idx, self.data.shape))
+        pos_param = (i / (m - 1) for i, m in zip(idx, self._data.shape))
         return [
             l[0] * (1 - x) + l[1] * x 
             for x, l in zip(pos_param, self.limits)
