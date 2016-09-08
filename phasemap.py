@@ -23,9 +23,18 @@ class PhaseMap:
         mesh is a list of integers
         limits is a list of tuples
         """
+        # consistency checks
         if len(mesh) != len(limits):
-            raise ValueError('inconsistent dimensions for mesh ({}) and limits ({})'.format(mesh, limits))
-        self.limits = limits
+            raise ValueError('Inconsistent dimensions for mesh ({}) and limits ({})'.format(mesh, limits))
+        if min(mesh) <= 1:
+            raise ValueError('Mesh size must be at least 2 in each direction.')
+        for l in limits:
+            if len(l) != 2:
+                raise ValueError(
+                    'Limit {} does not have length 2.'.format(l)
+                )
+
+        self.limits = list(tuple(l) for l in limits)
         self.data = np.empty(mesh, dtype=object)
         
     def __getitem__(self, *args):
@@ -65,10 +74,15 @@ class PhaseMap:
         
     def index_to_position(self, idx):
         """Returns the position on the phase map corresponding to a given index."""
-        pass
-    
+        pos_param = (i / (m - 1) for i, m in zip(idx, self.data.shape))
+        return [
+            l[0] * (1 - x) + l[1] * x 
+            for x, l in zip(pos_param, self.limits)
+        ]
+        
 @export
 def get_phase_map(fct, limits, init_mesh=5, num_steps=15):
     """
     init_mesh as int -> same in all dimensions. Otherwise as list of int.
     """
+    pass
