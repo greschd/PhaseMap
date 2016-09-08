@@ -49,12 +49,7 @@ class PhaseFinder(object):
             # STEP 1 -- check "old" neighbours and see if the new value should be measured or virtual
             to_measure = []
             new_virtual = {}
-            if follow_virtuals:
-                pos = self._create_grid()
-            else:
-                pos = set()
-                for p in self.results_measured.keys():
-                    pos.update(self._get_neighbours(p))
+            pos = self._create_grid()
             for p in pos:
                 if p not in self.results.keys():
                     #~ print(self.steps)
@@ -72,26 +67,25 @@ class PhaseFinder(object):
                 #~ assert p in self.results.keys()
     
             # STEP 2 -- now check whether some virtuals need to be updated
-            if follow_virtuals:
-                to_check = set(self.results_virtual.keys())
+            to_check = set(self.results_virtual.keys())
+            while to_check:
+                to_measure = set()
                 while to_check:
-                    to_measure = set()
-                    while to_check:
-                        p = to_check.pop()
-                        val, same = self._check_neighbour_results(p)
-                        if not same or val != self.results_virtual[p]:
-                            to_measure.add(p)
-                    to_measure = list(to_measure)
-                    self.results_measured.update({p: v for p, v in zip(to_measure, self.fct(to_measure))})
-                    
-                    # add neighbours of changed nodes to "to_check"
-                    for p in to_measure:
-                        if self.results_measured[p] != self.results_virtual[p]:
-                            to_check.update(self._get_neighbours(p))
-                        # delete all measured values from virtual results
-                        del self.results_virtual[p]
-                    # make sure the points to check are virtuals
-                    to_check = {p for p in to_check if p in self.results_virtual.keys()}
+                    p = to_check.pop()
+                    val, same = self._check_neighbour_results(p)
+                    if not same or val != self.results_virtual[p]:
+                        to_measure.add(p)
+                to_measure = list(to_measure)
+                self.results_measured.update({p: v for p, v in zip(to_measure, self.fct(to_measure))})
+                
+                # add neighbours of changed nodes to "to_check"
+                for p in to_measure:
+                    if self.results_measured[p] != self.results_virtual[p]:
+                        to_check.update(self._get_neighbours(p))
+                    # delete all measured values from virtual results
+                    del self.results_virtual[p]
+                # make sure the points to check are virtuals
+                to_check = {p for p in to_check if p in self.results_virtual.keys()}
 
             # DEBUG: For performance analysis
             print('all:', len(self.results.keys()))

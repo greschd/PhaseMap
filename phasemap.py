@@ -17,7 +17,7 @@ from fsc.export import export
 
 __version__ = '0.0.0a1'
 
-PhaseResult = namedtuple('PhaseResult', ['phase', 'virtual'])
+PhaseResult = namedtuple('PhaseResult', ['phase', 'guess'])
 
 @export
 class PhaseMap(object):
@@ -39,20 +39,20 @@ class PhaseMap(object):
                 )
 
         self.dim = len(mesh)
-        self._step = [1] * self.dim
+        self._steps = [1] * self.dim
         self.limits = list(tuple(l) for l in limits)
         self._data = np.empty(mesh, dtype=object)
 
     @property
     def result(self):
         return self._data[[
-            slice(None, None, s) for s in self._step
+            slice(None, None, s) for s in self._steps
         ]]
         
     @result.setter
     def result(self, value):
         self._data[[
-            slice(None, None, s) for s in self._step
+            slice(None, None, s) for s in self._steps
         ]] = value
         
     @property
@@ -66,7 +66,7 @@ class PhaseMap(object):
         # result doesn't actually copy, so it might be ok...
         #~ return [
             #~ ((m - 1) // s) + 1 
-            #~ for m, s in zip(self._data.shape, self._step)
+            #~ for m, s in zip(self._data.shape, self._steps)
         #~ ]
 
     @mesh.setter
@@ -84,14 +84,14 @@ class PhaseMap(object):
         """Extends the mesh in a given dimension (k-fold). For negative k, the mesh is reduced by increasing the step."""
         # increase step for negative k
         if k < 0:
-            self._step[dim] *= 2**-k
-            if (self._data.shape[dim] - 1) % self._step[dim] != 0:
+            self._steps[dim] *= 2**-k
+            if (self._data.shape[dim] - 1) % self._steps[dim] != 0:
                  raise ValueError('Cannot reduce dimension {} with mesh size {}.'.format(dim, self._data.shape[dim]))
         
         # reduce step for positive k while possible
-        while k > 0 and self._step[dim] > 1:
-            assert self._step[dim] % 2 == 0
-            self._step[dim] //= 2
+        while k > 0 and self._steps[dim] > 1:
+            assert self._steps[dim] % 2 == 0
+            self._steps[dim] //= 2
             k -= 1
         # extend data
         if k > 0:
@@ -121,22 +121,26 @@ class PhaseMap(object):
         """Returns an iterator over the indices in the mesh."""
         return itertools.product(*[range(s) for s in self.mesh])
 
+    #~ def positions(self):
+        #~ return (self.index_to_position(idx) for idx in self.indices())
+        
+
     def items(self):
         """returns iterator over (index, position, value) of all elements"""
         for idx in self.indices():
             yield idx, self.index_to_position(idx), self.result[idx]
         
-    def virtuals(self):
-        """returns iterator over virtual elements (index, position, value)."""
-        for idx, pos, val in self.items():
-            if isinstance(val, PhaseResult) and val.virtual:
-                yield idx, pos, val
-        
-    def new(self):
-        """returns iterator over new elements (index, position, value is None). May assume that they are at the correct (odd) indices."""
-        for idx, pos, val in self.items():
-            if not isinstance(val, PhaseResult):
-                yield idx, pos
+    #~ def virtuals(self):
+        #~ """returns iterator over virtual elements (index, position, value)."""
+        #~ for idx, pos, val in self.items():
+            #~ if isinstance(val, PhaseResult) and val.guess:
+                #~ yield idx, pos, val
+                
+    #~ def new(self):
+        #~ """returns iterator over new elements (index, position, value is None). May assume that they are at the correct (odd) indices."""
+        #~ for idx, pos, val in self.items():
+            #~ if not isinstance(val, PhaseResult):
+                #~ yield idx, pos
         
     def index_to_position(self, idx):
         """Returns the position on the phase map corresponding to a given index."""
@@ -146,6 +150,28 @@ class PhaseMap(object):
             for x, l in zip(pos_param, self.limits)
         ]
         
+    def get_neighbours(self, idx):
+        directions = itertools.product(range(-1, 2), repeat=self.dim)
+        dir_nonzero = (
+            d for d in directions if any(x != 0 for x in d)
+        )
+        res = (list(np.array(d) + np.array(idx)) for d in dir_nonzero)
+        return (r for r in res if self._in_limits(r))
+        
+    def get_neighbour_results(self, idx):
+        res = (self.result[i] for i in self.get_neighbours(idx))
+        return {r for r in res if r is not None}
+        
+    def check_neighbour_results(self, idx):
+        res = self.get_neighbour_results()
+        if len(res) == 1:
+            return res.pop(), True
+        else:
+            return None, False
+    
+    def _in_limits(self, idx):
+        return all(0 <= i < m for i, m in zip(idx, self.mesh))
+
 @export
 def get_phase_map(fct, limits, init_mesh=5, num_steps=15, init_result=None):
     """
@@ -164,8 +190,60 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=15, init_result=None):
         result_map = PhaseMap(mesh=init_mesh, limits=limits)
     
     # initial calculation
-    for idx, pos in result_map.new():
-        result_map.result[idx] = PhaseResult(self.fct(pos), virtual=False)
+    # calculate for all guesses and new entries
+    idx, pos = _split_idx_pos(
+        (i, p) for i, p, v in result_map.items()
+        if v is None or v.guess
+    )
+    result_map.result[idx] = [
+        PhaseResult(p, guess=False) for p in pos
+    ]
     
-    
+    for _ in range(num_steps):
+        result_map.extend_all()
+
+        # check new -- which have all the same neighbours?
+        idx = []
+        pos = []
+        for i, p, v in result_map.items():
+            if v is not None:
+                continue
+            val, flag = result_map.check_neighbour_results(i)
+            if flag:
+                result_map[i] = PhaseResult(val, guess=True)
+            else:
+                idx.append(i)
+                pos.append(p)
+        result_map[idx] = [
+            Phaseresult(v, guess=False)
+            for v in fct(pos)
+        ]
         
+        # second round -- check guesses again
+        to_check = set(i for i, p, v in self.items() if v.guess)
+        while to_check:
+            to_measure = []
+            old_result = []
+            while to_check:
+                i = to_check.pop()
+                val, same = result_map.check_neighbour_results(i)
+                if not same or val != result_map.result[i]:
+                    to_measure.append(i)
+                    old_result.append(result_map.result[i])
+            new_result = [
+                PhaseResult(n, guess=False) for n in fct(to_measure)
+            ]
+            phase_map.result[to_measure] = new_result
+            for i, n, o in zip(to_measure, new_result, old_result)
+                if n.phase != o.phase:
+                    to_check.update({
+                        idx for idx in self.get_neighbours(i)
+                        if phase_map.result[idx].guess
+                    })
+                    
+
+def _split_idx_pos(iterable):
+    l = list(iterable)
+    idx = [i for i, *_ in l]
+    pos = [p for _, p, *_ in l]
+    return idx, pos
