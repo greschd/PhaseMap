@@ -9,8 +9,10 @@ from phasemap import *
 
 A = PhaseMap([2, 2], [(0, 1), (0, 2)])
 
-for idx in A.indices():
-    A.result[idx] = 2 * idx[0] + idx[1]
+#~ for idx in A.indices():
+    #~ A.result[idx] = 2 * idx[0] + idx[1]
+    
+A.result = [[1, 2], [5, 6]]
     
 print(A.result)
 A.extend_mesh(0, 2)

@@ -5,6 +5,8 @@
 # Date:    25.08.2016 14:58:52 CEST
 # File:    phasemap.py
 
+from __future__ import division, print_function
+
 import math
 import itertools
 from collections import namedtuple
@@ -17,7 +19,7 @@ __version__ = '0.0.0a1'
 PhaseResult = namedtuple('PhaseResult', ['phase', 'virtual'])
 
 @export
-class PhaseMap:
+class PhaseMap(object):
     """data container"""
     def __init__(self, mesh, limits):
         """
@@ -45,6 +47,12 @@ class PhaseMap:
         return self._data[[
             slice(None, None, s) for s in self._step
         ]]
+        
+    @result.setter
+    def result(self, value):
+        self._data[[
+            slice(None, None, s) for s in self._step
+        ]] = value
         
     @property
     def mesh(self):
