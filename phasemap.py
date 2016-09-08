@@ -46,6 +46,22 @@ class PhaseMap:
             slice(None, None, s) for s in self._step
         ]]
         
+    @property
+    def mesh(self):
+        """
+        A way of getting self.result.shape without the matrix copying
+        """
+        return [
+            ((m - 1) // s) + 1 
+            for m, s in zip(self._data.shape, self._step)
+        ]
+
+    @mesh.setter
+    def mesh(self, mesh):
+        k_list = [self._get_k(m, n) for m, n in zip(mesh, self.mesh)]
+        for i, k in enumerate(k_list):
+            self.extend_mesh(i, k=k)
+
     def extend_all(self, k=1):
         """increases mesh in all dimensions"""
         for i in range(self.dim):
@@ -78,12 +94,6 @@ class PhaseMap:
                 for j in range(self.dim)
             ]] = self._data
             self._data = new_data
-                
-    def set_mesh(self, mesh):
-        current_mesh = self.result.shape
-        k_list = [self._get_k(m, n) for m, n in zip(mesh, current_mesh)]
-        for i, k in enumerate(k_list):
-            self.extend_mesh(i, k=k)
             
     @staticmethod
     def _get_k(m, n):
@@ -117,7 +127,7 @@ class PhaseMap:
         
     def index_to_position(self, idx):
         """Returns the position on the phase map corresponding to a given index."""
-        pos_param = (i / (m - 1) for i, m in zip(idx, self._data.shape))
+        pos_param = (i / (m - 1) for i, m in zip(idx, self.mesh))
         return [
             l[0] * (1 - x) + l[1] * x 
             for x, l in zip(pos_param, self.limits)

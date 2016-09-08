@@ -15,8 +15,9 @@ for idx in A.indices():
 print(A.result)
 A.extend_mesh(0, 2)
 A.extend_mesh(1, 1)
-A.set_mesh([2, 2])
+A.mesh = [2, 2]
 print(A.result)
+print(A.mesh)
 print(A._data)
 
 print(A.index_to_position([2, 2]))
