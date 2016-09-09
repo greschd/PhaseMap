@@ -5,23 +5,28 @@
 # Date:    29.08.2016 04:11:07 CEST
 # File:    test.py
 
+import numpy as np
 from phasemap import *
+import matplotlib.pyplot as plt
 
-A = PhaseMap([2, 2], [(0, 1), (0, 2)])
+def circle(x, y):
+    return 2 if x**2 + y**2 < 1 else 0
 
-#~ for idx in A.indices():
-    #~ A.result[idx] = 2 * idx[0] + idx[1]
-    
-A.result = [[1, 2], [5, 6]]
-    
-print(A.result)
-A.extend_mesh(0, 2)
-A.extend_mesh(1, 1)
-A.mesh = [2, 2]
-print(A.result)
-print(A.mesh)
-print(A._data)
+def line(x, y):
+    return 1 if x > 0.5 else 0
 
-A.mesh = [5, 5]
+def phase(val):
+    return [line(x, y) + circle(x, y) for x, y in val]
 
-print(A.index_to_position([2, 2]))
+res = get_phase_map(phase, [(0, 1), (0, 1)], num_steps=0, init_mesh=3)
+#~ print(res.phase)
+#~ print(res.result.flatten())
+res = get_phase_map(phase, [(0, 1), (0, 1)], num_steps=5, init_mesh=3)
+print([v for v in res.result.flatten()])
+print([v.phase for v in res.result.flatten()])
+#~ print(res.result.phase)
+#~ print(res.phase)
+#~ print(res.result)
+
+plt.imshow(res.phase, interpolation='none')
+plt.show()

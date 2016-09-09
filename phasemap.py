@@ -48,7 +48,18 @@ class PhaseMap(object):
         return self._data[[
             slice(None, None, s) for s in self._steps
         ]]
-        
+
+    @property
+    def phase(self):
+        def map_phase(res):
+            try:
+                return res.phase
+            except AttributeError:
+                return None
+        return np.array([
+            map_phase(v) for v in self.result.flatten()
+        ]).reshape(self.result.shape)
+    
     @result.setter
     def result(self, value):
         self._data[[
@@ -60,14 +71,7 @@ class PhaseMap(object):
         """
         Returns the shape of the current result
         """
-        # straight-forward way
         return self.result.shape
-        # maybe this is more efficient?
-        # result doesn't actually copy, so it might be ok...
-        #~ return [
-            #~ ((m - 1) // s) + 1 
-            #~ for m, s in zip(self._data.shape, self._steps)
-        #~ ]
 
     @mesh.setter
     def mesh(self, mesh):
@@ -121,26 +125,10 @@ class PhaseMap(object):
         """Returns an iterator over the indices in the mesh."""
         return itertools.product(*[range(s) for s in self.mesh])
 
-    #~ def positions(self):
-        #~ return (self.index_to_position(idx) for idx in self.indices())
-        
-
     def items(self):
         """returns iterator over (index, position, value) of all elements"""
         for idx in self.indices():
             yield idx, self.index_to_position(idx), self.result[idx]
-        
-    #~ def virtuals(self):
-        #~ """returns iterator over virtual elements (index, position, value)."""
-        #~ for idx, pos, val in self.items():
-            #~ if isinstance(val, PhaseResult) and val.guess:
-                #~ yield idx, pos, val
-                
-    #~ def new(self):
-        #~ """returns iterator over new elements (index, position, value is None). May assume that they are at the correct (odd) indices."""
-        #~ for idx, pos, val in self.items():
-            #~ if not isinstance(val, PhaseResult):
-                #~ yield idx, pos
         
     def index_to_position(self, idx):
         """Returns the position on the phase map corresponding to a given index."""
@@ -152,18 +140,15 @@ class PhaseMap(object):
         
     def get_neighbours(self, idx):
         directions = itertools.product(range(-1, 2), repeat=self.dim)
-        dir_nonzero = (
-            d for d in directions if any(x != 0 for x in d)
-        )
-        res = (list(np.array(d) + np.array(idx)) for d in dir_nonzero)
+        res = (tuple(np.array(d) + np.array(idx)) for d in directions)
         return (r for r in res if self._in_limits(r))
         
     def get_neighbour_results(self, idx):
-        res = (self.result[i] for i in self.get_neighbours(idx))
-        return {r for r in res if r is not None}
+        res = (self.result[tuple(i)] for i in self.get_neighbours(idx))
+        return {r.phase for r in res if r is not None}
         
     def check_neighbour_results(self, idx):
-        res = self.get_neighbour_results()
+        res = self.get_neighbour_results(idx)
         if len(res) == 1:
             return res.pop(), True
         else:
@@ -171,6 +156,10 @@ class PhaseMap(object):
     
     def _in_limits(self, idx):
         return all(0 <= i < m for i, m in zip(idx, self.mesh))
+        
+    def update(self, idx, val):
+        for i, v in zip(idx, val):
+            self.result[i] = v
 
 @export
 def get_phase_map(fct, limits, init_mesh=5, num_steps=15, init_result=None):
@@ -195,9 +184,10 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=15, init_result=None):
         (i, p) for i, p, v in result_map.items()
         if v is None or v.guess
     )
-    result_map.result[idx] = [
-        PhaseResult(p, guess=False) for p in pos
-    ]
+    result_map.update(
+        idx, 
+        [PhaseResult(v, guess=False) for v in fct(pos)]
+    )
     
     for _ in range(num_steps):
         result_map.extend_all()
@@ -210,37 +200,42 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=15, init_result=None):
                 continue
             val, flag = result_map.check_neighbour_results(i)
             if flag:
-                result_map[i] = PhaseResult(val, guess=True)
+                result_map.result[tuple(i)] = PhaseResult(val, guess=True)
             else:
                 idx.append(i)
                 pos.append(p)
-        result_map[idx] = [
-            Phaseresult(v, guess=False)
-            for v in fct(pos)
-        ]
+        result_map.update(
+            idx,
+            [PhaseResult(v, guess=False) for v in fct(pos)]
+        )
         
         # second round -- check guesses again
-        to_check = set(i for i, p, v in self.items() if v.guess)
+        to_check = set(i for i, p, v in result_map.items() if v.guess)
         while to_check:
             to_measure = []
             old_result = []
             while to_check:
-                i = to_check.pop()
-                val, same = result_map.check_neighbour_results(i)
-                if not same or val != result_map.result[i]:
+                idx = to_check.pop()
+                val, same = result_map.check_neighbour_results(idx)
+                if not same:
                     to_measure.append(i)
                     old_result.append(result_map.result[i])
             new_result = [
                 PhaseResult(n, guess=False) for n in fct(to_measure)
             ]
-            phase_map.result[to_measure] = new_result
-            for i, n, o in zip(to_measure, new_result, old_result)
+            result_map.update(to_measure, new_result)
+            for i, n, o in zip(to_measure, new_result, old_result):
                 if n.phase != o.phase:
                     to_check.update({
-                        idx for idx in self.get_neighbours(i)
-                        if phase_map.result[idx].guess
+                        idx for idx in result_map.get_neighbours(i)
+                        if result_map.result[tuple(idx)].guess
                     })
-                    
+
+    return result_map
+
+def _update_result(res, idx, val):
+    for i, v in zip(idx, val):
+        res.result[i] = v
 
 def _split_idx_pos(iterable):
     l = list(iterable)
