@@ -18,15 +18,10 @@ def line(x, y):
 def phase(val):
     return [line(x, y) + circle(x, y) for x, y in val]
 
-res = get_phase_map(phase, [(0, 1), (0, 1)], num_steps=0, init_mesh=3)
+#~ res = get_phase_map(phase, [(0, 1), (0, 1)], num_steps=0, init_mesh=3)
 #~ print(res.phase)
 #~ print(res.result.flatten())
-res = get_phase_map(phase, [(0, 1), (0, 1)], num_steps=5, init_mesh=3)
-print([v for v in res.result.flatten()])
-print([v.phase for v in res.result.flatten()])
-#~ print(res.result.phase)
-#~ print(res.phase)
-#~ print(res.result)
+res = get_phase_map(phase, [(0, 1), (0, 1)], num_steps=8, init_mesh=3)
 
 plt.imshow(res.phase, interpolation='none')
 plt.show()

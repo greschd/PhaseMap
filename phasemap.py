@@ -7,8 +7,10 @@
 
 from __future__ import division, print_function
 
+import sys
 import math
 import numbers
+import logging
 import itertools
 from collections import namedtuple
 
@@ -16,6 +18,13 @@ import numpy as np
 from fsc.export import export
 
 __version__ = '0.0.0a1'
+
+logger = logging.getLogger('phasemap')
+logger.setLevel(logging.INFO)
+DEFAULT_HANDLER = logging.StreamHandler(sys.stdout)
+#~ DEFAULT_HANDLER.setFormatter(logging.)
+#~ logging.getLogger('z2pack').setLevel(logging.INFO)
+logger.addHandler(DEFAULT_HANDLER)
 
 PhaseResult = namedtuple('PhaseResult', ['phase', 'guess'])
 
@@ -189,7 +198,8 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=15, init_result=None):
         [PhaseResult(v, guess=False) for v in fct(pos)]
     )
     
-    for _ in range(num_steps):
+    for step in range(num_steps):
+        logger.info('Starting mapping step {}'.format(step))
         result_map.extend_all()
 
         # check new -- which have all the same neighbours?
