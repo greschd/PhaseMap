@@ -6,7 +6,6 @@
 # File:    phasemap.py
 
 import math
-import numbers
 import itertools
 from collections import namedtuple
 
@@ -54,6 +53,17 @@ class PhaseMap:
                 return None
         return np.array([
             map_phase(v) for v in self.result.flatten()
+        ]).reshape(self.result.shape)
+        
+    @property
+    def guess(self):
+        def map_guess(res):
+            try:
+                return res.guess
+            except AttributeError:
+                return None
+        return np.array([
+            map_guess(v) for v in self.result.flatten()
         ]).reshape(self.result.shape)
     
     @result.setter

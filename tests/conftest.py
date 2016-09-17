@@ -6,8 +6,10 @@
 # File:    conftest.py
 
 import json
-import pytest
+import operator
 from collections.abc import Iterable
+
+import pytest
 
 @pytest.fixture
 def test_name(request):
@@ -21,12 +23,20 @@ def compare_data(request, test_name, scope="session"):
         full_name = test_name + (tag or '')
         val = request.config.cache.get(full_name, None)
         if val is None:
-            request.config.cache.set(full_name, json.loads(json.dumps(data, default=z2pack.io._encoding.encode)))
+            request.config.cache.set(full_name, json.loads(json.dumps(data)))
             raise ValueError('Reference data does not exist.')
         else:
-            assert compare_fct(val, json.loads(json.dumps(data, default=z2pack.io._encoding.encode))) # get rid of json-specific quirks
+            assert compare_fct(val, json.loads(json.dumps(data))) # get rid of json-specific quirks
     return inner
 
 @pytest.fixture
 def compare_equal(compare_data):
     return lambda data, tag=None: compare_data(operator.eq, data, tag)
+    
+@pytest.fixture
+def compare_result(compare_equal):
+    def inner(data, tag=None):
+        data = [data.phase.tolist(), data.guess.tolist()]
+        return compare_equal(data, tag=tag)
+    return inner
+    

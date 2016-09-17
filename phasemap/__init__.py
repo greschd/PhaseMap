@@ -6,5 +6,6 @@
 # File:    __init__.py
 
 from ._version import __version__
-from ._phasemap import *
+
+from ._containers import *
 from ._run import *

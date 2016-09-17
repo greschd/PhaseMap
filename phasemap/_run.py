@@ -5,8 +5,11 @@
 # Date:    17.09.2016 13:55:07 CEST
 # File:    _run.py
 
+import numbers
+
 from fsc.export import export
 
+from ._containers import PhaseMap, PhaseResult
 from ._logging_setup import logger
 
 @export

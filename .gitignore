@@ -3,6 +3,10 @@
 *.pyo
 *__pycache__*
 
+# hidden files garbage
+*~
+.fuse*
+
 # Installation/setup/doc related
 dist
 build
