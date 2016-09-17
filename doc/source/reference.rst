@@ -1,10 +1,10 @@
-.. _z2pack_reference:
+.. _phasemap_reference:
 
 Reference
 =========
-.. toctree::
-    :maxdepth: 3
 
-    core.rst
-    systems.rst
+This is the reference for the classes and functions defined in the :mod:`phasemap` module.
 
+.. automodule:: phasemap
+    :members:
+    :imported-members:

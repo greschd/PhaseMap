@@ -24,9 +24,6 @@
 | :ref:`phasemap_reference`
 | detailed description of the classes and functions
 |
-| :ref:`phasemap_links`
-| where to go next
-|
 
 .. rubric:: Getting in touch
 
