@@ -33,3 +33,14 @@ def test_change_mesh(results_equal, num_steps, mesh_size):
     res2.mesh = [mesh_size] * 3
     res2.mesh = res.mesh
     results_equal(res, res2)
+
+@pytest.mark.parametrize('num_steps_1', range(3))
+@pytest.mark.parametrize('num_steps_2', range(3))
+def test_restart(num_steps_1, num_steps_2, results_equal):
+    num_steps_total = num_steps_1 + num_steps_2
+    res = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_total, init_mesh=2)
+
+    res2 = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_1, init_mesh=2)
+    res2 = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_total, init_result=res2, init_mesh=2)
+    results_equal(res, res2)
+    

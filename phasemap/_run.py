@@ -7,6 +7,7 @@
 
 import numbers
 
+import numpy as np
 from fsc.export import export
 
 from ._containers import PhaseMap, PhaseResult
@@ -24,8 +25,8 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=15, init_result=None):
     if init_result is not None:
         result_map = init_result
         result_map.mesh = init_mesh
-        if not np.isclose(np.array(limits), np.array(result.limits)).all():
-            raise ValueError("'init_result' limits {} do not match limits {}".format(result.limits, limits))
+        if not np.isclose(np.array(limits), np.array(init_result.limits)).all():
+            raise ValueError("'init_result' limits {} do not match limits {}".format(init_result.limits, limits))
     else:
         result_map = PhaseMap(mesh=init_mesh, limits=limits)
     
