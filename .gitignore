@@ -1,2 +1,19 @@
-__pycache__
+# Python binaries
 *.pyc
+*.pyo
+*__pycache__*
+
+# Installation/setup/doc related
+dist
+build
+*egg**
+MANIFEST
+*.tar.gz
+files*.txt
+
+# pytest caches
+tests/.cache
+.cache/v/cache
+.coverage
+.coverage*
+htmlcov
