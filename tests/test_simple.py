@@ -5,6 +5,8 @@
 # Date:    29.08.2016 04:11:07 CEST
 # File:    test.py
 
+import copy
+
 import pytest
 import numpy as np
 import phasemap as pm
@@ -22,3 +24,12 @@ def phase(val):
 def test_phase(compare_result, num_steps):
     res = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
     compare_result(res)
+
+@pytest.mark.parametrize('mesh_size', [3, 5, 9])
+@pytest.mark.parametrize('num_steps', range(2, 5))
+def test_change_mesh(results_equal, num_steps, mesh_size):
+    res = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
+    res2 = copy.deepcopy(res)
+    res2.mesh = [mesh_size] * 3
+    res2.mesh = res.mesh
+    results_equal(res, res2)

@@ -40,3 +40,9 @@ def compare_result(compare_equal):
         return compare_equal(data, tag=tag)
     return inner
     
+@pytest.fixture
+def results_equal():
+    def inner(res1, res2):
+        assert (res1.phase == res2.phase).all()
+        assert (res1.guess == res2.guess).all()
+    return inner
