@@ -38,25 +38,23 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=5):
     
     for step in range(num_steps):
         logger.info('Starting mapping step {}'.format(step))
-        with Timer(step):
-            result_map.extend_all()
-            # collect all neighbours
-            neighbours = result_map.all_neighbours()
-            while neighbours:
-                with Timer('finding to_calculate'):
-                    to_calculate = [
-                        n for n in neighbours 
-                        if not result_map.check_neighbour_results(n)
-                    ]
-                with Timer('calculation'):
-                    result_map.update(
-                        to_calculate, 
-                        fct([result_map.index_to_position(i) for i in to_calculate])
-                    )
-                neighbours = set()
-                for i in to_calculate:
-                    neighbours.update(result_map.get_neighbours(i))
-                neighbours = neighbours - result_map.keys()
+        result_map.extend_all()
+        # collect all neighbours
+        neighbours = result_map.all_neighbours()
+        while neighbours:
+            to_calculate = [
+                n for n in neighbours 
+                if not result_map.check_neighbour_results(n)
+            ]
+            logger.info('found {} points to calculate'.format(len(to_calculate)))
+            result_map.update(
+                to_calculate, 
+                fct([result_map.index_to_position(i) for i in to_calculate])
+            )
+            neighbours = set()
+            for i in to_calculate:
+                neighbours.update(result_map.get_neighbours(i))
+            neighbours = neighbours - result_map.keys()
 
     return result_map
 
