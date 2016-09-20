@@ -32,7 +32,7 @@ class PhaseMap:
         self.mesh = list(mesh)
         self.limits = list(tuple(l) for l in limits)
         if init_map is None:
-            self._data = dict()
+            self.data = dict()
             self._steps = [1] * self.dim
         else:
             # consistency checks
@@ -45,15 +45,15 @@ class PhaseMap:
 
     def extend_all(self, k=1):
         """increases mesh in all dimensions"""
-        self._data = {tuple(kval * 2 for kval in k): v for k, v in self._data.items()}
+        self.data = {tuple(kval * 2 for kval in k): v for k, v in self.data.items()}
         self.mesh = [(m - 1) * 2 + 1 for m in self.mesh]
                 
     def keys(self):
         """Returns an iterator over the indices of the evaluated grid points"""
-        return self._data.keys()
+        return self.data.keys()
         
     def items(self):
-        return self._data.items()
+        return self.data.items()
 
     def index_to_position(self, idx):
         """Returns the position on the phase map corresponding to a given index."""
@@ -64,11 +64,11 @@ class PhaseMap:
         ]
         
     def get_neighbours(self, idx):
-        res = (tuple(np.array(d) + np.array(idx)) for d in self._neighbour_directions)
+        res = (tuple([d + i for i in zip(dir, idx)]) for dir in self._neighbour_directions)
         return (r for r in res if self._in_limits(r))
         
     def _get_neighbour_results(self, idx):
-        res = set(self._data.get(k, None) for k in self.get_neighbours(idx)) - {None}
+        res = set(self.data.get(k, None) for k in self.get_neighbours(idx)) - {None}
         return res
       
     def check_neighbour_results(self, idx):
@@ -84,4 +84,11 @@ class PhaseMap:
         
     def update(self, idx, val):
         for i, v in zip(idx, val):
-            self._data[i] = v
+            self.data[i] = v
+            
+    def to_array(self, dtype=object):
+        res = np.empty(self.mesh, dtype=dtype)
+        for k, v in self.keys():
+            res[k] = v
+        return res
+    

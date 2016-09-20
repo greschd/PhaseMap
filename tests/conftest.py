@@ -41,6 +41,21 @@ def compare_result(compare_equal):
     return inner
     
 @pytest.fixture
+def compare_result2(compare_equal):
+    def inner(data, tag=None):
+        x = sorted(data.data.items())[1]
+        print(x)
+        
+        print(type(x))
+        print(type(x[0]))
+        print(type(x[0][0]))
+        json.dumps(x)
+        return compare_equal(sorted(data.data.items())[1], tag=tag)
+        #~ data = [data.phase.tolist(), data.guess.tolist()]
+        #~ return compare_equal(data, tag=tag)
+    return inner
+    
+@pytest.fixture
 def results_equal():
     def inner(res1, res2):
         assert (res1.phase == res2.phase).all()
