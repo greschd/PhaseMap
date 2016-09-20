@@ -11,10 +11,8 @@ import itertools
 import numpy as np
 from fsc.export import export
 
-from ._containers import PhaseMap
+from ._container import PhaseMap
 from ._logging_setup import logger
-
-from ptools.monitoring import Timer
 
 @export
 def get_phase_map(fct, limits, init_mesh=5, num_steps=5):
@@ -35,13 +33,16 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=5):
         fct([result_map.index_to_position(i) for i in initial_idx])
     )
     
-    
     for step in range(num_steps):
         logger.info('Starting mapping step {}'.format(step))
         result_map.extend_all()
-        # collect all neighbours
-        neighbours = result_map.all_neighbours()
+        # collect all neighbours (not yet calculated)
+        neighbours = set()
+        for i in result_map.keys():
+            neighbours.update(result_map.get_neighbours(i))
+        
         while neighbours:
+            # check for those where not all neighbours have the same value
             to_calculate = [
                 n for n in neighbours 
                 if not result_map.check_neighbour_results(n)
@@ -51,6 +52,7 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=5):
                 to_calculate, 
                 fct([result_map.index_to_position(i) for i in to_calculate])
             )
+            # collect neighbours of newly calculated values
             neighbours = set()
             for i in to_calculate:
                 neighbours.update(result_map.get_neighbours(i))

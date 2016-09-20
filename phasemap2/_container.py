@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 #
 # Author:  Dominik Gresch <greschd@gmx.ch>
-# Date:    25.08.2016 14:58:52 CEST
-# File:    phasemap.py
+# Date:    20.09.2016 11:31:24 CEST
+# File:    _container.py
 
 import math
 import itertools
@@ -14,10 +14,8 @@ from fsc.export import export
 @export
 class PhaseMap:
     """data container"""
-    def __init__(self, mesh, limits):
+    def __init__(self, mesh, limits, init_map=None):
         """
-        mesh is a list of integers
-        limits is a list of tuples
         """
         # consistency checks
         if len(mesh) != len(limits):
@@ -33,7 +31,13 @@ class PhaseMap:
         self.dim = len(mesh)
         self.mesh = list(mesh)
         self.limits = list(tuple(l) for l in limits)
-        self._data = dict()
+        if init_map is None:
+            self._data = dict()
+            self._steps = [1] * self.dim
+        else:
+            # consistency checks
+            raise NotImplementedError
+            
         self._neighbour_directions = [
             l for l in list(itertools.product([-1, 0, 1], repeat=self.dim))
             if l != tuple([0] * self.dim)
@@ -67,12 +71,6 @@ class PhaseMap:
         res = set(self._data.get(k, None) for k in self.get_neighbours(idx)) - {None}
         return res
       
-    def all_neighbours(self):
-        res = set()
-        for i in self._data.keys():
-            res.update(self.get_neighbours(i))
-        return res - self._data.keys()
-    
     def check_neighbour_results(self, idx):
         res = self._get_neighbour_results(idx)
         assert len(res) != 0

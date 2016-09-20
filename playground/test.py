@@ -5,12 +5,19 @@
 # Date:    29.08.2016 04:11:07 CEST
 # File:    test.py
 
+import sys
 import copy
+import logging
 
 import numpy as np
 import phasemap2 as pm
 
 import matplotlib.pyplot as plt
+
+logger = logging.getLogger('phasemap')
+logger.setLevel(logging.INFO)
+DEFAULT_HANDLER = logging.StreamHandler(sys.stdout)
+logger.addHandler(DEFAULT_HANDLER)
 
 def circle(x, y):
     return 2 if x**2 + y**2 < 1 else 0
