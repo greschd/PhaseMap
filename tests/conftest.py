@@ -10,6 +10,7 @@ import operator
 from collections.abc import Iterable
 
 import pytest
+import numpy as np
 
 @pytest.fixture
 def test_name(request):
@@ -43,14 +44,7 @@ def compare_result(compare_equal):
 @pytest.fixture
 def compare_result2(compare_equal):
     def inner(data, tag=None):
-        x = sorted(data.data.items())[1]
-        print(x)
-        
-        print(type(x))
-        print(type(x[0]))
-        print(type(x[0][0]))
-        json.dumps(x)
-        return compare_equal(sorted(data.data.items())[1], tag=tag)
+        return compare_equal(np.array(sorted(data.data.items())).tolist(), tag=tag)
     return inner
     
 @pytest.fixture
