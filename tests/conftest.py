@@ -62,4 +62,4 @@ def results_equal():
         assert sorted(res1.items()) == sorted(res2.items())
         assert res1.dim == res2.dim
         assert res1.limits == res2.limits
-    
+    return inner
