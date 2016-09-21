@@ -6,15 +6,16 @@
 # File:    _run.py
 
 import numbers
+import itertools
 
 import numpy as np
 from fsc.export import export
 
-from ._containers import PhaseMap, PhaseResult
+from ._container import PhaseMap
 from ._logging_setup import logger
 
 @export
-def get_phase_map(fct, limits, init_mesh=5, num_steps=15, init_result=None):
+def get_phase_map(fct, limits, init_mesh=5, num_steps=5):
     """
     init_mesh as int -> same in all dimensions. Otherwise as list of int.
     """
@@ -22,73 +23,42 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=15, init_result=None):
     if isinstance(init_mesh, numbers.Integral):
         init_mesh = [init_mesh] * len(limits)
     
-    if init_result is not None:
-        result_map = init_result
-        result_map.mesh = init_mesh
-        if not np.isclose(np.array(limits), np.array(init_result.limits)).all():
-            raise ValueError("'init_result' limits {} do not match limits {}".format(init_result.limits, limits))
-    else:
-        result_map = PhaseMap(mesh=init_mesh, limits=limits)
+    result_map = PhaseMap(mesh=init_mesh, limits=limits)
     
     # initial calculation
-    # calculate for all guesses and new entries
-    idx, pos = _split_idx_pos(
-        (i, p) for i, p, v in result_map.items()
-        if v is None or v.guess
-    )
+    # calculate for every grid point
+    initial_idx = list(itertools.product(*[range(n) for n in init_mesh]))
     result_map.update(
-        idx, 
-        [PhaseResult(v, guess=False) for v in fct(pos)]
+        initial_idx, 
+        fct([result_map.index_to_position(i) for i in initial_idx])
     )
     
     for step in range(num_steps):
         logger.info('Starting mapping step {}'.format(step))
         result_map.extend_all()
-
-        # check new -- which have all the same neighbours?
-        idx = []
-        pos = []
-        for i, p, v in result_map.items():
-            if v is not None:
-                continue
-            val, flag = result_map.check_neighbour_results(i)
-            if flag:
-                result_map.result[tuple(i)] = PhaseResult(val, guess=True)
-            else:
-                idx.append(i)
-                pos.append(p)
-        result_map.update(
-            idx,
-            [PhaseResult(v, guess=False) for v in fct(pos)]
-        )
+        # collect all neighbours (not yet calculated)
+        neighbours = set()
+        for i in result_map.keys():
+            neighbours.update(result_map.get_neighbours(i))
         
-        # second round -- check guesses again
-        to_check = set(i for i, p, v in result_map.items() if v.guess)
-        while to_check:
-            to_measure = []
-            old_result = []
-            while to_check:
-                idx = to_check.pop()
-                val, same = result_map.check_neighbour_results(idx)
-                if not same:
-                    to_measure.append(i)
-                    old_result.append(result_map.result[i])
-            new_result = [
-                PhaseResult(n, guess=False) for n in fct(to_measure)
+        while neighbours:
+            # check for those where not all neighbours have the same value
+            to_calculate = [
+                n for n in neighbours 
+                if not result_map.check_neighbour_results(n)
             ]
-            result_map.update(to_measure, new_result)
-            for i, n, o in zip(to_measure, new_result, old_result):
-                if n.phase != o.phase:
-                    to_check.update({
-                        idx for idx in result_map.get_neighbours(i)
-                        if result_map.result[tuple(idx)].guess
-                    })
+            logger.info('found {} points to calculate'.format(len(to_calculate)))
+            result_map.update(
+                to_calculate, 
+                fct([result_map.index_to_position(i) for i in to_calculate])
+            )
+            # collect neighbours of newly calculated values
+            neighbours = set()
+            for i in to_calculate:
+                neighbours.update(result_map.get_neighbours(i))
+            neighbours = neighbours - result_map.keys()
 
     return result_map
-
-def _update_result(res, idx, val):
-    for i, v in zip(idx, val):
-        res.result[i] = v
 
 def _split_idx_pos(iterable):
     l = list(iterable)

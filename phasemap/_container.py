@@ -64,7 +64,10 @@ class PhaseMap:
         ]
         
     def get_neighbours(self, idx):
-        res = (tuple([d + i for i in zip(dir, idx)]) for dir in self._neighbour_directions)
+        res = (
+            tuple([d + i for d, i in zip(direction, idx)]) 
+            for direction in self._neighbour_directions
+        )
         return (r for r in res if self._in_limits(r))
         
     def _get_neighbour_results(self, idx):

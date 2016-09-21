@@ -10,7 +10,7 @@ import copy
 import logging
 
 import numpy as np
-import phasemap2 as pm
+import phasemap as pm
 
 import matplotlib.pyplot as plt
 
@@ -36,20 +36,4 @@ if __name__ == '__main__':
         A[k] = v
     plt.imshow(A.T, interpolation='none', origin='lower')
     plt.colorbar()
-    plt.savefig('plot_start.pdf', rasterize=False, bbox_inches='tight')
-    #~ plt.clf()
-    #~ for i in range(res.mesh[0]):
-        #~ iterator = range(res.mesh[1])
-        #~ if i % 2 == 1:
-            #~ iterator = reversed(iterator)
-        #~ for j in iterator:
-            #~ if A[i, j] == -1:
-                #~ A[i, j] = current
-            #~ else:
-                #~ current = A[i, j]
-    #~ A[0,0] = -1
-    #~ plt.imshow(A.T, interpolation='none', origin='lower')
-    #~ plt.colorbar()
-    #~ plt.savefig('plot.svg', bbox_inches='tight')
-    
-
+    plt.savefig('plot.pdf', rasterize=False, bbox_inches='tight')

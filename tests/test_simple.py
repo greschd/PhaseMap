@@ -9,8 +9,8 @@ import copy
 
 import pytest
 import numpy as np
+import phasemap_old as pmo
 import phasemap as pm
-import phasemap2 as pm2
 
 def circle(x, y):
     return 2 if x**2 + y**2 < 1 else 0
@@ -23,18 +23,18 @@ def phase(val):
 
 @pytest.mark.parametrize('num_steps', range(2, 5))
 def test_phase(compare_result, num_steps):
-    res = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
+    res = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
     compare_result(res)
     
 @pytest.mark.parametrize('num_steps', range(2, 5))
 def test_phase_2(compare_result2, num_steps):
-    res = pm2.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
+    res = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
     compare_result2(res)
     
 @pytest.mark.parametrize('num_steps', range(2, 5))
 def compare_p1p2(num_steps):
-    res1 = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
-    res2 = pm2.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
+    res1 = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
+    res2 = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
     A = np.empty(res1.mesh, dtype=object)
     where = np.where(not res1.guess) 
     A[where] = res1.phase[where]
@@ -43,7 +43,7 @@ def compare_p1p2(num_steps):
 @pytest.mark.parametrize('mesh_size', [3, 5, 9])
 @pytest.mark.parametrize('num_steps', range(2, 5))
 def test_change_mesh(results_equal, num_steps, mesh_size):
-    res = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
+    res = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
     res2 = copy.deepcopy(res)
     res2.mesh = [mesh_size] * 3
     res2.mesh = res.mesh
@@ -53,9 +53,9 @@ def test_change_mesh(results_equal, num_steps, mesh_size):
 @pytest.mark.parametrize('num_steps_2', range(3))
 def test_restart(num_steps_1, num_steps_2, results_equal):
     num_steps_total = num_steps_1 + num_steps_2
-    res = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_total, init_mesh=2)
+    res = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_total, init_mesh=2)
 
-    res2 = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_1, init_mesh=2)
-    res2 = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_total, init_result=res2, init_mesh=2)
+    res2 = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_1, init_mesh=2)
+    res2 = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_total, init_result=res2, init_mesh=2)
     results_equal(res, res2)
     

@@ -32,7 +32,7 @@ def compare_data(request, test_name, scope="session"):
 @pytest.fixture
 def compare_equal(compare_data):
     return lambda data, tag=None: compare_data(operator.eq, data, tag)
-    
+
 @pytest.fixture
 def compare_result(compare_equal):
     def inner(data, tag=None):
@@ -51,8 +51,6 @@ def compare_result2(compare_equal):
         print(type(x[0][0]))
         json.dumps(x)
         return compare_equal(sorted(data.data.items())[1], tag=tag)
-        #~ data = [data.phase.tolist(), data.guess.tolist()]
-        #~ return compare_equal(data, tag=tag)
     return inner
     
 @pytest.fixture

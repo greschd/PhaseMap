@@ -40,5 +40,5 @@ setup(
     ],
     license='GPL',
     keywords=['phase', 'map', 'diagram', 'scaling'],
-    packages=['phasemap', 'phasemap2']
+    packages=['phasemap', 'phasemap_old']
 )
