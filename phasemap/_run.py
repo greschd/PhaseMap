@@ -15,7 +15,7 @@ from ._container import PhaseMap
 from ._logging_setup import logger
 
 @export
-def get_phase_map(fct, limits, init_mesh=5, num_steps=5):
+def get_phase_map(fct, limits, init_mesh=5, num_steps=5, init_result=None):
     """
     init_mesh as int -> same in all dimensions. Otherwise as list of int.
     """
@@ -23,7 +23,7 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=5):
     if isinstance(init_mesh, numbers.Integral):
         init_mesh = [init_mesh] * len(limits)
     
-    result_map = PhaseMap(mesh=init_mesh, limits=limits)
+    result_map = PhaseMap(mesh=init_mesh, limits=limits, init_map=init_result)
     
     # initial calculation
     # calculate for every grid point
@@ -38,7 +38,7 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=5):
         result_map.extend_all()
         # collect all neighbours (not yet calculated)
         neighbours = set()
-        for i in result_map.keys():
+        for i in result_map.indices():
             neighbours.update(result_map.get_neighbours(i))
         
         while neighbours:
@@ -56,7 +56,7 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=5):
             neighbours = set()
             for i in to_calculate:
                 neighbours.update(result_map.get_neighbours(i))
-            neighbours = neighbours - result_map.keys()
+            neighbours = neighbours - result_map.indices()
 
     return result_map
 

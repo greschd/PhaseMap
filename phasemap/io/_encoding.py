@@ -46,7 +46,7 @@ def _(obj):
         limits=obj.limits,
         mesh=obj.mesh,
         steps=obj._steps,
-        data_items=list(obj.data.items())
+        data_items=list(obj._data.items())
     )
 
 #-----------------------------------------------------------------------#
@@ -66,7 +66,7 @@ def decode_phasemap(obj):
     res = PhaseMap(mesh=obj['mesh'], limits=obj['limits'])
     res._steps = obj['steps']
     for k, v in obj['data_items']:
-        res.data[tuple(k)] = v
+        res._data[tuple(k)] = v
     return res
 
 @decode.register(dict)
