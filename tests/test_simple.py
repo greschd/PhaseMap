@@ -20,28 +20,34 @@ def line(x, y):
 
 def phase(val):
     return [line(x, y) + circle(x, y) for x, y in val]
-
-@pytest.mark.parametrize('num_steps', range(2, 5))
-def test_phase_old(compare_result_old, num_steps):
-    res = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
-    compare_result_old(res)
     
-@pytest.mark.parametrize('mesh_size', [3, 5, 9])
 @pytest.mark.parametrize('num_steps', range(2, 5))
-def test_change_mesh_old(results_equal_old, num_steps, mesh_size):
-    res = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
-    res2 = copy.deepcopy(res)
-    res2.mesh = [mesh_size] * 3
-    res2.mesh = res.mesh
-    results_equal_old(res, res2)
-    
-@pytest.mark.parametrize('num_steps_1', range(3))
-@pytest.mark.parametrize('num_steps_2', range(3))
-def test_restart_old(num_steps_1, num_steps_2, results_equal_old):
-    num_steps_total = num_steps_1 + num_steps_2
-    res = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_total, init_mesh=2)
+@pytest.mark.parametrize('all_corners', [False, True])
+def test_phase(compare_result, num_steps, all_corners):
+    res = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3, all_corners=all_corners)
+    compare_result(res)
 
-    res2 = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_1, init_mesh=2)
-    res2 = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_total, init_result=res2, init_mesh=2)
-    results_equal_old(res, res2)
+#~ @pytest.mark.parametrize('num_steps', range(2, 5))
+#~ def test_phase_old(compare_result_old, num_steps):
+    #~ res = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
+    #~ compare_result_old(res)
+    
+#~ @pytest.mark.parametrize('mesh_size', [3, 5, 9])
+#~ @pytest.mark.parametrize('num_steps', range(2, 5))
+#~ def test_change_mesh_old(results_equal_old, num_steps, mesh_size):
+    #~ res = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
+    #~ res2 = copy.deepcopy(res)
+    #~ res2.mesh = [mesh_size] * 3
+    #~ res2.mesh = res.mesh
+    #~ results_equal_old(res, res2)
+    
+#~ @pytest.mark.parametrize('num_steps_1', range(3))
+#~ @pytest.mark.parametrize('num_steps_2', range(3))
+#~ def test_restart_old(num_steps_1, num_steps_2, results_equal_old):
+    #~ num_steps_total = num_steps_1 + num_steps_2
+    #~ res = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_total, init_mesh=2)
+
+    #~ res2 = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_1, init_mesh=2)
+    #~ res2 = pmo.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps = num_steps_total, init_result=res2, init_mesh=2)
+    #~ results_equal_old(res, res2)
     

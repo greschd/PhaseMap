@@ -7,6 +7,7 @@
 
 import json
 import operator
+import functools
 from collections.abc import Iterable
 
 import pytest
@@ -36,19 +37,13 @@ def compare_data(request, test_name, scope="session"):
 def compare_equal(compare_data):
     return lambda data, tag=None: compare_data(operator.eq, data, tag)
 
+@pytest.fixture
+def compare_result(compare_data, results_equal):
+    return lambda data, tag=None: compare_data(results_equal, data, tag)
     
 @pytest.fixture
-def compare_result_old(compare_data, results_equal_old):
-    def inner(data, tag=None):
-        return lambda data, tag: compare_data(results_equal, data, tag)
-    return inner
-
-@pytest.fixture
-def results_equal_old():
+def results_equal():
     def inner(res1, res2):
-        assert res1._steps == res2._steps
-        assert res1.mesh == res2.mesh
-        assert sorted(res1.items()) == sorted(res2.items())
-        assert res1.dim == res2.dim
-        assert res1.limits == res2.limits
+        assert False
+        assert sorted(res1.points.items()) == sorted(res2.points.items())
     return inner
