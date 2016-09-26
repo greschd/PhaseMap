@@ -139,9 +139,15 @@ class PhaseMap:
         )
         
     def get_neighbour_pts(self, pt_idx, step):
-        for i in range(self.dim):
-            for s in [-step, step]:
-                yield tuple(p + s if i == j else p for j, p in enumerate(pt_idx))
+        # if all corners are calculated, the neighbours with the relevant squares can be further away
+        if self.all_corners:
+            assert step % 2 == 0
+            for dist in itertools.product(range(-3, 4), repeat=self.dim):
+                yield tuple(p + d * (step // 2) for p, d in zip(pt_idx, dist))
+        else:
+            for i in range(self.dim):
+                for s in [-step, step]:
+                    yield tuple(p + s if i == j else p for j, p in enumerate(pt_idx))
     
     def split_square(self, square_idx):
         old_square = self.squares[square_idx]

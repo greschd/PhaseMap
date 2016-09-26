@@ -99,9 +99,9 @@ def phase_fct(pos):
     #~ if y < 0.25 and x < 0.15:
         #~ return 1
     #~ return 0
-def phase(val):
-    x, y = val
-    return 1 if x**2 + y**2 < 1 else 0
+#~ def phase(val):
+    #~ x, y = val
+    #~ return 1 if x**2 + y**2 < 1 else 0
     #~ print(val)
     #~ if val in [[0., 0.], [0.25, 0.25], [0.5, 0.125]]:
         #~ return 1
@@ -111,10 +111,15 @@ def phase(val):
 
 if __name__ == '__main__':
 
-    NUM_STEPS = 6
+    NUM_STEPS = 8
     with Timer('foo'):
-        #~ res = pm.get_phase_map(phase, [(0, 1), (0, 1)], num_steps=NUM_STEPS, init_mesh=2, listable=False)
-        res = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=NUM_STEPS, init_mesh=3, listable=False)
+        res = pm.get_phase_map(phase_fct, [(0, 1), (0, 1)], num_steps=NUM_STEPS, init_mesh=2, listable=False, all_corners=False)
+    with Timer('bar'):
+        res2 = pm.get_phase_map(phase_fct, [(0, 1), (0, 1)], num_steps=NUM_STEPS, init_mesh=2, listable=False, all_corners=True)
+    
+    #~ print(res.points)
+    #~ print(res.points[(0.5, 0.5)].squares)
+        #~ res = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=NUM_STEPS, init_mesh=3, listable=False)
     #~ with Timer('bar'):
         #~ res2 = pm.get_phase_map(phase, [(0, 1), (0, 1)], num_steps=NUM_STEPS, init_mesh=3, all_corners=True)
     #~ NUM_STEPS = 6
@@ -131,7 +136,7 @@ if __name__ == '__main__':
     
     #~ plt.savefig('test2.pdf')
     
-    plot(res.squares, res.mesh[0] - 1, 100, res.points)
+    #~ plot(res.squares, res.mesh[0] - 1, 100, res.points)
     
     #~ fig, ax = plt.subplots(figsize=[4, 4])
     #~ items = res2.points.items()
@@ -141,7 +146,7 @@ if __name__ == '__main__':
     
     #~ plt.savefig('test3.pdf')
     
-    #~ print(len(res.points.items()) / len(res2.points.items()))
+    print(len(res.points.items()) / len(res2.points.items()))
     #~ print(len(res3.points.items()) / len(res4.points.items()))
 
     #~ SLICE = 5
