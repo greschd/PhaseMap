@@ -45,9 +45,9 @@ class PhaseMap:
         self.points = dict()
         self.squares = list()
         self.all_corners = all_corners
-        self._to_split = set()
-        self._to_calculate = set()
-        self._split_next = set()
+        self._to_split = []
+        self._to_calculate = []
+        self._split_next = []
         
     def create_initial_squares(self):
         for i, position in enumerate(itertools.product(*[range(n - 1) for n in self.mesh])):
@@ -78,11 +78,11 @@ class PhaseMap:
                 # larger squares can be split in the current iteration
                 if square.size > 1:
                     assert square_idx not in self._to_calculate
-                    self._to_calculate.add(square_idx)
+                    self._to_calculate.append(square_idx)
                 # size 1 squares will be split in the next iteration
                 else:
                     assert square_idx not in self._split_next
-                    self._split_next.add(square_idx)
+                    self._split_next.append(square_idx)
     
     def extend(self):
         """Double the indices"""
@@ -93,14 +93,14 @@ class PhaseMap:
             s.points = {tuple(2 * p for p in pt) for pt in s.points}
             s.position = tuple(2 * p for p in s.position)
         # split_next are now to calculate (size > 1)
-        self._to_calculate = self._to_calculate | self._split_next
-        self._split_next = set()
+        self._to_calculate = self._split_next
+        self._split_next = []
             
     def _get_new_pts(self, square_idx):
         pts_new = set()
         square = self.squares[square_idx]
         assert square.size % 2 == 0
-        #~ # corner points
+        # corner points
         if self.all_corners:
             pts_new.update(itertools.product(*[
                 (p, p + square.size // 2,  p + square.size) for p in square.position
@@ -117,8 +117,8 @@ class PhaseMap:
         pts_all = set()
         for square_idx in self._to_calculate:
             pts_all.update(self._get_new_pts(square_idx))
-        self._to_split = copy.deepcopy(self._to_calculate)
-        self._to_calcualte = set()
+        self._to_split = self._to_calculate
+        self._to_calculate = []
         return list(pts_all - self.points.keys())
         
     def update(self, pts, values):
@@ -128,6 +128,7 @@ class PhaseMap:
     def split_all(self):
         for square_idx in list(self._to_split):
             self.split_square(square_idx)
+        self._to_split = []
         assert len(self._to_split) == 0
     
     def pt_in_square(self, *, pt_idx, square_idx):
@@ -144,8 +145,13 @@ class PhaseMap:
     
     def split_square(self, square_idx):
         # remove square from to_split and to_calculate
-        self._to_split.remove(square_idx)
-        self._to_calculate.remove(square_idx)
+        #~ self._to_split.remove(square_idx)
+        #~ print([self.squares[s].position for s in self._to_calculate])
+        assert square_idx not in self._to_calculate
+            #~ raise ValueError
+            #~ print(square_idx)
+        #~ with contextlib.suppress(KeyError):
+            #~ self._to_calculate.remove(square_idx)
 
         old_square = self.squares[square_idx]
         # get points which have not been added to the square yet

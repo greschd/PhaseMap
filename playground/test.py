@@ -10,8 +10,7 @@ import copy
 import logging
 
 import numpy as np
-import phasemap2 as pm
-import phasemap as pm_old
+import phasemap as pm
 
 import matplotlib.pyplot as plt
 plt.set_cmap('viridis')
@@ -58,23 +57,23 @@ def phase_single(x, y):
     
     #~ return 0
     
-#~ def phase_fct(pos):
-    #~ if pos[0] >= 0 and pos[0] < 0.3:
-        #~ if pos[1] > 0.4 and pos[1] < 0.6:
-            #~ return 1
+def phase_fct(pos):
+    if pos[0] >= 0 and pos[0] < 0.3:
+        if pos[1] > 0.4 and pos[1] < 0.6:
+            return 1
 
-    #~ if pos[0] > 0.4 and pos[0] < 0.6:
-        #~ if pos[1] >= 0 and pos[1] < 0.6:
-            #~ return 1
-    #~ if pos[0] > 0.4 and pos[0] < 0.6:
-        #~ if pos[1] >= 0.6:
-            #~ return 2
+    if pos[0] > 0.4 and pos[0] < 0.6:
+        if pos[1] >= 0 and pos[1] < 0.6:
+            return 1
+    if pos[0] > 0.4 and pos[0] < 0.6:
+        if pos[1] >= 0.6:
+            return 2
 
-    #~ if pos[0] >= 0 and pos[0] < 0.1:
-        #~ if pos[1] >= 0 and pos[1] < 0.1:
-            #~ return 1
+    if pos[0] >= 0 and pos[0] < 0.1:
+        if pos[1] >= 0 and pos[1] < 0.1:
+            return 1
 
-    #~ return 0 
+    return 0 
     
 #~ def phase_fct(x, y):
     #~ return x**2 + y**2 < 1
@@ -83,47 +82,67 @@ def phase_single(x, y):
     #~ return (x**2 + y**2) < 1
 #~ def phase_fct(x, y, z=0):
     #~ return x**2 + y**2 + z**2  < 1
-def phase_fct(x, y, z=0):
-    if x < 1 / np.pi and y < 1 / np.pi:
-        return 0
-    elif x < 1 / np.pi:
-        return 1
-    return 2
+#~ def phase_fct(x, y, z=0):
+    #~ if x < 1 / np.pi and y < 1 / np.pi:
+        #~ return 0
+    #~ elif x < 1 / np.pi:
+        #~ return 1
+    #~ return 2
 
+#~ def phase(val):
+    #~ return [phase_fct(v) for v in val]
+    
+#~ def phase(val):
+    #~ x, y = val
+    #~ if 0.2 < y < 0.3 and 0.1 < x < 0.6:
+        #~ return 1
+    #~ if y < 0.25 and x < 0.15:
+        #~ return 1
+    #~ return 0
 def phase(val):
-    return [phase_fct(*v) for v in val]
+    x, y = val
+    return 1 if x**2 + y**2 < 1 else 0
+    #~ print(val)
+    #~ if val in [[0., 0.], [0.25, 0.25], [0.5, 0.125]]:
+        #~ return 1
+    #~ elif val in [[0.375, 0.125], [0.5, 0.125]]:
+        #~ return 2
+    #~ return 0
 
 if __name__ == '__main__':
 
-    NUM_STEPS = 5
-    with Timer('foo'):
-        res = pm.get_phase_map(phase, [(-1.1, 1.1), (-1.1, 1.1)], num_steps=NUM_STEPS, init_mesh=3)
-    with Timer('bar'):
-        res2 = pm.get_phase_map(phase, [(-1.1, 1.1), (-1.1, 1.1)], num_steps=NUM_STEPS, init_mesh=3, all_corners=True)
     NUM_STEPS = 6
-    with Timer('foo3'):
-        res3 = pm.get_phase_map(phase, [(-1.1, 1.1), (-1.1, 1.1), (-1.1, 1.1)], num_steps=NUM_STEPS, init_mesh=3)
-    with Timer('bar3'):
-        res4 = pm.get_phase_map(phase, [(-1.1, 1.1), (-1.1, 1.1), (-1.1, 1.1)], num_steps=NUM_STEPS, init_mesh=3, all_corners=True)
+    with Timer('foo'):
+        #~ res = pm.get_phase_map(phase, [(0, 1), (0, 1)], num_steps=NUM_STEPS, init_mesh=2, listable=False)
+        res = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=NUM_STEPS, init_mesh=3, listable=False)
+    #~ with Timer('bar'):
+        #~ res2 = pm.get_phase_map(phase, [(0, 1), (0, 1)], num_steps=NUM_STEPS, init_mesh=3, all_corners=True)
+    #~ NUM_STEPS = 6
+    #~ with Timer('foo3'):
+        #~ res3 = pm.get_phase_map(phase, [(-1.1, 1.1), (-1.1, 1.1), (-1.1, 1.1)], num_steps=NUM_STEPS, init_mesh=3)
+    #~ with Timer('bar3'):
+        #~ res4 = pm.get_phase_map(phase, [(-1.1, 1.1), (-1.1, 1.1), (-1.1, 1.1)], num_steps=NUM_STEPS, init_mesh=3, all_corners=True)
 
-    fig, ax = plt.subplots(figsize=[4, 4])
-    items = res.points.items()
-    pos = [p for p, v in items]
-    val = [v.phase for p, v in items]
-    cmap_irregular(val, pos, fill_lines=False, axis=ax)
+    #~ fig, ax = plt.subplots(figsize=[4, 4])
+    #~ items = res.points.items()
+    #~ pos = [p for p, v in items]
+    #~ val = [v.phase for p, v in items]
+    #~ cmap_irregular(val, pos, fill_lines=False, axis=ax)
     
-    plt.savefig('test2.pdf')
+    #~ plt.savefig('test2.pdf')
     
-    fig, ax = plt.subplots(figsize=[4, 4])
-    items = res2.points.items()
-    pos = [p for p, v in items]
-    val = [v.phase for p, v in items]
-    cmap_irregular(val, pos, fill_lines=False, axis=ax)
+    plot(res.squares, res.mesh[0] - 1, 100, res.points)
     
-    plt.savefig('test3.pdf')
+    #~ fig, ax = plt.subplots(figsize=[4, 4])
+    #~ items = res2.points.items()
+    #~ pos = [p for p, v in items]
+    #~ val = [v.phase for p, v in items]
+    #~ cmap_irregular(val, pos, fill_lines=False, axis=ax)
     
-    print(len(res.points.items()) / len(res2.points.items()))
-    print(len(res3.points.items()) / len(res4.points.items()))
+    #~ plt.savefig('test3.pdf')
+    
+    #~ print(len(res.points.items()) / len(res2.points.items()))
+    #~ print(len(res3.points.items()) / len(res4.points.items()))
 
     #~ SLICE = 5
     #~ plot([s for s in res.squares if s.position[2] <= SLICE and s.position[2] + s.size >= SLICE], res.mesh[0], 100, {})

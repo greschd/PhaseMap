@@ -15,10 +15,14 @@ from ._container import PhaseMap
 from ._logging_setup import logger
 
 @export
-def get_phase_map(fct, limits, init_mesh=5, num_steps=5, all_corners=False):
+def get_phase_map(fct, limits, init_mesh=5, num_steps=5, all_corners=False, listable=True):
     """
     init_mesh as int -> same in all dimensions. Otherwise as list of int.
     """
+    if not listable:
+        fct_listable = lambda pts: [fct(p) for p in pts]
+    else:
+        fct_listable = fct
     # setting up the PhaseMap object
     if isinstance(init_mesh, numbers.Integral):
         init_mesh = [init_mesh] * len(limits)
@@ -30,7 +34,7 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=5, all_corners=False):
     initial_idx = list(itertools.product(*[range(n) for n in init_mesh]))
     result_map.update(
         initial_idx, 
-        fct([result_map.index_to_position(i) for i in initial_idx])
+        fct_listable([result_map.index_to_position(i) for i in initial_idx])
     )
     result_map.create_initial_squares()
     
@@ -41,7 +45,7 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=5, all_corners=False):
         while to_calculate:
             result_map.update(
                 to_calculate,
-                fct([result_map.index_to_position(i) for i in to_calculate])
+                fct_listable([result_map.index_to_position(i) for i in to_calculate])
             )
             result_map.split_all()
             to_calculate = result_map.pts_to_calculate()
