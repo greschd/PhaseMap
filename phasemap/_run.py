@@ -49,32 +49,5 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=5, all_corners=False, list
             )
             result_map.split_all()
             to_calculate = result_map.pts_to_calculate()
-        #~ # collect all neighbours (not yet calculated)
-        #~ neighbours = set()
-        #~ for i in result_map.indices():
-            #~ neighbours.update(result_map.get_neighbours(i))
-        
-        #~ while neighbours:
-            #~ # check for those where not all neighbours have the same value
-            #~ to_calculate = [
-                #~ n for n in neighbours 
-                #~ if not result_map.check_neighbour_results(n)
-            #~ ]
-            #~ logger.info('found {} points to calculate'.format(len(to_calculate)))
-            #~ result_map.update(
-                #~ to_calculate, 
-                #~ fct([result_map.index_to_position(i) for i in to_calculate])
-            #~ )
-            #~ # collect neighbours of newly calculated values
-            #~ neighbours = set()
-            #~ for i in to_calculate:
-                #~ neighbours.update(result_map.get_neighbours(i))
-            #~ neighbours = neighbours - result_map.indices()
 
     return result_map
-
-#~ def _split_idx_pos(iterable):
-    #~ l = list(iterable)
-    #~ idx = [i for i, *_ in l]
-    #~ pos = [p for _, p, *_ in l]
-    #~ return idx, pos
