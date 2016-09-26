@@ -76,9 +76,11 @@ class PhaseMap:
                 square.phase = None
                 # larger squares can be split in the current iteration
                 if square.size > 1:
+                    assert square_idx not in self._to_calculate
                     self._to_calculate.add(square_idx)
                 # size 1 squares will be split in the next iteration
                 else:
+                    assert square_idx not in self._split_next
                     self._split_next.add(square_idx)
     
     def extend(self):

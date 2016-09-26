@@ -35,6 +35,7 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=5):
     result_map.create_initial_squares()
     
     for step in range(num_steps):
+        logger.info('starting evaluation step {}'.format(step))
         result_map.extend()
         to_calculate = result_map.pts_to_calculate()
         while to_calculate:
