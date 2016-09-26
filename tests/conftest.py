@@ -36,28 +36,15 @@ def compare_data(request, test_name, scope="session"):
 def compare_equal(compare_data):
     return lambda data, tag=None: compare_data(operator.eq, data, tag)
 
-@pytest.fixture
-def compare_result_old(compare_equal):
-    def inner(data, tag=None):
-        data = [data.phase.tolist(), data.guess.tolist()]
-        return compare_equal(data, tag=tag)
-    return inner
     
 @pytest.fixture
-def compare_result(compare_data, results_equal):
+def compare_result_old(compare_data, results_equal_old):
     def inner(data, tag=None):
         return lambda data, tag: compare_data(results_equal, data, tag)
     return inner
-    
-@pytest.fixture
-def results_equal_old():
-    def inner(res1, res2):
-        assert (res1.phase == res2.phase).all()
-        assert (res1.guess == res2.guess).all()
-    return inner
 
 @pytest.fixture
-def results_equal():
+def results_equal_old():
     def inner(res1, res2):
         assert res1._steps == res2._steps
         assert res1.mesh == res2.mesh

@@ -5,18 +5,29 @@
 # Date:    20.09.2016 11:31:24 CEST
 # File:    _container.py
 
+import copy
 import math
 import itertools
+import contextlib
+from collections import namedtuple
 
 import numpy as np
 from fsc.export import export
 
-@export
+class Point:
+    def __init__(self, phase):
+        self.phase=phase
+        self.squares = set()
+
+class Square:
+    def __init__(self, position, size=1):
+        self.position = tuple(position)
+        self.phase = None
+        self.size = size
+        self.points = set()
+
 class PhaseMap:
-    """data container"""
-    def __init__(self, mesh, limits, init_map=None):
-        """
-        """
+    def __init__(self, mesh, limits, all_corners=False):
         # consistency checks
         if len(mesh) != len(limits):
             raise ValueError('Inconsistent dimensions for mesh ({}) and limits ({})'.format(mesh, limits))
@@ -29,100 +40,21 @@ class PhaseMap:
                 )
 
         self.dim = len(mesh)
+        self.mesh = list(mesh)
         self.limits = list(tuple(l) for l in limits)
-        self._steps = [1] * self.dim
-        self._neighbour_directions = [
-            l for l in list(itertools.product([-1, 0, 1], repeat=self.dim))
-            if l != tuple([0] * self.dim)
-        ]
-
-        if init_map is None:
-            self._data = dict()
-            # the step in going from indices (external repr.) to  keys (internal repr.) 
-            # the mesh size of the internal representation
-            self._mesh = list(mesh)
-        else:
-            # consistency check
-            if self.limits != init_map.limits:
-                raise ValueError("limits '{}' of init_map do not match the current limits '{}'".format(init_map.limits, limits))
-            
-            self._mesh = init_map._mesh
-            self._data = init_map._data
-            # convert size -- this takes care of getting the right steps
-            self.mesh = list(mesh)
-            
-            
+        self.points = dict()
+        self.squares = list()
+        self.all_corners = all_corners
+        self._to_split = set()
+        self._to_calculate = set()
+        self._split_next = set()
         
-    @property
-    def mesh(self):
-        """
-        Returns the shape (number of grid points in each direction) of the current result.
-        """
-        return tuple((m - 1) // s + 1 for m, s in zip(self._mesh, self._steps))
+    def create_initial_squares(self):
+        for i, position in enumerate(itertools.product(*[range(n - 1) for n in self.mesh])):
+            self.squares.append(Square(position=position))
+            for pt in itertools.product(*[(p, p + 1) for p in position]):
+                self.add_point(point_idx=pt, square_idx=i)
         
-
-    @mesh.setter
-    def mesh(self, mesh):
-        k_list = [self._get_k(m, n) for m, n in zip(mesh, self.mesh)]
-        for i, k in enumerate(k_list):
-            self.extend_mesh(i, k=k)
-
-    def extend_all(self, k=1):
-        """increases mesh in all dimensions"""
-        for i in range(self.dim):
-            self.extend_mesh(dim=i, k=k)
-                
-    def extend_mesh(self, dim, k=1):
-        """Extends the mesh in a given dimension (k-fold). For negative k, the mesh is reduced by increasing the step."""
-        # increase step for negative k
-        if k < 0:
-            self._steps[dim] *= 2**-k
-            if (self._mesh[dim] - 1) % self._steps[dim] != 0:
-                 raise ValueError('Cannot reduce dimension {} with mesh size {}.'.format(dim, self._data.shape[dim]))
-        
-        # reduce step for positive k while possible
-        while k > 0 and self._steps[dim] > 1:
-            assert self._steps[dim] % 2 == 0
-            self._steps[dim] //= 2
-            k -= 1
-        # extend data
-        if k > 0:
-            self._data = {
-                tuple(kval * 2 if i == dim else kval for i, kval in enumerate(k)): v 
-                for k, v in self._data.items()
-            }
-            self._mesh = [(m * 2 - 1) if i == dim else m for i, m in enumerate(self._mesh)] 
-                
-    def indices(self):
-        """Returns a set containing the indices of the evaluated grid points"""
-        keys_internal = self._data.keys()
-        return {
-            tuple(kval // s for kval, s in zip(k, self._steps)) 
-            for k in keys_internal 
-            if all(kval % s == 0 for kval, s in zip(k, self._steps))
-        }
-        
-    def items(self):
-        return self._data.items()
-        
-    def _to_key(self, idx):
-        """Converts the index from external to internal representation."""
-        return tuple(i * s for i, s in zip(external_idx, self._step))
-        
-    def _to_idx(self, key):
-        if all(k % s == 0 for k, s in zip(key, self._steps)):
-            return tuple(k // s for k, s in zip(key, self._steps))
-        else:
-            return None
-        
-    def __getitem__(self, idx):
-        """Set an element of the phase map."""
-        return self._data[self._to_key(idx)]
-        
-    def __setitem__(self, idx, val):
-        """Get an element of the phase map."""
-        self._data[self._to_key(idx)] = val
-
     def index_to_position(self, idx):
         """Returns the position on the phase map corresponding to a given index."""
         pos_param = (i / (m - 1) for i, m in zip(idx, self.mesh))
@@ -131,45 +63,124 @@ class PhaseMap:
             for x, l in zip(pos_param, self.limits)
         ]
         
-    def get_neighbours(self, idx):
-        res = (
-            tuple([d + i for d, i in zip(direction, idx)]) 
-            for direction in self._neighbour_directions
-        )
-        return (r for r in res if self._in_limits(r))
-        
-    def _get_neighbour_results(self, idx):
-        res = set(self._data.get(k, None) for k in self.get_neighbours(idx)) - {None}
-        return res
-      
-    def check_neighbour_results(self, idx):
-        res = self._get_neighbour_results(idx)
-        assert len(res) != 0
-        if len(res) == 1:
-            return True
+    def add_point(self, *, point_idx, square_idx):
+        if self.pt_in_square(pt_idx=point_idx, square_idx=square_idx):
+            point = self.points[point_idx]
+            square = self.squares[square_idx]
+            square.points.add(point_idx)
+            point.squares.add(square_idx)
+            # adding the first point determines the phase
+            if square.phase is None and len(square.points) == 1:
+                square.phase = point.phase
+            # check whether the phase is inconsistent
+            elif (square.phase is not None) and (square.phase != point.phase):
+                square.phase = None
+                # larger squares can be split in the current iteration
+                if square.size > 1:
+                    assert square_idx not in self._to_calculate
+                    self._to_calculate.add(square_idx)
+                # size 1 squares will be split in the next iteration
+                else:
+                    assert square_idx not in self._split_next
+                    self._split_next.add(square_idx)
+    
+    def extend(self):
+        """Double the indices"""
+        self.mesh = [2 * m - 1 for m in self.mesh]
+        self.points = {tuple(2 * p for p in pt): v for pt, v in self.points.items()}
+        for s in self.squares:
+            s.size *= 2
+            s.points = {tuple(2 * p for p in pt) for pt in s.points}
+            s.position = tuple(2 * p for p in s.position)
+        # split_next are now to calculate (size > 1)
+        self._to_calculate = self._to_calculate | self._split_next
+        self._split_next = set()
+            
+    def _get_new_pts(self, square_idx):
+        pts_new = set()
+        square = self.squares[square_idx]
+        assert square.size % 2 == 0
+        #~ # corner points
+        if self.all_corners:
+            pts_new.update(itertools.product(*[
+                (p, p + square.size // 2,  p + square.size) for p in square.position
+            ]))
         else:
-            return False
-    
-    def _in_limits(self, idx):
-        """Checks whether a given (external) index is within the bounds of the data."""
-        return all(0 <= i < m for i, m in zip(idx, self.mesh))
+            pts_new.update(itertools.product(*[
+                (p,  p + square.size) for p in square.position
+            ]))
+            # middle point
+            pts_new.add(tuple(p + square.size // 2 for p in square.position))
+        return pts_new
+            
+    def pts_to_calculate(self):
+        pts_all = set()
+        for square_idx in self._to_calculate:
+            pts_all.update(self._get_new_pts(square_idx))
+        self._to_split = copy.deepcopy(self._to_calculate)
+        self._to_calcualte = set()
+        return list(pts_all - self.points.keys())
         
-    def update(self, idx, val):
-        for i, v in zip(idx, val):
-            self._data[i] = v
-            
-    @staticmethod
-    def _get_k(m, n):
-        k = math.log2((m - 1) / (n - 1))
-        # round to integer
-        res = math.floor(k + 0.5)
-        if not np.isclose(res, k):
-            raise ValueError('New mesh size {} is inconsistent with the given size {}.'.format(m, n))
-        return res
-            
-    #~ def to_array(self, dtype=object):
-        #~ res = np.empty(self.mesh, dtype=dtype)
-        #~ for k, v in self.keys():
-            #~ res[k] = v
-        #~ return res
+    def update(self, pts, values):
+        for p, v in zip(pts, values):
+            self.points[p] = Point(phase=v)
     
+    def split_all(self):
+        for square_idx in list(self._to_split):
+            self.split_square(square_idx)
+        assert len(self._to_split) == 0
+    
+    def pt_in_square(self, *, pt_idx, square_idx):
+        square = self.squares[square_idx]
+        return all(
+            p_i >= s_p and p_i <= s_p + square.size 
+            for p_i, s_p in zip(pt_idx, square.position)
+        )
+        
+    def get_neighbour_pts(self, pt_idx, step):
+        for i in range(self.dim):
+            for s in [-step, step]:
+                yield tuple(p + s if i == j else p for j, p in enumerate(pt_idx))
+    
+    def split_square(self, square_idx):
+        # remove square from to_split and to_calculate
+        self._to_split.remove(square_idx)
+        self._to_calculate.remove(square_idx)
+
+        old_square = self.squares[square_idx]
+        # get points which have not been added to the square yet
+        new_pts = self._get_new_pts(square_idx)
+        old_pts = old_square.points
+        for p in old_pts:
+            self.points[p].squares.remove(square_idx)
+        # get neighbouring squares for new points
+        for p in new_pts - old_pts:
+            square_candidates = set()
+            for n in self.get_neighbour_pts(p, step=old_square.size):
+                pt = self.points.get(n, None)
+                if pt is None:
+                    continue
+                square_candidates.update(pt.squares)
+            for s in square_candidates:
+                #~ if self.pt_in_square(square_idx=s, pt_idx=p):
+                self.add_point(square_idx=s, point_idx=p)
+        all_pts = new_pts | old_pts
+        
+        # create new squares
+        assert old_square.size % 2 == 0
+        new_size = old_square.size // 2
+        new_squares = [
+            Square(position=position, size=new_size)
+            for position in itertools.product(*[(e, e + new_size) for e in old_square.position])
+        ]
+        # replace square in container
+        num_squares_before = len(self.squares)
+        self.squares[square_idx] = new_squares[0]
+        self.squares.extend(new_squares[1:])
+        new_square_indices = [square_idx] + list(range(num_squares_before, len(self.squares)))
+        
+        # find new square(s) for each point
+        for p in all_pts:
+            for n in new_square_indices:
+                self.add_point(point_idx=p, square_idx=n)
+
