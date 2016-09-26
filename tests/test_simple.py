@@ -9,7 +9,6 @@ import copy
 
 import pytest
 import numpy as np
-import phasemap_old as pmo
 import phasemap as pm
 
 def circle(x, y):

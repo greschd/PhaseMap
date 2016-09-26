@@ -145,6 +145,7 @@ class PhaseMap:
     
     def split_square(self, square_idx):
         old_square = self.squares[square_idx]
+
         # get points which have not been added to the square yet
         new_pts = self._get_new_pts(square_idx)
         old_pts = old_square.points

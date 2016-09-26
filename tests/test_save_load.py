@@ -11,7 +11,6 @@ import pickle
 
 import pytest
 import msgpack
-import phasemap_old as pmo
 
 def circle(x, y):
     return 2 if x**2 + y**2 < 1 else 0
