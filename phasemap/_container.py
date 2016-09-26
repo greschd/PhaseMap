@@ -126,7 +126,7 @@ class PhaseMap:
             self.points[p] = Point(phase=v)
     
     def split_all(self):
-        for square_idx in list(self._to_split):
+        for square_idx in self._to_split:
             self.split_square(square_idx)
         self._to_split = []
         assert len(self._to_split) == 0
@@ -144,15 +144,6 @@ class PhaseMap:
                 yield tuple(p + s if i == j else p for j, p in enumerate(pt_idx))
     
     def split_square(self, square_idx):
-        # remove square from to_split and to_calculate
-        #~ self._to_split.remove(square_idx)
-        #~ print([self.squares[s].position for s in self._to_calculate])
-        assert square_idx not in self._to_calculate
-            #~ raise ValueError
-            #~ print(square_idx)
-        #~ with contextlib.suppress(KeyError):
-            #~ self._to_calculate.remove(square_idx)
-
         old_square = self.squares[square_idx]
         # get points which have not been added to the square yet
         new_pts = self._get_new_pts(square_idx)
