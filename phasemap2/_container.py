@@ -27,7 +27,7 @@ class Square:
         self.points = set()
 
 class PhaseMap:
-    def __init__(self, mesh, limits):
+    def __init__(self, mesh, limits, all_corners=False):
         # consistency checks
         if len(mesh) != len(limits):
             raise ValueError('Inconsistent dimensions for mesh ({}) and limits ({})'.format(mesh, limits))
@@ -44,6 +44,7 @@ class PhaseMap:
         self.limits = list(tuple(l) for l in limits)
         self.points = dict()
         self.squares = list()
+        self.all_corners = all_corners
         self._to_split = set()
         self._to_calculate = set()
         self._split_next = set()
@@ -99,12 +100,17 @@ class PhaseMap:
         pts_new = set()
         square = self.squares[square_idx]
         assert square.size % 2 == 0
-        # position points
-        pts_new.update(itertools.product(*[
-            (p, p + square.size) for p in square.position
-        ]))
-        # middle point
-        pts_new.add(tuple(p + square.size // 2 for p in square.position))
+        #~ # corner points
+        if self.all_corners:
+            pts_new.update(itertools.product(*[
+                (p, p + square.size // 2,  p + square.size) for p in square.position
+            ]))
+        else:
+            pts_new.update(itertools.product(*[
+                (p,  p + square.size) for p in square.position
+            ]))
+            # middle point
+            pts_new.add(tuple(p + square.size // 2 for p in square.position))
         return pts_new
             
     def pts_to_calculate(self):
