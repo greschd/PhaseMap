@@ -51,12 +51,3 @@ def test_phase(compare_equal, num_steps, all_corners, phase, listable, limits):
 def test_3d(compare_equal, num_steps, all_corners, phase, listable, limits):
     res = pm.get_phase_map(phase, limits=limits, num_steps=num_steps, init_mesh=3, all_corners=all_corners, listable=listable)
     compare_equal(sorted([(k, v.phase) for k, v in res.points.items()]))
-
-#~ @pytest.mark.parametrize('num_steps', range(2, 5))
-#~ @pytest.mark.parametrize('all_corners', [False, True])
-#~ @pytest.mark.parametrize('phase,listable', [(phase1, True), (phase2, False)])
-#~ def test_same_square_idx(compare_equal):
-    #~ res = pm.get_phase_map(phase3, [(0, 1), (0, 1)], num_steps=2, init_mesh=2, listable=False)
-    #~ compare_equal(sorted([(k, v.phase) for k, v in res.points.items()]))
-    # This can be used when the code is stable and io is done
-    #~ compare_result(res)
