@@ -95,8 +95,7 @@ def phase(val):
 
 if __name__ == '__main__':
 
-    NUM_STEPS = 8
-    #~ res = pm.get_phase_map(phase, [(-1, 2), (-1, 2)], num_steps=7, init_mesh=4)
+    NUM_STEPS = 5
     with Timer('foo'):
         res = pm.get_phase_map(phase, [(-1.1, 1.1), (-1.1, 1.1)], num_steps=NUM_STEPS, init_mesh=3)
     with Timer('bar'):
@@ -107,21 +106,21 @@ if __name__ == '__main__':
     with Timer('bar3'):
         res4 = pm.get_phase_map(phase, [(-1.1, 1.1), (-1.1, 1.1), (-1.1, 1.1)], num_steps=NUM_STEPS, init_mesh=3, all_corners=True)
 
-    #~ fig, ax = plt.subplots(figsize=[4, 4])
-    #~ items = res.points.items()
-    #~ pos = [p for p, v in items]
-    #~ val = [v.phase for p, v in items]
-    #~ cmap_irregular(val, pos, fill_lines=False, axis=ax)
+    fig, ax = plt.subplots(figsize=[4, 4])
+    items = res.points.items()
+    pos = [p for p, v in items]
+    val = [v.phase for p, v in items]
+    cmap_irregular(val, pos, fill_lines=False, axis=ax)
     
-    #~ plt.savefig('test2.pdf')
+    plt.savefig('test2.pdf')
     
-    #~ fig, ax = plt.subplots(figsize=[4, 4])
-    #~ items = res2.points.items()
-    #~ pos = [p for p, v in items]
-    #~ val = [v.phase for p, v in items]
-    #~ cmap_irregular(val, pos, fill_lines=False, axis=ax)
+    fig, ax = plt.subplots(figsize=[4, 4])
+    items = res2.points.items()
+    pos = [p for p, v in items]
+    val = [v.phase for p, v in items]
+    cmap_irregular(val, pos, fill_lines=False, axis=ax)
     
-    #~ plt.savefig('test3.pdf')
+    plt.savefig('test3.pdf')
     
     print(len(res.points.items()) / len(res2.points.items()))
     print(len(res3.points.items()) / len(res4.points.items()))
