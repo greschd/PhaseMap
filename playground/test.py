@@ -14,6 +14,7 @@ import phasemap as pm
 
 import matplotlib.pyplot as plt
 plt.set_cmap('viridis')
+from matplotlib.colors import ListedColormap
 
 from plot import plot
 from ptools.advanced_plot import cmap_irregular
@@ -72,6 +73,9 @@ def phase_fct(pos):
     if pos[0] >= 0 and pos[0] < 0.1:
         if pos[1] >= 0 and pos[1] < 0.1:
             return 1
+            
+    if (pos[0] - 0.5)**2 + (pos[1] - 0.5)**2 < 0.1:
+        return 3
 
     return 0 
     
@@ -111,9 +115,19 @@ def phase_fct(pos):
 
 if __name__ == '__main__':
 
-    NUM_STEPS = 1
+    NUM_STEPS = 10
+    #~ plt.set_cmap()
     res = pm.get_phase_map(phase_fct, [(0, 1), (0, 1)], num_steps=NUM_STEPS, init_mesh=2, listable=False)
-    res2 = pm.get_phase_map(phase_fct, [(0, 1), (0, 1)], num_steps=NUM_STEPS, init_mesh=2, listable=False, init_result=res)
+    #~ res2 = pm.get_phase_map(phase_fct, [(0, 1), (0, 1)], num_steps=NUM_STEPS, init_mesh=2, listable=False, init_result=res)
+    
+    BORDEAUX = '#770044'
+    GREY = '#AAAAAA'
+    BLUE = '#003399'
+    GREEN = '#008833'
+    ORANGE = '#EE6600'
+    cmap = ListedColormap([GREY, BORDEAUX, BLUE, ORANGE])
+    pm.plot.squares(res, cmap=cmap)
+    plt.savefig('foo.pdf', bbox_inches='tight')
     
     #~ print(res.points)
     #~ print(res.points[(0.5, 0.5)].squares)
@@ -134,8 +148,8 @@ if __name__ == '__main__':
     
     #~ plt.savefig('test2.pdf')
     
-    plot(res.squares, res.mesh[0] - 1, 100, res.points, savefile='test.svg')
-    plot(res2.squares, res2.mesh[0] - 1, 100, res.points, savefile='test2.svg')
+    #~ plot(res.squares, res.mesh[0] - 1, 100, res.points, savefile='test.svg')
+    #~ plot(res2.squares, res2.mesh[0] - 1, 100, res.points, savefile='test2.svg')
     
     #~ fig, ax = plt.subplots(figsize=[4, 4])
     #~ items = res2.points.items()
@@ -145,7 +159,7 @@ if __name__ == '__main__':
     
     #~ plt.savefig('test3.pdf')
     
-    print('pt ratio', len(res.points.items()) / len(res2.points.items()))
+    #~ print('pt ratio', len(res.points.items()) / len(res2.points.items()))
     #~ print(len(res3.points.items()) / len(res4.points.items()))
 
     #~ SLICE = 5

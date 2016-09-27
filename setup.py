@@ -25,7 +25,7 @@ setup(
     author='Dominik Gresch',
     author_email='greschd@gmx.ch',
     description='Algorithm for mapping phase diagrams',
-    install_requires=['numpy', 'msgpack-python', 'fsc.export', 'fsc.io_helper'],
+    install_requires=['numpy', 'matplotlib', 'msgpack-python', 'decorator', 'fsc.export', 'fsc.io_helper'],
     long_description=readme,
     classifiers=[
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',

@@ -50,7 +50,11 @@ class StepDict:
         return res
         
     def values(self):
-        return self.data.values()
+        res = []
+        for key, val in self.data.items():
+            if all(k % s == 0 for k, s in zip(key, self.step)):
+                res.append(val)
+        return res
         
     def items(self):
         res = []
