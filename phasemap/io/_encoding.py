@@ -58,7 +58,7 @@ def _(obj):
     return dict(
         __stepdict__=True,
         step=obj.step,
-        data_items=obj.data.items()
+        data_items=sorted(obj.data.items())
     )
 
 @encode.register(Point)

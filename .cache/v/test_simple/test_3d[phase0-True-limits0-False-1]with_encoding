@@ -1,0 +1,2090 @@
+{
+  "__phasemap__": true,
+  "_split_next": [
+    0,
+    8,
+    9,
+    10,
+    12,
+    13,
+    11,
+    1,
+    19,
+    18,
+    21,
+    16,
+    15,
+    17,
+    2,
+    24,
+    26,
+    27,
+    23,
+    25,
+    22,
+    28,
+    3,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    42,
+    39,
+    36,
+    37,
+    41,
+    40,
+    4,
+    5,
+    43,
+    45,
+    47,
+    48,
+    46,
+    49,
+    6,
+    50,
+    51,
+    52,
+    54,
+    55,
+    53,
+    56,
+    7,
+    62,
+    60,
+    57,
+    58,
+    63,
+    61,
+    59
+  ],
+  "_to_calculate": [],
+  "_to_split": [],
+  "all_corners": false,
+  "limits": [
+    [
+      -1,
+      1
+    ],
+    [
+      -1,
+      1
+    ],
+    [
+      -1,
+      1
+    ]
+  ],
+  "mesh": [
+    5,
+    5,
+    5
+  ],
+  "points": {
+    "__stepdict__": true,
+    "data_items": [
+      [
+        [
+          0,
+          0,
+          0
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            0
+          ]
+        }
+      ],
+      [
+        [
+          0,
+          0,
+          2
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            8,
+            1
+          ]
+        }
+      ],
+      [
+        [
+          0,
+          0,
+          4
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            15
+          ]
+        }
+      ],
+      [
+        [
+          0,
+          2,
+          0
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            9,
+            2
+          ]
+        }
+      ],
+      [
+        [
+          0,
+          2,
+          2
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            10,
+            16,
+            3,
+            22
+          ]
+        }
+      ],
+      [
+        [
+          0,
+          2,
+          4
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            17,
+            29
+          ]
+        }
+      ],
+      [
+        [
+          0,
+          4,
+          0
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            23
+          ]
+        }
+      ],
+      [
+        [
+          0,
+          4,
+          2
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            24,
+            30
+          ]
+        }
+      ],
+      [
+        [
+          0,
+          4,
+          4
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            31
+          ]
+        }
+      ],
+      [
+        [
+          1,
+          1,
+          1
+        ],
+        {
+          "__point__": true,
+          "phase": 3,
+          "squares": [
+            0,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ]
+        }
+      ],
+      [
+        [
+          1,
+          1,
+          3
+        ],
+        {
+          "__point__": true,
+          "phase": 3,
+          "squares": [
+            1,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21
+          ]
+        }
+      ],
+      [
+        [
+          1,
+          3,
+          1
+        ],
+        {
+          "__point__": true,
+          "phase": 2,
+          "squares": [
+            2,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28
+          ]
+        }
+      ],
+      [
+        [
+          1,
+          3,
+          3
+        ],
+        {
+          "__point__": true,
+          "phase": 2,
+          "squares": [
+            32,
+            33,
+            34,
+            3,
+            35,
+            29,
+            30,
+            31
+          ]
+        }
+      ],
+      [
+        [
+          2,
+          0,
+          0
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            11,
+            4
+          ]
+        }
+      ],
+      [
+        [
+          2,
+          0,
+          2
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            36,
+            5,
+            12,
+            18
+          ]
+        }
+      ],
+      [
+        [
+          2,
+          0,
+          4
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            43,
+            19
+          ]
+        }
+      ],
+      [
+        [
+          2,
+          2,
+          0
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            37,
+            6,
+            13,
+            25
+          ]
+        }
+      ],
+      [
+        [
+          2,
+          2,
+          2
+        ],
+        {
+          "__point__": true,
+          "phase": 3,
+          "squares": [
+            32,
+            7,
+            38,
+            44,
+            14,
+            50,
+            20,
+            26
+          ]
+        }
+      ],
+      [
+        [
+          2,
+          2,
+          4
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            33,
+            21,
+            45,
+            57
+          ]
+        }
+      ],
+      [
+        [
+          2,
+          4,
+          0
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            51,
+            27
+          ]
+        }
+      ],
+      [
+        [
+          2,
+          4,
+          2
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            34,
+            52,
+            58,
+            28
+          ]
+        }
+      ],
+      [
+        [
+          2,
+          4,
+          4
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            59,
+            35
+          ]
+        }
+      ],
+      [
+        [
+          3,
+          1,
+          1
+        ],
+        {
+          "__point__": true,
+          "phase": 3,
+          "squares": [
+            4,
+            37,
+            38,
+            36,
+            40,
+            39,
+            41,
+            42
+          ]
+        }
+      ],
+      [
+        [
+          3,
+          1,
+          3
+        ],
+        {
+          "__point__": true,
+          "phase": 3,
+          "squares": [
+            5,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49
+          ]
+        }
+      ],
+      [
+        [
+          3,
+          3,
+          1
+        ],
+        {
+          "__point__": true,
+          "phase": 2,
+          "squares": [
+            6,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56
+          ]
+        }
+      ],
+      [
+        [
+          3,
+          3,
+          3
+        ],
+        {
+          "__point__": true,
+          "phase": 2,
+          "squares": [
+            7,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63
+          ]
+        }
+      ],
+      [
+        [
+          4,
+          0,
+          0
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            39
+          ]
+        }
+      ],
+      [
+        [
+          4,
+          0,
+          2
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            40,
+            46
+          ]
+        }
+      ],
+      [
+        [
+          4,
+          0,
+          4
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            47
+          ]
+        }
+      ],
+      [
+        [
+          4,
+          2,
+          0
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            41,
+            53
+          ]
+        }
+      ],
+      [
+        [
+          4,
+          2,
+          2
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            42,
+            48,
+            54,
+            60
+          ]
+        }
+      ],
+      [
+        [
+          4,
+          2,
+          4
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            49,
+            61
+          ]
+        }
+      ],
+      [
+        [
+          4,
+          4,
+          0
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            55
+          ]
+        }
+      ],
+      [
+        [
+          4,
+          4,
+          2
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            56,
+            62
+          ]
+        }
+      ],
+      [
+        [
+          4,
+          4,
+          4
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            63
+          ]
+        }
+      ]
+    ],
+    "step": [
+      1,
+      1,
+      1
+    ]
+  },
+  "squares": [
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        0,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        0,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          1,
+          3
+        ],
+        [
+          0,
+          0,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        2,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          0,
+          2,
+          0
+        ],
+        [
+          1,
+          3,
+          1
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        2,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          3,
+          3
+        ],
+        [
+          0,
+          2,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        0,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          1,
+          1
+        ],
+        [
+          2,
+          0,
+          0
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        0,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          2,
+          0,
+          2
+        ],
+        [
+          3,
+          1,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        2,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          3,
+          1
+        ],
+        [
+          2,
+          2,
+          0
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        2,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          3,
+          3
+        ],
+        [
+          2,
+          2,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        0,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        1,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          0,
+          2,
+          0
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        1,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          2,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        0,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          2,
+          0,
+          0
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        0,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          2,
+          0,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        1,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          2,
+          2,
+          0
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        1,
+        1
+      ],
+      "phase": 3,
+      "points": [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        0,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          1,
+          3
+        ],
+        [
+          0,
+          0,
+          4
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        1,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          1,
+          3
+        ],
+        [
+          0,
+          2,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        1,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          1,
+          3
+        ],
+        [
+          0,
+          2,
+          4
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        0,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          1,
+          3
+        ],
+        [
+          2,
+          0,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        0,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          1,
+          3
+        ],
+        [
+          2,
+          0,
+          4
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        1,
+        2
+      ],
+      "phase": 3,
+      "points": [
+        [
+          1,
+          1,
+          3
+        ],
+        [
+          2,
+          2,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        1,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          1,
+          3
+        ],
+        [
+          2,
+          2,
+          4
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        2,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          3,
+          1
+        ],
+        [
+          0,
+          2,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        3,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          3,
+          1
+        ],
+        [
+          0,
+          4,
+          0
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        3,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          0,
+          4,
+          2
+        ],
+        [
+          1,
+          3,
+          1
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        2,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          3,
+          1
+        ],
+        [
+          2,
+          2,
+          0
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        2,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          1,
+          3,
+          1
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        3,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          2,
+          4,
+          0
+        ],
+        [
+          1,
+          3,
+          1
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        3,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          3,
+          1
+        ],
+        [
+          2,
+          4,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        2,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          0,
+          2,
+          4
+        ],
+        [
+          1,
+          3,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        3,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          0,
+          4,
+          2
+        ],
+        [
+          1,
+          3,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        3,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          0,
+          4,
+          4
+        ],
+        [
+          1,
+          3,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        2,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          1,
+          3,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        2,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          2,
+          2,
+          4
+        ],
+        [
+          1,
+          3,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        3,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          3,
+          3
+        ],
+        [
+          2,
+          4,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        3,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          2,
+          4,
+          4
+        ],
+        [
+          1,
+          3,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        0,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          2,
+          0,
+          2
+        ],
+        [
+          3,
+          1,
+          1
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        1,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          1,
+          1
+        ],
+        [
+          2,
+          2,
+          0
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        1,
+        1
+      ],
+      "phase": 3,
+      "points": [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          3,
+          1,
+          1
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        0,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          1,
+          1
+        ],
+        [
+          4,
+          0,
+          0
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        0,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          4,
+          0,
+          2
+        ],
+        [
+          3,
+          1,
+          1
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        1,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          1,
+          1
+        ],
+        [
+          4,
+          2,
+          0
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        1,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          4,
+          2,
+          2
+        ],
+        [
+          3,
+          1,
+          1
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        0,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          2,
+          0,
+          4
+        ],
+        [
+          3,
+          1,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        1,
+        2
+      ],
+      "phase": 3,
+      "points": [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          3,
+          1,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        1,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          2,
+          2,
+          4
+        ],
+        [
+          3,
+          1,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        0,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          4,
+          0,
+          2
+        ],
+        [
+          3,
+          1,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        0,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          4,
+          0,
+          4
+        ],
+        [
+          3,
+          1,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        1,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          4,
+          2,
+          2
+        ],
+        [
+          3,
+          1,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        1,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          4,
+          2,
+          4
+        ],
+        [
+          3,
+          1,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        2,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          3,
+          3,
+          1
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        3,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          2,
+          4,
+          0
+        ],
+        [
+          3,
+          3,
+          1
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        3,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          3,
+          1
+        ],
+        [
+          2,
+          4,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        2,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          3,
+          1
+        ],
+        [
+          4,
+          2,
+          0
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        2,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          3,
+          1
+        ],
+        [
+          4,
+          2,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        3,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          3,
+          1
+        ],
+        [
+          4,
+          4,
+          0
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        3,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          3,
+          1
+        ],
+        [
+          4,
+          4,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        2,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          3,
+          3
+        ],
+        [
+          2,
+          2,
+          4
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        3,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          3,
+          3
+        ],
+        [
+          2,
+          4,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        3,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          3,
+          3
+        ],
+        [
+          2,
+          4,
+          4
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        2,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          3,
+          3
+        ],
+        [
+          4,
+          2,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        2,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          3,
+          3
+        ],
+        [
+          4,
+          2,
+          4
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        3,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          3,
+          3
+        ],
+        [
+          4,
+          4,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        3,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          3,
+          3
+        ],
+        [
+          4,
+          4,
+          4
+        ]
+      ],
+      "size": 1
+    }
+  ]
+}

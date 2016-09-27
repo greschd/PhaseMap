@@ -39,10 +39,6 @@ def compare_equal(compare_data):
     return lambda data, tag=None: compare_data(operator.eq, data, tag)
 
 @pytest.fixture
-def compare_result(compare_data, results_equal):
-    return lambda data, tag=None: compare_data(results_equal, data, tag)
-    
-@pytest.fixture
 def results_equal():
     def inner(res1, res2):
         assert res1.dim == res2.dim

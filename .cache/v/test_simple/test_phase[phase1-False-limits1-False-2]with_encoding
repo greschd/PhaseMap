@@ -1,0 +1,1136 @@
+{
+  "__phasemap__": true,
+  "_split_next": [
+    1,
+    14,
+    5,
+    17,
+    18,
+    20,
+    21,
+    22,
+    2,
+    7,
+    25,
+    28,
+    3,
+    10,
+    31
+  ],
+  "_to_calculate": [],
+  "_to_split": [],
+  "all_corners": false,
+  "limits": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      1
+    ]
+  ],
+  "mesh": [
+    9,
+    9
+  ],
+  "points": {
+    "__stepdict__": true,
+    "data_items": [
+      [
+        [
+          0,
+          0
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            0
+          ]
+        }
+      ],
+      [
+        [
+          0,
+          4
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            0,
+            1
+          ]
+        }
+      ],
+      [
+        [
+          0,
+          6
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            4,
+            13
+          ]
+        }
+      ],
+      [
+        [
+          0,
+          8
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            4
+          ]
+        }
+      ],
+      [
+        [
+          1,
+          5
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            1,
+            13,
+            14,
+            15
+          ]
+        }
+      ],
+      [
+        [
+          2,
+          4
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            0,
+            5,
+            14
+          ]
+        }
+      ],
+      [
+        [
+          2,
+          6
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            4,
+            6,
+            15,
+            16
+          ]
+        }
+      ],
+      [
+        [
+          2,
+          8
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            19,
+            4
+          ]
+        }
+      ],
+      [
+        [
+          3,
+          5
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            16,
+            17,
+            18,
+            5
+          ]
+        }
+      ],
+      [
+        [
+          3,
+          7
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            19,
+            20,
+            21,
+            6
+          ]
+        }
+      ],
+      [
+        [
+          4,
+          0
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            0,
+            2
+          ]
+        }
+      ],
+      [
+        [
+          4,
+          2
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            0,
+            22,
+            7
+          ]
+        }
+      ],
+      [
+        [
+          4,
+          4
+        ],
+        {
+          "__point__": true,
+          "phase": 1,
+          "squares": [
+            0,
+            3,
+            17,
+            25
+          ]
+        }
+      ],
+      [
+        [
+          4,
+          6
+        ],
+        {
+          "__point__": true,
+          "phase": 2,
+          "squares": [
+            10,
+            18,
+            20,
+            28
+          ]
+        }
+      ],
+      [
+        [
+          4,
+          8
+        ],
+        {
+          "__point__": true,
+          "phase": 2,
+          "squares": [
+            21,
+            31
+          ]
+        }
+      ],
+      [
+        [
+          5,
+          1
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            24,
+            2,
+            22,
+            23
+          ]
+        }
+      ],
+      [
+        [
+          5,
+          3
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            25,
+            26,
+            27,
+            7
+          ]
+        }
+      ],
+      [
+        [
+          5,
+          5
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            3,
+            28,
+            29,
+            30
+          ]
+        }
+      ],
+      [
+        [
+          5,
+          7
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            32,
+            33,
+            10,
+            31
+          ]
+        }
+      ],
+      [
+        [
+          6,
+          0
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            8,
+            23
+          ]
+        }
+      ],
+      [
+        [
+          6,
+          2
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            8,
+            9,
+            26,
+            24
+          ]
+        }
+      ],
+      [
+        [
+          6,
+          4
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            11,
+            9,
+            29,
+            27
+          ]
+        }
+      ],
+      [
+        [
+          6,
+          6
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            11,
+            32,
+            12,
+            30
+          ]
+        }
+      ],
+      [
+        [
+          6,
+          8
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            33,
+            12
+          ]
+        }
+      ],
+      [
+        [
+          8,
+          0
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            8
+          ]
+        }
+      ],
+      [
+        [
+          8,
+          4
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            9,
+            11
+          ]
+        }
+      ],
+      [
+        [
+          8,
+          8
+        ],
+        {
+          "__point__": true,
+          "phase": 0,
+          "squares": [
+            12
+          ]
+        }
+      ]
+    ],
+    "step": [
+      1,
+      1
+    ]
+  },
+  "squares": [
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        0
+      ],
+      "phase": 1,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          4,
+          0
+        ]
+      ],
+      "size": 4
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        4
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          5
+        ],
+        [
+          0,
+          4
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        4,
+        0
+      ],
+      "phase": null,
+      "points": [
+        [
+          5,
+          1
+        ],
+        [
+          4,
+          0
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        4,
+        4
+      ],
+      "phase": null,
+      "points": [
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        6
+      ],
+      "phase": 0,
+      "points": [
+        [
+          0,
+          6
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          2,
+          8
+        ]
+      ],
+      "size": 2
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        4
+      ],
+      "phase": null,
+      "points": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        6
+      ],
+      "phase": 0,
+      "points": [
+        [
+          3,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        4,
+        2
+      ],
+      "phase": null,
+      "points": [
+        [
+          4,
+          2
+        ],
+        [
+          5,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        6,
+        0
+      ],
+      "phase": 0,
+      "points": [
+        [
+          8,
+          0
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          6,
+          0
+        ]
+      ],
+      "size": 2
+    },
+    {
+      "__square__": true,
+      "corner": [
+        6,
+        2
+      ],
+      "phase": 0,
+      "points": [
+        [
+          6,
+          4
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          4
+        ]
+      ],
+      "size": 2
+    },
+    {
+      "__square__": true,
+      "corner": [
+        4,
+        6
+      ],
+      "phase": null,
+      "points": [
+        [
+          5,
+          7
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        6,
+        4
+      ],
+      "phase": 0,
+      "points": [
+        [
+          6,
+          6
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          8,
+          4
+        ]
+      ],
+      "size": 2
+    },
+    {
+      "__square__": true,
+      "corner": [
+        6,
+        6
+      ],
+      "phase": 0,
+      "points": [
+        [
+          8,
+          8
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "size": 2
+    },
+    {
+      "__square__": true,
+      "corner": [
+        0,
+        5
+      ],
+      "phase": 0,
+      "points": [
+        [
+          1,
+          5
+        ],
+        [
+          0,
+          6
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        4
+      ],
+      "phase": null,
+      "points": [
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        1,
+        5
+      ],
+      "phase": 0,
+      "points": [
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        5
+      ],
+      "phase": 0,
+      "points": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        4
+      ],
+      "phase": null,
+      "points": [
+        [
+          4,
+          4
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        5
+      ],
+      "phase": null,
+      "points": [
+        [
+          4,
+          6
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        2,
+        7
+      ],
+      "phase": 0,
+      "points": [
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        6
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        3,
+        7
+      ],
+      "phase": null,
+      "points": [
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          8
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        4,
+        1
+      ],
+      "phase": null,
+      "points": [
+        [
+          4,
+          2
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        5,
+        0
+      ],
+      "phase": 0,
+      "points": [
+        [
+          5,
+          1
+        ],
+        [
+          6,
+          0
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        5,
+        1
+      ],
+      "phase": 0,
+      "points": [
+        [
+          5,
+          1
+        ],
+        [
+          6,
+          2
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        4,
+        3
+      ],
+      "phase": null,
+      "points": [
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        5,
+        2
+      ],
+      "phase": 0,
+      "points": [
+        [
+          6,
+          2
+        ],
+        [
+          5,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        5,
+        3
+      ],
+      "phase": 0,
+      "points": [
+        [
+          6,
+          4
+        ],
+        [
+          5,
+          3
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        4,
+        5
+      ],
+      "phase": null,
+      "points": [
+        [
+          5,
+          5
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        5,
+        4
+      ],
+      "phase": 0,
+      "points": [
+        [
+          6,
+          4
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        5,
+        5
+      ],
+      "phase": 0,
+      "points": [
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        4,
+        7
+      ],
+      "phase": null,
+      "points": [
+        [
+          5,
+          7
+        ],
+        [
+          4,
+          8
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        5,
+        6
+      ],
+      "phase": 0,
+      "points": [
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "size": 1
+    },
+    {
+      "__square__": true,
+      "corner": [
+        5,
+        7
+      ],
+      "phase": 0,
+      "points": [
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          8
+        ]
+      ],
+      "size": 1
+    }
+  ]
+}
