@@ -38,7 +38,7 @@ def phase2(pos):
 
     return 0
 
-@pytest.mark.parametrize('num_steps', range(2, 5))
+@pytest.mark.parametrize('num_steps', range(0, 5))
 @pytest.mark.parametrize('all_corners', [False, True])
 @pytest.mark.parametrize('phase, listable, limits', [(phase1, True, [(-1, 1), (-1, 1)]), (phase2, False, [(0, 1), (0, 1)])])
 def test_phase(compare_equal, num_steps, all_corners, phase, listable, limits):

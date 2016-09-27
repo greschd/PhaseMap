@@ -20,10 +20,37 @@ class Square:
         self.phase = None
         self.size = size
         self.points = set()
+        
+class StepDict(dict):
+    def __init__(self, step):
+        self.step = list(step)
+        
+    def _idx_to_key(self, idx):
+        return tuple(i * s for i, s in zip(idx, self.step))
+        
+    def __getitem__(self, idx):
+        return super().__getitem__(self._idx_to_key(idx))
+        
+    def __setitem__(self, idx, value):
+        super().__setitem__(self._idx_to_key(idx), value)
+        
+    def keys(self):
+        res = {}
+        for key in super().keys():
+            if all(k % s == 0 for k, s in zip(key, self.step)):
+                res.add(tuple(k // s for k, s in zip(key, self.step)))
+        return res
+        
+    def items(self):
+        res = []
+        for key, val in super().items():
+            if all(k % s == 0 for k, s in zip(key, self.step)):
+                res.append((tuple(k // s for k, s in zip(key, self.step)), val))
+        return res
 
 @export
 class PhaseMap:
-    def __init__(self, mesh, limits, all_corners=False):
+    def __init__(self, mesh, limits, all_corners=False, init_map=None):
         # consistency checks
         if len(mesh) != len(limits):
             raise ValueError('Inconsistent dimensions for mesh ({}) and limits ({})'.format(mesh, limits))
@@ -38,7 +65,11 @@ class PhaseMap:
         self.dim = len(mesh)
         self.mesh = list(mesh)
         self.limits = list(tuple(l) for l in limits)
-        self.points = dict()
+        if init_map is None:
+            self.points = StepDict(step=[1] * self.dim)
+        else:
+            self.points = init_map.points
+            # set the correct step or extend the points
         self.squares = list()
         self.all_corners = all_corners
         self._to_split = []
