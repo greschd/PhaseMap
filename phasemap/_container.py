@@ -101,7 +101,6 @@ class PhaseMap:
                 v.squares = set()
             # set the correct step or extend the points
             k_list = [self._get_k(m, n) for m, n in zip(self.mesh, init_map.mesh)]
-            print(k_list)
             self.points.extend(k_list)
         self.squares = list()
         self.all_corners = all_corners
@@ -122,6 +121,9 @@ class PhaseMap:
             l[0] * (1 - x) + l[1] * x
             for x, l in zip(pos_param, self.limits)
         ]
+        
+    def step_done(self):
+        return not (self._to_calculate or self._to_split)
 
     def add_point(self, *, point_idx, square_idx):
         if self.pt_in_square(pt_idx=point_idx, square_idx=square_idx):

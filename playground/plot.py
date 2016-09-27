@@ -14,7 +14,7 @@ def sqr_to_coord(sqr):
     edge, size = sqr.corner, sqr.size
     return [edge[0], edge[1], edge[0] + size, edge[1], edge[0] + size, edge[1] + size, edge[0], edge[1] + size]
 
-def plot(sqr_list, max_size, base_mult, AP):
+def plot(sqr_list, max_size, base_mult, AP, savefile='test.svg'):
     mult = base_mult
     max_size *= mult
 
@@ -38,4 +38,4 @@ def plot(sqr_list, max_size, base_mult, AP):
     pic = util.svg.canvas(height = max_size, width = max_size)
     pic.add_frame([[(gp, (max_size, max_size))]])
     pic.svg_parse()
-    pic.write_svg("test.svg")
+    pic.write_svg(savefile)
