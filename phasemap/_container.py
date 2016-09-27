@@ -123,7 +123,7 @@ class PhaseMap:
         ]
         
     def step_done(self):
-        return not (self._to_calculate or self._to_split)
+        return not self._to_calculate
 
     def add_point(self, *, point_idx, square_idx):
         if self.pt_in_square(pt_idx=point_idx, square_idx=square_idx):
