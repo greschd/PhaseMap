@@ -5,6 +5,8 @@
 # Date:    20.09.2016 11:31:24 CEST
 # File:    _container.py
 
+import copy
+import numbers
 import itertools
 
 from fsc.export import export
@@ -21,32 +23,56 @@ class Square:
         self.size = size
         self.points = set()
         
-class StepDict(dict):
-    def __init__(self, step):
+class StepDict:
+    def __init__(self, step, data=None):
         self.step = list(step)
+        self.data = data if data is not None else dict()
         
     def _idx_to_key(self, idx):
         return tuple(i * s for i, s in zip(idx, self.step))
         
     def __getitem__(self, idx):
-        return super().__getitem__(self._idx_to_key(idx))
+        return self.data[self._idx_to_key(idx)]
         
     def __setitem__(self, idx, value):
-        super().__setitem__(self._idx_to_key(idx), value)
+        self.data[self._idx_to_key(idx)] = value
+        
+    def get(self, idx, default=None):
+        return self.data.get(self._idx_to_key(idx), default)
         
     def keys(self):
-        res = {}
-        for key in super().keys():
+        res = set()
+        for key in self.data.keys():
             if all(k % s == 0 for k, s in zip(key, self.step)):
                 res.add(tuple(k // s for k, s in zip(key, self.step)))
         return res
         
+    def values(self):
+        return self.data.values()
+        
     def items(self):
         res = []
-        for key, val in super().items():
+        for key, val in self.data.items():
             if all(k % s == 0 for k, s in zip(key, self.step)):
                 res.append((tuple(k // s for k, s in zip(key, self.step)), val))
         return res
+        
+    def extend(self, k_list=1):
+        if isinstance(k_list, numbers.Integral):
+            k_list = [k_list] * len(self.step)
+        for i in range(len(self.step)):
+            if k_list[i] < 0:
+                self.step[i] *= 2**k_list[i]
+                k_list[i] = 0
+            while self.step[i] > 1 and k_list[i] > 0:
+                assert self.step[i] % 2 == 0
+                k_list[i] -=1
+                self.step[i] //= 2
+        self.data = {
+            tuple(i * 2**k for i, k in zip(idx, k_list)): val
+            for idx, val in self.data.items()
+        }
+    
 
 @export
 class PhaseMap:
@@ -69,7 +95,12 @@ class PhaseMap:
             self.points = StepDict(step=[1] * self.dim)
         else:
             self.points = init_map.points
+            # remove squares
+            for v in self.points.values:
+                v.squares = set()
             # set the correct step or extend the points
+            k_list = [self._get_k(m, n) for m, n in zip(self.mesh, init_map.mesh)]
+            self.points.extend(k_list)
         self.squares = list()
         self.all_corners = all_corners
         self._to_split = []
@@ -114,7 +145,7 @@ class PhaseMap:
     def extend(self):
         """Double the indices"""
         self.mesh = [2 * m - 1 for m in self.mesh]
-        self.points = {tuple(2 * p for p in pt): v for pt, v in self.points.items()}
+        self.points.extend()
         for s in self.squares:
             s.size *= 2
             s.points = {tuple(2 * p for p in pt) for pt in s.points}
@@ -214,3 +245,11 @@ class PhaseMap:
             for n in new_square_indices:
                 self.add_point(point_idx=p, square_idx=n)
 
+    @staticmethod     
+    def _get_k(m, n):         
+        k = math.log2((m - 1) / (n - 1))         
+        # round to integer         
+        res = math.floor(k + 0.5)         
+        if not np.isclose(res, k):             
+            raise ValueError('New mesh size {} is inconsistent with the given size {}.'.format(m, n))         
+        return res   
