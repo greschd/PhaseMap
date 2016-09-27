@@ -51,3 +51,14 @@ def test_phase(compare_equal, num_steps, all_corners, phase, listable, limits):
 def test_3d(compare_equal, num_steps, all_corners, phase, listable, limits):
     res = pm.get_phase_map(phase, limits=limits, num_steps=num_steps, init_mesh=3, all_corners=all_corners, listable=listable)
     compare_equal(sorted([(k, v.phase) for k, v in res.points.items()]))
+
+@pytest.mark.parametrize('num_steps_1', range(3))
+@pytest.mark.parametrize('num_steps_2', range(3))
+def test_restart(num_steps_1, num_steps_2):
+    num_steps_total = num_steps_1 + num_steps_2
+    res = pm.get_phase_map(phase1, [(-1, 1), (-1, 1)], num_steps=num_steps_total, init_mesh=2)
+
+    res2 = pm.get_phase_map(phase1, [(-1, 1), (-1, 1)], num_steps=num_steps_1, init_mesh=2)
+    res2 = pm.get_phase_map(phase1, [(-1, 1), (-1, 1)], num_steps=num_steps_total, init_result=res2, init_mesh=2)
+    assert sorted([(k, v.phase) for k, v in res.points.items()]) == sorted([(k, v.phase) for k, v in res2.points.items()])
+    #~ results_equal(res, res2)

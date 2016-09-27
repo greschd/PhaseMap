@@ -16,7 +16,7 @@ from ._logging_setup import logger
 
 
 @export
-def get_phase_map(fct, limits, init_mesh=5, num_steps=5, all_corners=False, listable=True):
+def get_phase_map(fct, limits, init_mesh=5, num_steps=5, all_corners=False, listable=True, init_result=None):
     """
     init_mesh as int -> same in all dimensions. Otherwise as list of int.
     """
@@ -31,7 +31,8 @@ def get_phase_map(fct, limits, init_mesh=5, num_steps=5, all_corners=False, list
     result_map = PhaseMap(
         mesh=init_mesh,
         limits=limits,
-        all_corners=all_corners
+        all_corners=all_corners,
+        init_map=init_result
     )
 
     # initial calculation

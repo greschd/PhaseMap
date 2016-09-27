@@ -5,10 +5,12 @@
 # Date:    20.09.2016 11:31:24 CEST
 # File:    _container.py
 
+import math
 import copy
 import numbers
 import itertools
 
+import numpy as np
 from fsc.export import export
 
 class Point:
@@ -62,7 +64,7 @@ class StepDict:
             k_list = [k_list] * len(self.step)
         for i in range(len(self.step)):
             if k_list[i] < 0:
-                self.step[i] *= 2**k_list[i]
+                self.step[i] *= 2**-k_list[i]
                 k_list[i] = 0
             while self.step[i] > 1 and k_list[i] > 0:
                 assert self.step[i] % 2 == 0
@@ -72,7 +74,6 @@ class StepDict:
             tuple(i * 2**k for i, k in zip(idx, k_list)): val
             for idx, val in self.data.items()
         }
-    
 
 @export
 class PhaseMap:
@@ -96,10 +97,11 @@ class PhaseMap:
         else:
             self.points = init_map.points
             # remove squares
-            for v in self.points.values:
+            for v in self.points.values():
                 v.squares = set()
             # set the correct step or extend the points
             k_list = [self._get_k(m, n) for m, n in zip(self.mesh, init_map.mesh)]
+            print(k_list)
             self.points.extend(k_list)
         self.squares = list()
         self.all_corners = all_corners
