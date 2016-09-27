@@ -123,10 +123,14 @@ class PhaseMap:
         ]
         
     def step_done(self):
-        return not self._to_calculate
+        """Returns whether the current step is completely done."""
+        return not (self._to_calculate or self._to_split)
 
     def add_point(self, *, point_idx, square_idx):
-        if self.pt_in_square(pt_idx=point_idx, square_idx=square_idx):
+        """
+        Add a point to a given square. This adds the square to the point's list of squares and vice versa. If necessary the square is added to the relevant list of squares (to calculate now, to calculate in the next step).
+        """
+        if self.pt_in_square(point_idx=point_idx, square_idx=square_idx):
             point = self.points[point_idx]
             square = self.squares[square_idx]
             square.points.add(point_idx)
@@ -147,7 +151,7 @@ class PhaseMap:
                     self._split_next.append(square_idx)
 
     def extend(self):
-        """Double the indices"""
+        """Doubles the size of the system, adjusting the points and squares accordingly."""
         self.mesh = [2 * m - 1 for m in self.mesh]
         self.points.extend()
         for s in self.squares:
@@ -159,6 +163,7 @@ class PhaseMap:
         self._split_next = []
 
     def _get_new_pts(self, square_idx):
+        """Returns the points to calculate for splitting a given square."""
         pts_new = set()
         square = self.squares[square_idx]
         assert square.size % 2 == 0
@@ -176,6 +181,9 @@ class PhaseMap:
         return pts_new
 
     def pts_to_calculate(self):
+        """
+        Returns a set of points which need to be calculated for the squares that are marked for calculation. When done, it marks these squares for splitting.
+        """
         pts_all = set()
         for square_idx in self._to_calculate:
             pts_all.update(self._get_new_pts(square_idx))
@@ -184,32 +192,42 @@ class PhaseMap:
         return list(pts_all - self.points.keys())
 
     def update(self, pts, values):
+        """
+        Sets the value for the given points.
+        
+        :param pts: A list of tuples, giving the index of the points.
+        
+        :param values: The values corresponding to each point.
+        :type values: list
+        """
         for p, v in zip(pts, values):
             self.points[p] = Point(phase=v)
 
     def split_all(self):
+        """Splits all squares that are currently marked for splitting."""
         for square_idx in self._to_split:
             self.split_square(square_idx)
         self._to_split = []
         assert len(self._to_split) == 0
 
-    def pt_in_square(self, *, pt_idx, square_idx):
+    def pt_in_square(self, *, point_idx, square_idx):
+        """Checks whether a given point is within a square."""
         square = self.squares[square_idx]
         return all(
             p >= c and p <= c + square.size
-            for p, c in zip(pt_idx, square.corner)
+            for p, c in zip(point_idx, square.corner)
         )
 
-    def get_neighbour_pts(self, pt_idx, step):
+    def get_neighbour_pts(self, point_idx, step):
         # if all corners are calculated, the neighbours with the relevant squares can be further away
         if self.all_corners:
             assert step % 2 == 0
             for dist in itertools.product(range(-3, 4), repeat=self.dim):
-                yield tuple(p + d * (step // 2) for p, d in zip(pt_idx, dist))
+                yield tuple(p + d * (step // 2) for p, d in zip(point_idx, dist))
         else:
             for i in range(self.dim):
                 for s in [-step, step]:
-                    yield tuple(p + s if i == j else p for j, p in enumerate(pt_idx))
+                    yield tuple(p + s if i == j else p for j, p in enumerate(point_idx))
 
     def split_square(self, square_idx):
         old_square = self.squares[square_idx]
