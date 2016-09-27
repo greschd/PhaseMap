@@ -8,6 +8,7 @@
 import json
 import operator
 import functools
+from itertools import zip_longest
 from collections.abc import Iterable
 
 import pytest
@@ -44,6 +45,18 @@ def compare_result(compare_data, results_equal):
 @pytest.fixture
 def results_equal():
     def inner(res1, res2):
-        assert False
-        assert sorted(res1.points.items()) == sorted(res2.points.items())
+        assert res1.dim == res2.dim
+        assert res1.mesh == res2.mesh
+        assert res1.limits == res2.limits
+        for p in res1.points.keys() | res2.points.keys():
+            v1, v2 = res1.points[p], res2.points[p]
+            assert v1.phase == v2.phase
+            assert v1.squares == v2.squares
+        for s1, s2 in zip_longest(res1.squares, res2.squares):
+            assert s1.phase == s2.phase
+            assert s1.points == s2.points
+        assert res1.all_corners == res2.all_corners
+        assert res1._split_next == res2._split_next
+        assert res1._to_split == res2._to_split
+        assert res1._to_calculate == res2._to_calculate
     return inner
