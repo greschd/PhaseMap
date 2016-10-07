@@ -57,8 +57,8 @@ def plot_combined(num_steps):
     
     fig, ax = plt.subplots(figsize=[4.2, 4])
     ax.set_aspect(1.)
-    pm.plot.squares(res, ax=ax, zorder=0, add_cbar=False, lw=0.1, edgecolor='k')
-    pm.plot.points(res, ax=ax, edgecolors='k', lw=0.1, s=0.5)
+    pm.plot.squares(res, axes=ax, zorder=0, add_cbar=False, lw=0.1, edgecolor='k')
+    pm.plot.points(res, axes=ax, edgecolors='k', lw=0.1, s=0.5)
     plt.savefig('combined.pdf', bbox_inches='tight')
 
 if __name__ == '__main__':

@@ -21,25 +21,25 @@ from matplotlib.colorbar import ColorbarBase
 from matplotlib.colors import Normalize, ListedColormap
 
 @decorator.decorator
-def _plot(func, phase_map, *, ax=None, add_cbar=True, **kwargs):
-    # create ax if it does not exist
-    if ax is None:
+def _plot(func, phase_map, *, axes=None, add_cbar=True, **kwargs):
+    # create axes if it does not exist
+    if axes is None:
         fig = plt.figure(figsize=[4, 4])
-        ax = fig.add_subplot(111)
+        axes = fig.add_subplot(111)
     # else just get the figure
     else:
-        fig = ax.figure
+        fig = axes.figure
 
     xlim = [0, phase_map.mesh[0] - 1]
     ylim = [0, phase_map.mesh[1] - 1]
-    ax.set_xlim(xlim)
-    ax.set_ylim(ylim)
-    ax.set_xticks(xlim)
-    ax.set_yticks(ylim)
-    ax.set_xticklabels(phase_map.limits[0])
-    ax.set_yticklabels(phase_map.limits[1])
+    axes.set_xlim(xlim)
+    axes.set_ylim(ylim)
+    axes.set_xticks(xlim)
+    axes.set_yticks(ylim)
+    axes.set_xticklabels(phase_map.limits[0])
+    axes.set_yticklabels(phase_map.limits[1])
 
-    ax, cmap, norm, vals = func(phase_map, ax=ax, **kwargs)
+    axes, cmap, norm, vals = func(phase_map, axes=axes, **kwargs)
 
     if add_cbar:
         fig.subplots_adjust(right=0.9)
@@ -67,7 +67,7 @@ def _plot(func, phase_map, *, ax=None, add_cbar=True, **kwargs):
 def squares(
         phase_map,
         *,
-        ax=None,
+        axes=None,
         add_cbar=True,
         scale_val=None,
         cmap=None,
@@ -77,8 +77,8 @@ def squares(
     """
     Plots the phase diagram as a collection of squares, which are colored according to the estimate of the phase in a given square.
 
-    :param ax: Axes where the plot is drawn.
-    :type ax: :py:mod:`matplotlib` axes
+    :param axes: Axes where the plot is drawn.
+    :type axes: :py:mod:`matplotlib` axes
 
     :param add_cbar: Determines whether a colorbar is added to the figure.
     :type add_cbar: bool
@@ -105,21 +105,21 @@ def squares(
         dict(lw=1e-11 if fill_lines else 0.)
     )
     for c, s in zip(colors, sqrs):
-        ax.add_patch(Rectangle(
+        axes.add_patch(Rectangle(
             xy=s.corner,
             width=s.size,
             height=s.size,
             **ChainMap(rect_properties, dict(facecolor=c, edgecolor=c))
         ))
 
-    return ax, cmap, norm, all_vals
+    return axes, cmap, norm, all_vals
 
 @export
 @_plot
 def points(
         phase_map,
         *,
-        ax=None,
+        axes=None,
         add_cbar=True,
         scale_val=None,
         cmap=None,
@@ -144,12 +144,12 @@ def points(
         point_colors[cmap(norm(v.phase))].append(p)
 
     for c, p in point_colors.items():
-        ax.scatter(
+        axes.scatter(
             [pt[0] for pt in p],
             [pt[1] for pt in p],
             color=c,
             **kwargs
         )
 
-    return ax, cmap, norm, all_vals
+    return axes, cmap, norm, all_vals
 
