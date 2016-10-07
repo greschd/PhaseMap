@@ -17,12 +17,14 @@ from matplotlib.colorbar import ColorbarBase
 from matplotlib.colors import Normalize, LogNorm, ListedColormap
 
 @decorator.decorator
-def _plot(func, phase_map, *, fig=None, ax=None, add_cbar=True, **kwargs):
-    if fig is None and ax is None:
-        fig = plt.figure(figsize=[4, 4])
+def _plot(func, phase_map, *, ax=None, add_cbar=True, **kwargs):
     # create ax if it does not exist
     if ax is None:
+        fig = plt.figure(figsize=[4, 4])
         ax = fig.add_subplot(111)
+    # else just get the figure
+    else:
+        fig = ax.figure
 
     xlim = [0, phase_map.mesh[0] - 1]
     ylim = [0, phase_map.mesh[1] - 1]
@@ -36,9 +38,6 @@ def _plot(func, phase_map, *, fig=None, ax=None, add_cbar=True, **kwargs):
     ax, cmap, norm, vals = func(phase_map, ax=ax, **kwargs)
 
     if add_cbar:
-        if fig is None:
-            raise ValueError('Colorbar cannot be set when the ax is given explicitly, but the figure is not.')
-
         fig.subplots_adjust(right=0.9)
         cbar_ax = fig.add_axes([0.95, 0.1, 0.04, 0.8])
 
@@ -64,7 +63,6 @@ def _plot(func, phase_map, *, fig=None, ax=None, add_cbar=True, **kwargs):
 def squares(
         phase_map,
         *,
-        fig=None,
         ax=None,
         add_cbar=True,
         log_norm=False,
@@ -109,7 +107,6 @@ def squares(
 def points(
         phase_map,
         *,
-        fig=None,
         ax=None,
         add_cbar=True,
         log_norm=False,
