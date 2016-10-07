@@ -14,11 +14,19 @@ import numpy as np
 from fsc.export import export
 
 class Point:
+    """
+    The squares are stored by their index in the PhaseMap.squares list.
+    """
     def __init__(self, phase):
         self.phase = phase
         self.squares = set()
 
 class Square:
+    """
+    - corner is the vertex with the lowest indices
+    - phase is None if there is no point in the square or there are points with different phases
+    - the points are stored by their index (position)
+    """
     def __init__(self, corner, size=1):
         self.corner = tuple(corner)
         self.phase = None
@@ -26,6 +34,9 @@ class Square:
         self.points = set()
         
 class StepDict:
+    """
+    Wrapper for a dictionary with integer tuples as keys. It allows for setting a 'step', which is a multiplier between the keys as shown to the outside and their internal representation. The purpose of this is to allow storing more data than is currently shown to the outside, recovering it when necessary.
+    """
     def __init__(self, step, data=None):
         self.step = list(step)
         self.data = data if data is not None else dict()
