@@ -5,6 +5,10 @@
 # Date:    27.09.2016 13:22:14 CEST
 # File:    plot.py
 
+"""
+This module contains functions for plotting the phase diagram. The functions are based upon the :py:mod:`matplotlib` package.
+"""
+
 from collections import defaultdict, ChainMap
 
 import decorator
@@ -14,7 +18,7 @@ from fsc.export import export
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from matplotlib.colorbar import ColorbarBase
-from matplotlib.colors import Normalize, LogNorm, ListedColormap
+from matplotlib.colors import Normalize, ListedColormap
 
 @decorator.decorator
 def _plot(func, phase_map, *, ax=None, add_cbar=True, **kwargs):
@@ -65,13 +69,21 @@ def squares(
         *,
         ax=None,
         add_cbar=True,
-        log_norm=False,
         scale_val=None,
         cmap=None,
         fill_lines=False,
         **kwargs
     ):
+    """
+    Plots the phase diagram as a collection of squares, which are colored according to the estimate of the phase in a given square.
 
+    :param ax: Axes where the plot is drawn.
+    :type ax: :py:mod:`matplotlib` axes
+
+    :param add_cbar: Determines whether a colorbar is added to the figure.
+    :type add_cbar: bool
+
+    """
     if cmap is None:
         # don't do this in the signature, otherwise it gets set at import time
         cmap = plt.get_cmap()
@@ -80,7 +92,7 @@ def squares(
     vals = [s.phase for s in sqrs]
     all_vals = sorted(set(vals))
 
-    norm = LogNorm() if log_norm else Normalize()
+    norm = Normalize()
     if scale_val is None:
         norm.autoscale(all_vals)
     else:
@@ -109,7 +121,6 @@ def points(
         *,
         ax=None,
         add_cbar=True,
-        log_norm=False,
         scale_val=None,
         cmap=None,
         **kwargs
@@ -121,7 +132,7 @@ def points(
     pts = phase_map.points
     all_vals = sorted(set([p.phase for p in pts.values()]))
 
-    norm = LogNorm() if log_norm else Normalize()
+    norm = Normalize()
     if scale_val is None:
         norm.autoscale(all_vals)
     else:

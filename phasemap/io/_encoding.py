@@ -19,7 +19,7 @@ from .._container import PhaseMap, Square, Point, StepDict
 @singledispatch
 def encode(obj):
     """
-    Encodes Z2Pack types into JSON / msgpack - compatible types.
+    Encodes PhaseMap types into JSON / msgpack - compatible types.
     """
     raise TypeError('cannot JSONify {} object {}'.format(type(obj), obj))
 
