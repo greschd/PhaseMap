@@ -11,6 +11,3 @@ import logging
 __all__ = ['logger']
 
 logger = logging.getLogger('phasemap')
-#~ logger.setLevel(logging.INFO)
-#~ DEFAULT_HANDLER = logging.StreamHandler(sys.stdout)
-#~ logger.addHandler(DEFAULT_HANDLER)

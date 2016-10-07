@@ -5,6 +5,8 @@
 # Date:    27.09.2016 13:22:14 CEST
 # File:    plot.py
 
+from collections import defaultdict, ChainMap
+
 import decorator
 import numpy as np
 from fsc.export import export
@@ -15,27 +17,28 @@ from matplotlib.colorbar import ColorbarBase
 from matplotlib.colors import Normalize, LogNorm, ListedColormap
 
 @decorator.decorator
-def _plot(func, phase_map, *, axis=None, **kwargs):
-    # create axis if it does not exist
-    if axis is None:
-        return_fig = True
+def _plot(func, phase_map, *, fig=None, ax=None, add_cbar=True, **kwargs):
+    if fig is None and ax is None:
         fig = plt.figure(figsize=[4, 4])
-        axis = fig.add_subplot(111)
-    else:
-        return_fig = False
+    # create ax if it does not exist
+    if ax is None:
+        ax = fig.add_subplot(111)
 
     xlim = [0, phase_map.mesh[0] - 1]
     ylim = [0, phase_map.mesh[1] - 1]
-    axis.set_xlim(xlim)
-    axis.set_ylim(ylim)
-    axis.set_xticks(xlim)
-    axis.set_yticks(ylim)
-    axis.set_xticklabels(phase_map.limits[0])
-    axis.set_yticklabels(phase_map.limits[1])
+    ax.set_xlim(xlim)
+    ax.set_ylim(ylim)
+    ax.set_xticks(xlim)
+    ax.set_yticks(ylim)
+    ax.set_xticklabels(phase_map.limits[0])
+    ax.set_yticklabels(phase_map.limits[1])
 
-    axis, cmap, norm, vals = func(phase_map, axis=axis, **kwargs)
+    ax, cmap, norm, vals = func(phase_map, ax=ax, **kwargs)
 
-    if return_fig:
+    if add_cbar:
+        if fig is None:
+            raise ValueError('Colorbar cannot be set when the ax is given explicitly, but the figure is not.')
+        
         fig.subplots_adjust(right=0.9)
         cbar_ax = fig.add_axes([0.95, 0.1, 0.04, 0.8])
 
@@ -54,34 +57,28 @@ def _plot(func, phase_map, *, axis=None, **kwargs):
         c_bar.solids.set_edgecolor("k")
         c_bar.set_ticklabels(vals)
 
-        return fig
+    return fig
 
 @export
 @_plot
 def squares(
         phase_map,
         *,
-        axis=None, 
+        ax=None, 
         log_norm=False, 
         scale_val=None,
         cmap=None,
-        unknown_value=None,
-        phase_mapping=None,
-        fill_lines=False
+        fill_lines=False,
+        **kwargs
     ):
     
-    # phase_mapping can be used for non-numeric phases
-    if phase_mapping is None:
-        phase_mapping = lambda x: x
     if cmap is None:
         # don't do this in the signature, otherwise it gets set at import time
         cmap = plt.get_cmap()
     
-    squares = phase_map.squares
-    if unknown_value is None:
-        squares = [s for s in squares if s.phase is not None]
-    vals = [s.phase if s.phase is not None else unknown_value for s in squares]
-    all_vals = sorted(set([phase_mapping(v.phase) for v in phase_map.points.values()]))
+    squares = [s for s in phase_map.squares if s.phase is not None]
+    vals = [s.phase for s in squares]
+    all_vals = sorted(set(vals))
     
     
     if log_norm:
@@ -95,14 +92,59 @@ def squares(
 
     colors = cmap([norm(v) for v in vals])
     
+    rect_properties = ChainMap(
+        kwargs, 
+        dict(lw=1e-11 if fill_lines else 0.)
+    )
     for c, s in zip(colors, squares):
-        axis.add_patch(Rectangle(
+        ax.add_patch(Rectangle(
             xy=s.corner,
             width=s.size,
             height=s.size,
-            color=c,
-            lw=1e-11 if fill_lines else 0.,
+            **ChainMap(rect_properties, dict(facecolor=c, edgecolor=c))
         ))
         
-    return axis, cmap, norm, all_vals
+    return ax, cmap, norm, all_vals
+
+@export
+@_plot
+def points(
+        phase_map,
+        *,
+        ax=None, 
+        log_norm=False, 
+        scale_val=None,
+        cmap=None,
+        **kwargs
+    ):
+    if cmap is None:
+        # don't do this in the signature, otherwise it gets set at import time
+        cmap = plt.get_cmap()
+    
+    points = phase_map.points
+    all_vals = sorted(set([p.phase for p in points.values()]))
+
+    if log_norm:
+        norm = LogNorm()
+    else:
+        norm = Normalize()
+    if scale_val is None:
+        norm.autoscale(all_vals)
+    else:
+        norm.autoscale(scale_val)
+    
+    
+    point_colors = defaultdict(list)
+    for p, v in points.items():
+        point_colors[cmap(norm(v.phase))].append(p)
+
+    for color, pts in point_colors.items():
+        ax.scatter(
+            [p[0] for p in pts],
+            [p[1] for p in pts],
+            color=color,
+            **kwargs
+        )
+
+    return ax, cmap, norm, all_vals
 
