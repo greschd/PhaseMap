@@ -64,7 +64,9 @@ def _plot(func, phase_map, *, fig=None, ax=None, add_cbar=True, **kwargs):
 def squares(
         phase_map,
         *,
+        fig=None,
         ax=None,
+        add_cbar=True,
         log_norm=False,
         scale_val=None,
         cmap=None,
@@ -107,7 +109,9 @@ def squares(
 def points(
         phase_map,
         *,
+        fig=None,
         ax=None,
+        add_cbar=True,
         log_norm=False,
         scale_val=None,
         cmap=None,
