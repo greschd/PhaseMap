@@ -14,7 +14,7 @@
     
     .. rubric:: Please cite
 
-    * Dominik Gresch, Donjan Rodic, Alexey A. Soluyanov, Matthias Troyer "An algorithm for mapping phase diagrams that scales with the dimension of the phase boundary." [in preparation]
+    * Dominik Gresch, Mario Könz, Donjan Rodic, Alexey A. Soluyanov, Matthias Troyer *"Boundary Search Algorithm for Mapping Phase Diagrams."* [in preparation]
 
 .. rubric:: Parts of the documentation
 
