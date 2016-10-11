@@ -71,11 +71,13 @@ def squares(
         add_cbar=True,
         scale_val=None,
         cmap=None,
-        fill_lines=False,
         **kwargs
     ):
     """
     Plots the phase diagram as a collection of squares, which are colored according to the estimate of the phase in a given square.
+    
+    :param phase_map: Result of the phase mapping run.
+    :type phase_map: :class:`.PhaseMap`
 
     :param axes: Axes where the plot is drawn.
     :type axes: :py:mod:`matplotlib` axes
@@ -83,6 +85,12 @@ def squares(
     :param add_cbar: Determines whether a colorbar is added to the figure.
     :type add_cbar: bool
 
+    :param scale_val: Values to which the colormap is scaled. By default, the colormap is scaled to the set of values which occur in the squares.
+    :type scale_val: list
+    
+    :param cmap: The colormap which is used to plot the phases. The colormap should take values normalized to [0, 1] and return a 4-tuple specifying the RGBA value (again normalized to [0, 1].
+    
+    :param kwargs: Keyword arguments passed to :py:class:`matplotlib.patches.Rectangle`.
     """
     if cmap is None:
         # don't do this in the signature, otherwise it gets set at import time
@@ -102,14 +110,17 @@ def squares(
 
     rect_properties = ChainMap(
         kwargs,
-        dict(lw=1e-11 if fill_lines else 0.)
+        dict(lw=0)
     )
     for c, s in zip(colors, sqrs):
         axes.add_patch(Rectangle(
             xy=s.corner,
             width=s.size,
             height=s.size,
-            **ChainMap(rect_properties, dict(facecolor=c, edgecolor=c))
+            **ChainMap(
+                rect_properties, 
+                dict(facecolor=c, edgecolor=c)
+            )
         ))
 
     return axes, cmap, norm, all_vals
@@ -125,6 +136,22 @@ def points(
         cmap=None,
         **kwargs
     ):
+    """
+    Plots the phase diagram as a collection of squares, which are colored according to the estimate of the phase in a given square. TODO: FIX!!!!!
+
+    :param axes: Axes where the plot is drawn.
+    :type axes: :py:mod:`matplotlib` axes
+
+    :param add_cbar: Determines whether a colorbar is added to the figure.
+    :type add_cbar: bool
+
+    :param scale_val: Values to which the colormap is scaled. By default, the colormap is scaled to the set of values which occur in the squares.
+    :type scale_val: list
+    
+    :param cmap: The colormap which is used to plot the phases. The colormap should take values normalized to [0, 1] and return a 4-tuple specifying the RGBA value (again normalized to [0, 1].
+    
+    :param kwargs: Keyword arguments passed to :py:meth:`scatter <matplotlib.axes.Axes.scatter>`.
+    """
     if cmap is None:
         # don't do this in the signature, otherwise it gets set at import time
         cmap = plt.get_cmap()

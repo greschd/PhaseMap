@@ -36,8 +36,7 @@ extensions = [
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
     'msgpack': ('http://pythonhosted.org/msgpack-python', None),
-    'z2pack': ('http://z2pack.ethz.ch/doc/', None),
-    'tbmodels': ('http://z2pack.ethz.ch/tbmodels/', None),
+    'z2pack': ('http://z2pack.ethz.ch/doc', None),
     'matplotlib': ('http://matplotlib.org', None)
 }
 
@@ -148,7 +147,7 @@ html_logo = "images/logo_square_on_white_stretched.png"
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-html_favicon = "images/phasemap.ico"
+html_favicon = "_static/favicon.ico"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

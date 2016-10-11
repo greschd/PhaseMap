@@ -14,6 +14,7 @@ Submodule :mod:`phasemap.plot`
 
 .. automodule:: phasemap.plot
     :members:
+    :imported-members:
 
 Submodule :mod:`phasemap.io`
 ----------------------------

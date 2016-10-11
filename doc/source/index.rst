@@ -1,5 +1,5 @@
-.. image:: images/phasemap_logo.svg
-    :width: 200px
+.. image:: images/logo_on_white.png
+    :width: 400px
     :alt: PhaseMap
 
 |
@@ -8,10 +8,8 @@
 
 .. container:: section
     
-    is an algorithm for mapping phase diagrams. The key advantage of this algorithm is that the number of evaluations of the phase scales with the dimension of the phase boundary instead of the full phase space.
-    
-    This is the reference implementation for this algorithm.
-    
+    is a tool for calculating phase diagrams. It uses a quadtree algorithm that tracks the phase boundary. The key advantage of this approach is that it **scales** with the **dimension of the phase boundary** instead of the full phase space. This is especially important when evaluating a single point in the phase space is an expensive operation.
+
     .. rubric:: Please cite
 
     * Dominik Gresch, Mario Könz, Donjan Rodic, Alexey A. Soluyanov, Matthias Troyer *"Boundary Search Algorithm for Mapping Phase Diagrams."* [in preparation]
@@ -43,4 +41,3 @@ The development version of PhaseMap is hosted on `GitHub <http://github.com/Z2Pa
     
     tutorial.rst
     reference.rst
-    links.rst
