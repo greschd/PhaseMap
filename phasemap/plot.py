@@ -6,7 +6,7 @@
 # File:    plot.py
 
 """
-This module contains functions for plotting the phase diagram. The functions are based upon the :py:mod:`matplotlib` package.
+This module contains functions for plotting the phase diagram. The functions are based upon the :py:mod:`matplotlib <matplotlib.pyplot>` package.
 """
 
 from collections import defaultdict, ChainMap
@@ -80,7 +80,7 @@ def squares(
     :type phase_map: :class:`.PhaseMap`
 
     :param axes: Axes where the plot is drawn.
-    :type axes: :py:mod:`matplotlib` axes
+    :type axes: :py:mod:`matplotlib <matplotlib.pyplot>` axes
 
     :param add_cbar: Determines whether a colorbar is added to the figure.
     :type add_cbar: bool
@@ -140,7 +140,7 @@ def points(
     Plots the phase diagram as a collection of squares, which are colored according to the estimate of the phase in a given square. TODO: FIX!!!!!
 
     :param axes: Axes where the plot is drawn.
-    :type axes: :py:mod:`matplotlib` axes
+    :type axes: :py:mod:`matplotlib <matplotlib.pyplot>` axes
 
     :param add_cbar: Determines whether a colorbar is added to the figure.
     :type add_cbar: bool
