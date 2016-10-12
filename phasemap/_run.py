@@ -16,7 +16,7 @@ from ._logging_setup import logger
 
 
 @export
-def run(fct, limits, init_mesh=5, num_steps=5, all_corners=False, listable=True, init_result=None):
+def run(fct, limits, init_mesh=5, num_steps=5, all_corners=False, listable=False, init_result=None):
     """
     init_mesh as int -> same in all dimensions. Otherwise as list of int.
     """

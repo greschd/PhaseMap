@@ -58,9 +58,9 @@ def test_3d(compare_equal, num_steps, all_corners, phase, listable, limits):
 @pytest.mark.parametrize('num_steps_2', range(3))
 def test_restart(results_equal, num_steps_1, num_steps_2):
     num_steps_total = num_steps_1 + num_steps_2
-    res = pm.run(phase1, [(-1, 1), (-1, 1)], num_steps=num_steps_total, init_mesh=2)
+    res = pm.run(phase1, [(-1, 1), (-1, 1)], num_steps=num_steps_total, init_mesh=2, listable=True)
 
-    res2 = pm.run(phase1, [(-1, 1), (-1, 1)], num_steps=num_steps_1, init_mesh=2)
-    res2 = pm.run(phase1, [(-1, 1), (-1, 1)], num_steps=num_steps_total, init_result=res2, init_mesh=2)
+    res2 = pm.run(phase1, [(-1, 1), (-1, 1)], num_steps=num_steps_1, init_mesh=2, listable=True)
+    res2 = pm.run(phase1, [(-1, 1), (-1, 1)], num_steps=num_steps_total, init_result=res2, init_mesh=2, listable=True)
     assert sorted([(k, v.phase) for k, v in res.points.items()]) == sorted([(k, v.phase) for k, v in res2.points.items()])
     results_equal(res, res2)
