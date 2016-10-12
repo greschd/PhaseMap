@@ -26,7 +26,7 @@ def phase(val):
 @pytest.mark.parametrize('num_steps', range(2, 5))
 @pytest.mark.parametrize('serializer', [json, msgpack, pickle])
 def test_consistency_old(results_equal, num_steps, serializer):
-    res = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
+    res = pm.run(phase, [(-1, 1), (-1, 1)], num_steps=num_steps, init_mesh=3)
     with tempfile.NamedTemporaryFile('w+') as f:
         pm.io.save(res, f.name, serializer=serializer)
         res2 = pm.io.load(f.name, serializer=serializer)

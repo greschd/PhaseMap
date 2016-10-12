@@ -41,19 +41,19 @@ def phase_fct(pos):
     return 0 
 
 def plot_squares(num_steps):
-    res = pm.get_phase_map(phase_fct, [(0, 1), (0, 1)], num_steps=num_steps, init_mesh=2, listable=False)
+    res = pm.run(phase_fct, [(0, 1), (0, 1)], num_steps=num_steps, init_mesh=2, listable=False)
     
     pm.plot.squares(res)
     plt.savefig('squares.pdf', bbox_inches='tight')
 
 def plot_points(num_steps):
-    res = pm.get_phase_map(phase_fct, [(0, 1), (0, 1)], num_steps=num_steps, init_mesh=2, listable=False)
+    res = pm.run(phase_fct, [(0, 1), (0, 1)], num_steps=num_steps, init_mesh=2, listable=False)
     
     pm.plot.points(res, s=0.5, lw=0.)
     plt.savefig('points.pdf', bbox_inches='tight')
     
 def plot_combined(num_steps):
-    res = pm.get_phase_map(phase_fct, [(0, 1), (0, 1)], num_steps=num_steps, init_mesh=2, listable=False)
+    res = pm.run(phase_fct, [(0, 1), (0, 1)], num_steps=num_steps, init_mesh=2, listable=False)
     
     fig, ax = plt.subplots(figsize=[4.2, 4])
     ax.set_aspect(1.)
