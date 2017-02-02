@@ -31,12 +31,23 @@ def compare_data(request, test_name, scope="session"):
             request.config.cache.set(full_name, json.loads(json.dumps(data, default=phasemap.io._encoding.encode)))
             raise ValueError('Reference data does not exist.')
         else:
-            assert compare_fct(val, json.loads(json.dumps(data, default=phasemap.io._encoding.encode))) # get rid of json-specific quirks
+            val = json.loads(
+                json.dumps(val, default=phasemap.io._encoding.encode), 
+                object_hook=phasemap.io._encoding.decode
+            )
+            assert compare_fct(val, json.loads(
+                json.dumps(data, default=phasemap.io._encoding.encode),
+                object_hook=phasemap.io._encoding.decode
+            )) # get rid of json-specific quirks
     return inner
 
 @pytest.fixture
 def compare_equal(compare_data):
     return lambda data, tag=None: compare_data(operator.eq, data, tag)
+
+@pytest.fixture
+def compare_result_equal(compare_data, results_equal):
+    return lambda data, tag=None: compare_data(results_equal, data, tag)
 
 @pytest.fixture
 def results_equal():
@@ -55,4 +66,5 @@ def results_equal():
         assert res1._split_next == res2._split_next
         assert res1._to_split == res2._to_split
         assert res1._to_calculate == res2._to_calculate
+        return True
     return inner

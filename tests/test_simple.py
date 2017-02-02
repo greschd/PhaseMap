@@ -41,18 +41,18 @@ def phase2(pos):
 @pytest.mark.parametrize('num_steps', range(0, 5))
 @pytest.mark.parametrize('all_corners', [False, True])
 @pytest.mark.parametrize('phase, listable, limits', [(phase1, True, [(-1, 1), (-1, 1)]), (phase2, False, [(0, 1), (0, 1)])])
-def test_phase(compare_equal, num_steps, all_corners, phase, listable, limits):
+def test_phase(compare_equal, compare_result_equal, num_steps, all_corners, phase, listable, limits):
     res = pm.run(phase, limits, num_steps=num_steps, init_mesh=3, all_corners=all_corners, listable=listable)
     compare_equal(sorted([(k, v.phase) for k, v in res.points.items()]))
-    compare_equal(res, tag='with_encoding')
+    compare_result_equal(res, tag='with_encoding')
 
 @pytest.mark.parametrize('num_steps', range(0, 3))
 @pytest.mark.parametrize('all_corners', [False, True])
 @pytest.mark.parametrize('phase, listable, limits', [(phase1, True, [(-1, 1), (-1, 1), (-1, 1)])])
-def test_3d(compare_equal, num_steps, all_corners, phase, listable, limits):
+def test_3d(compare_equal, compare_result_equal, num_steps, all_corners, phase, listable, limits):
     res = pm.run(phase, limits=limits, num_steps=num_steps, init_mesh=3, all_corners=all_corners, listable=listable)
     compare_equal(sorted([(k, v.phase) for k, v in res.points.items()]))
-    compare_equal(res, tag='with_encoding')
+    compare_result_equal(res, tag='with_encoding')
 
 @pytest.mark.parametrize('num_steps_1', range(3))
 @pytest.mark.parametrize('num_steps_2', range(3))
