@@ -1,8 +1,8 @@
-p35:   
+python_3.5_manual:   
     before_script:     
         - apt-get update     
         - apt-get install -yq python3-pip 
-        - apt-get install python3-tk
+        - apt-get install -yq python3-tk
 
     script:
         - pip3 install .
@@ -10,7 +10,16 @@ p35:
         - cd tests
         - py.test
 
-simple_image:   
+python_3.5:   
+    image: python:3.5
+
+    script:
+        - pip install .
+        - pip install pytest
+        - cd tests
+        - py.test
+
+python_3.6:   
     image: python:3.6
 
     script:
