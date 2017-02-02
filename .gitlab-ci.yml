@@ -2,21 +2,11 @@ p35:
     before_script:     
         - apt-get update     
         - apt-get install -yq python3-pip 
+        - apt-get install python3-tk
 
     script:
         - pip3 install .
         - pip3 install pytest
-        - cd tests
-        - py.test
-
-p2:   
-    before_script:     
-        - apt-get update     
-        - apt-get install -yq python-pip 
-
-    script:
-        - pip install .
-        - pip install pytest
         - cd tests
         - py.test
 
