@@ -1,0 +1,31 @@
+p35:   
+    before_script:     
+        - apt-get update     
+        - apt-get install -yq python3-pip 
+
+    script:
+        - pip3 install .
+        - pip3 install pytest
+        - cd tests
+        - py.test
+
+p2:   
+    before_script:     
+        - apt-get update     
+        - apt-get install -yq python-pip 
+
+    script:
+        - pip install .
+        - pip install pytest
+        - cd tests
+        - py.test
+
+simple_image:   
+    image: python:3.6
+
+    script:
+        - pip install .
+        - pip install pytest
+        - cd tests
+        - py.test
+
