@@ -47,7 +47,7 @@ def _plot(func, phase_map, *, axes=None, add_cbar=True, **kwargs):
 
 
         max_val = vals[-1]
-        color_vals = [c / max_val for c in vals]
+        color_vals = [norm(c) for c in vals]
         cbar_cmap = ListedColormap(
             [cmap(v) for v in color_vals]
         )
@@ -75,7 +75,7 @@ def squares(
     ):
     """
     Plots the phase diagram as a collection of squares, which are colored according to the estimate of the phase in a given square.
-    
+
     :param phase_map: Result of the phase mapping run.
     :type phase_map: :class:`.PhaseMap`
 
@@ -87,9 +87,9 @@ def squares(
 
     :param scale_val: Values to which the colormap is scaled. By default, the colormap is scaled to the set of values which occur in the squares.
     :type scale_val: list
-    
+
     :param cmap: The colormap which is used to plot the phases. The colormap should take values normalized to [0, 1] and return a 4-tuple specifying the RGBA value (again normalized to [0, 1].
-    
+
     :param kwargs: Keyword arguments passed to :py:class:`matplotlib.patches.Rectangle`.
     """
     if cmap is None:
@@ -118,7 +118,7 @@ def squares(
             width=s.size,
             height=s.size,
             **ChainMap(
-                rect_properties, 
+                rect_properties,
                 dict(facecolor=c, edgecolor=c)
             )
         ))
@@ -147,9 +147,9 @@ def points(
 
     :param scale_val: Values to which the colormap is scaled. By default, the colormap is scaled to the set of values which occur in the squares.
     :type scale_val: list
-    
+
     :param cmap: The colormap which is used to plot the phases. The colormap should take values normalized to [0, 1] and return a 4-tuple specifying the RGBA value (again normalized to [0, 1].
-    
+
     :param kwargs: Keyword arguments passed to :py:meth:`scatter <matplotlib.axes.Axes.scatter>`.
     """
     if cmap is None:
@@ -179,4 +179,3 @@ def points(
         )
 
     return axes, cmap, norm, all_vals
-
