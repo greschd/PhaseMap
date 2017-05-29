@@ -92,6 +92,21 @@ class StepDict:
 
 @export
 class PhaseMap:
+    """
+    Data container for the phase diagram.
+
+    :param mesh: Number of grid points in each spatial dimension.
+    :type mesh: List[int]
+
+    :param limits: Range of the phase diagram in each dimension.
+    :type limits: List[List[float]]
+
+    :param all_corners: Flag which determines if all corners of each square are calculated, or only those along one diagonal.
+    :type all_corners: bool
+
+    :param init_map: Initial result.
+    :type init_map: PhaseMap
+    """
     def __init__(self, mesh, limits, all_corners=False, init_map=None):
         # consistency checks
         if len(mesh) != len(limits):
