@@ -32,7 +32,7 @@ class Square:
         self.phase = None
         self.size = size
         self.points = set()
-        
+
 class StepDict:
     """
     Wrapper for a dictionary with integer tuples as keys. It allows for setting a 'step', which is a multiplier between the keys as shown to the outside and their internal representation. The purpose of this is to allow storing more data than is currently shown to the outside, recovering it when necessary.
@@ -40,40 +40,40 @@ class StepDict:
     def __init__(self, step, data=None):
         self.step = list(step)
         self.data = data if data is not None else dict()
-        
+
     def _idx_to_key(self, idx):
         return tuple(i * s for i, s in zip(idx, self.step))
-        
+
     def __getitem__(self, idx):
         return self.data[self._idx_to_key(idx)]
-        
+
     def __setitem__(self, idx, value):
         self.data[self._idx_to_key(idx)] = value
-        
+
     def get(self, idx, default=None):
         return self.data.get(self._idx_to_key(idx), default)
-        
+
     def keys(self):
         res = set()
         for key in self.data.keys():
             if all(k % s == 0 for k, s in zip(key, self.step)):
                 res.add(tuple(k // s for k, s in zip(key, self.step)))
         return res
-        
+
     def values(self):
         res = []
         for key, val in self.data.items():
             if all(k % s == 0 for k, s in zip(key, self.step)):
                 res.append(val)
         return res
-        
+
     def items(self):
         res = []
         for key, val in self.data.items():
             if all(k % s == 0 for k, s in zip(key, self.step)):
                 res.append((tuple(k // s for k, s in zip(key, self.step)), val))
         return res
-        
+
     def extend(self, k_list=1):
         if isinstance(k_list, numbers.Integral):
             k_list = [k_list] * len(self.step)
@@ -136,7 +136,7 @@ class PhaseMap:
             l[0] * (1 - x) + l[1] * x
             for x, l in zip(pos_param, self.limits)
         ]
-        
+
     def step_done(self):
         """Returns whether the current step is completely done."""
         return not (self._to_calculate or self._to_split)
@@ -209,9 +209,9 @@ class PhaseMap:
     def update(self, pts, values):
         """
         Sets the value for the given points.
-        
+
         :param pts: A list of tuples, giving the index of the points.
-        
+
         :param values: The values corresponding to each point.
         :type values: list
         """
@@ -282,11 +282,11 @@ class PhaseMap:
             for n in new_square_indices:
                 self.add_point(point_idx=p, square_idx=n)
 
-    @staticmethod     
-    def _get_k(m, n):         
-        k = math.log2((m - 1) / (n - 1))         
-        # round to integer         
-        res = math.floor(k + 0.5)         
-        if not np.isclose(res, k):             
-            raise ValueError('New mesh size {} is inconsistent with the given size {}.'.format(m, n))         
-        return res   
+    @staticmethod
+    def _get_k(m, n):
+        k = math.log2((m - 1) / (n - 1))
+        # round to integer
+        res = math.floor(k + 0.5)
+        if not np.isclose(res, k):
+            raise ValueError('New mesh size {} is inconsistent with the given size {}.'.format(m, n))
+        return res
