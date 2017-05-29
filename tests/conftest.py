@@ -32,7 +32,7 @@ def compare_data(request, test_name, scope="session"):
             raise ValueError('Reference data does not exist.')
         else:
             val = json.loads(
-                json.dumps(val, default=phasemap.io._encoding.encode), 
+                json.dumps(val, default=phasemap.io._encoding.encode),
                 object_hook=phasemap.io._encoding.decode
             )
             assert compare_fct(val, json.loads(
@@ -50,7 +50,7 @@ def compare_result_equal(compare_data, results_equal):
     return lambda data, tag=None: compare_data(results_equal, data, tag)
 
 @pytest.fixture
-def results_equal():
+def results_equal(squares_idx_equal, squares_equal):
     def inner(res1, res2):
         assert res1.dim == res2.dim
         assert res1.mesh == res2.mesh
@@ -58,13 +58,39 @@ def results_equal():
         for p in res1.points.keys() | res2.points.keys():
             v1, v2 = res1.points[p], res2.points[p]
             assert v1.phase == v2.phase
-            assert v1.squares == v2.squares
-        for s1, s2 in zip_longest(res1.squares, res2.squares):
-            assert s1.phase == s2.phase
-            assert s1.points == s2.points
+            squares_idx_equal(v1.squares, res1, v2.squares, res2)
+
+        squares_equal(res1.squares, res2.squares)
         assert res1.all_corners == res2.all_corners
-        assert res1._split_next == res2._split_next
+        squares_idx_equal(res1._split_next, res1, res2._split_next, res2)
         assert res1._to_split == res2._to_split
         assert res1._to_calculate == res2._to_calculate
         return True
+    return inner
+
+@pytest.fixture
+def squares_idx_equal(normalize_square_idx):
+    def inner(squares1, res1, squares2, res2):
+        assert normalize_square_idx(squares1, res1) == normalize_square_idx(squares2, res2)
+    return inner
+
+@pytest.fixture
+def squares_equal(normalize_squares):
+    def inner(squares1, squares2):
+        assert normalize_squares(squares1) == normalize_squares(squares2)
+    return inner
+
+@pytest.fixture
+def normalize_square_idx(normalize_squares):
+    def inner(squares, res):
+        squares_evaluated = [res.squares[idx] for idx in squares]
+        return normalize_squares(squares_evaluated)
+    return inner
+
+@pytest.fixture
+def normalize_squares():
+    def inner(squares):
+        return set(
+            (s.corner, s.phase, s.size, tuple(sorted(s.points))) for s in squares
+        )
     return inner
