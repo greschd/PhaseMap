@@ -16,7 +16,15 @@ from ._logging_setup import logger
 
 
 @export
-def run(fct, limits, init_mesh=5, num_steps=5, all_corners=False, listable=False, init_result=None):
+def run(
+    fct,
+    limits,
+    init_mesh=5,
+    num_steps=5,
+    all_corners=False,
+    listable=False,
+    init_result=None
+):
     """
     init_mesh as int -> same in all dimensions. Otherwise as list of int.
     """
@@ -52,8 +60,7 @@ def run(fct, limits, init_mesh=5, num_steps=5, all_corners=False, listable=False
             result_map.update(
                 to_calculate,
                 fct_listable([
-                    result_map.index_to_position(i)
-                    for i in to_calculate
+                    result_map.index_to_position(i) for i in to_calculate
                 ])
             )
             result_map.split_all()

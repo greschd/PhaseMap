@@ -4,7 +4,6 @@
 # Author:  Dominik Gresch <greschd@gmx.ch>
 # Date:    27.09.2016 13:22:14 CEST
 # File:    plot.py
-
 """
 This module contains functions for plotting the phase diagram. The functions are based upon the :py:mod:`matplotlib <matplotlib.pyplot>` package.
 """
@@ -19,6 +18,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from matplotlib.colorbar import ColorbarBase
 from matplotlib.colors import Normalize, ListedColormap
+
 
 @decorator.decorator
 def _plot(func, phase_map, *, axes=None, add_cbar=True, **kwargs):
@@ -45,12 +45,9 @@ def _plot(func, phase_map, *, axes=None, add_cbar=True, **kwargs):
         fig.subplots_adjust(right=0.9)
         cbar_ax = fig.add_axes([0.95, 0.1, 0.04, 0.8])
 
-
         max_val = vals[-1]
         color_vals = [norm(c) for c in vals]
-        cbar_cmap = ListedColormap(
-            [cmap(v) for v in color_vals]
-        )
+        cbar_cmap = ListedColormap([cmap(v) for v in color_vals])
         c_bar = ColorbarBase(
             cbar_ax,
             cmap=cbar_cmap,
@@ -62,17 +59,18 @@ def _plot(func, phase_map, *, axes=None, add_cbar=True, **kwargs):
 
     return fig
 
+
 @export
 @_plot
 def squares(
-        phase_map,
-        *,
-        axes=None,
-        add_cbar=True,
-        scale_val=None,
-        cmap=None,
-        **kwargs
-    ):
+    phase_map,
+    *,
+    axes=None,
+    add_cbar=True,
+    scale_val=None,
+    cmap=None,
+    **kwargs
+):
     """
     Plots the phase diagram as a collection of squares, which are colored according to the estimate of the phase in a given square.
 
@@ -108,34 +106,31 @@ def squares(
 
     colors = cmap([norm(v) for v in vals])
 
-    rect_properties = ChainMap(
-        kwargs,
-        dict(lw=0)
-    )
+    rect_properties = ChainMap(kwargs, dict(lw=0))
     for c, s in zip(colors, sqrs):
-        axes.add_patch(Rectangle(
-            xy=s.corner,
-            width=s.size,
-            height=s.size,
-            **ChainMap(
-                rect_properties,
-                dict(facecolor=c, edgecolor=c)
+        axes.add_patch(
+            Rectangle(
+                xy=s.corner,
+                width=s.size,
+                height=s.size,
+                **ChainMap(rect_properties, dict(facecolor=c, edgecolor=c))
             )
-        ))
+        )
 
     return axes, cmap, norm, all_vals
+
 
 @export
 @_plot
 def points(
-        phase_map,
-        *,
-        axes=None,
-        add_cbar=True,
-        scale_val=None,
-        cmap=None,
-        **kwargs
-    ):
+    phase_map,
+    *,
+    axes=None,
+    add_cbar=True,
+    scale_val=None,
+    cmap=None,
+    **kwargs
+):
     """
     Plots the phase diagram as a collection of squares, which are colored according to the estimate of the phase in a given square. TODO: FIX!!!!!
 
@@ -165,17 +160,13 @@ def points(
     else:
         norm.autoscale(scale_val)
 
-
     point_colors = defaultdict(list)
     for p, v in pts.items():
         point_colors[cmap(norm(v.phase))].append(p)
 
     for c, p in point_colors.items():
-        axes.scatter(
-            [pt[0] for pt in p],
-            [pt[1] for pt in p],
-            color=c,
-            **kwargs
-        )
+        axes.scatter([pt[0] for pt in p], [pt[1] for pt in p],
+                     color=c,
+                     **kwargs)
 
     return axes, cmap, norm, all_vals

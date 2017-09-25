@@ -13,13 +13,16 @@ import itertools
 import numpy as np
 from fsc.export import export
 
+
 class Point:
     """
     The squares are stored by their index in the PhaseMap.squares list.
     """
+
     def __init__(self, phase):
         self.phase = phase
         self.squares = set()
+
 
 class Square:
     """
@@ -27,16 +30,19 @@ class Square:
     - phase is None if there is no point in the square or there are points with different phases
     - the points are stored by their index (position)
     """
+
     def __init__(self, corner, size=1):
         self.corner = tuple(corner)
         self.phase = None
         self.size = size
         self.points = set()
 
+
 class StepDict:
     """
     Wrapper for a dictionary with integer tuples as keys. It allows for setting a 'step', which is a multiplier between the keys as shown to the outside and their internal representation. The purpose of this is to allow storing more data than is currently shown to the outside, recovering it when necessary.
     """
+
     def __init__(self, step, data=None):
         self.step = list(step)
         self.data = data if data is not None else dict()
@@ -71,7 +77,9 @@ class StepDict:
         res = []
         for key, val in self.data.items():
             if all(k % s == 0 for k, s in zip(key, self.step)):
-                res.append((tuple(k // s for k, s in zip(key, self.step)), val))
+                res.append(
+                    (tuple(k // s for k, s in zip(key, self.step)), val)
+                )
         return res
 
     def extend(self, k_list=1):
@@ -83,12 +91,13 @@ class StepDict:
                 k_list[i] = 0
             while self.step[i] > 1 and k_list[i] > 0:
                 assert self.step[i] % 2 == 0
-                k_list[i] -=1
+                k_list[i] -= 1
                 self.step[i] //= 2
         self.data = {
             tuple(i * 2**k for i, k in zip(idx, k_list)): val
             for idx, val in self.data.items()
         }
+
 
 @export
 class PhaseMap:
@@ -107,17 +116,19 @@ class PhaseMap:
     :param init_map: Initial result.
     :type init_map: PhaseMap
     """
+
     def __init__(self, mesh, limits, all_corners=False, init_map=None):
         # consistency checks
         if len(mesh) != len(limits):
-            raise ValueError('Inconsistent dimensions for mesh ({}) and limits ({})'.format(mesh, limits))
+            raise ValueError(
+                'Inconsistent dimensions for mesh ({}) and limits ({})'.
+                format(mesh, limits)
+            )
         if min(mesh) <= 1:
             raise ValueError('Mesh size must be at least 2 in each direction.')
         for l in limits:
             if len(l) != 2:
-                raise ValueError(
-                    'Limit {} does not have length 2.'.format(l)
-                )
+                raise ValueError('Limit {} does not have length 2.'.format(l))
 
         self.dim = len(mesh)
         self.mesh = list(mesh)
@@ -130,7 +141,9 @@ class PhaseMap:
             for v in self.points.values():
                 v.squares = set()
             # set the correct step or extend the points
-            k_list = [self._get_k(m, n) for m, n in zip(self.mesh, init_map.mesh)]
+            k_list = [
+                self._get_k(m, n) for m, n in zip(self.mesh, init_map.mesh)
+            ]
             self.points.extend(k_list)
         self.squares = list()
         self.all_corners = all_corners
@@ -139,7 +152,9 @@ class PhaseMap:
         self._split_next = []
 
     def create_initial_squares(self):
-        for i, corner in enumerate(itertools.product(*[range(n - 1) for n in self.mesh])):
+        for i, corner in enumerate(
+            itertools.product(*[range(n - 1) for n in self.mesh])
+        ):
             self.squares.append(Square(corner=corner))
             for pt in itertools.product(*[(c, c + 1) for c in corner]):
                 self.add_point(point_idx=pt, square_idx=i)
@@ -148,8 +163,7 @@ class PhaseMap:
         """Returns the position on the phase map corresponding to a given index."""
         pos_param = (i / (m - 1) for i, m in zip(idx, self.mesh))
         return [
-            l[0] * (1 - x) + l[1] * x
-            for x, l in zip(pos_param, self.limits)
+            l[0] * (1 - x) + l[1] * x for x, l in zip(pos_param, self.limits)
         ]
 
     def step_done(self):
@@ -199,13 +213,17 @@ class PhaseMap:
         assert square.size % 2 == 0
         # corner points
         if self.all_corners:
-            pts_new.update(itertools.product(*[
-                (c, c + square.size // 2, c + square.size) for c in square.corner
-            ]))
+            pts_new.update(
+                itertools.product(
+                    *[(c, c + square.size // 2, c + square.size)
+                      for c in square.corner]
+                )
+            )
         else:
-            pts_new.update(itertools.product(*[
-                (c, c + square.size) for c in square.corner
-            ]))
+            pts_new.update(
+                itertools.
+                product(*[(c, c + square.size) for c in square.corner])
+            )
             # middle point
             pts_new.add(tuple(c + square.size // 2 for c in square.corner))
         return pts_new
@@ -253,11 +271,16 @@ class PhaseMap:
         if self.all_corners:
             assert step % 2 == 0
             for dist in itertools.product(range(-3, 4), repeat=self.dim):
-                yield tuple(p + d * (step // 2) for p, d in zip(point_idx, dist))
+                yield tuple(
+                    p + d * (step // 2) for p, d in zip(point_idx, dist)
+                )
         else:
             for i in range(self.dim):
                 for s in [-step, step]:
-                    yield tuple(p + s if i == j else p for j, p in enumerate(point_idx))
+                    yield tuple(
+                        p + s if i == j else p
+                        for j, p in enumerate(point_idx)
+                    )
 
     def split_square(self, square_idx):
         old_square = self.squares[square_idx]
@@ -284,13 +307,16 @@ class PhaseMap:
         new_size = old_square.size // 2
         new_squares = [
             Square(corner=corner, size=new_size)
-            for corner in itertools.product(*[(c, c + new_size) for c in old_square.corner])
+            for corner in
+            itertools.product(*[(c, c + new_size) for c in old_square.corner])
         ]
         # replace square in container
         num_squares_before = len(self.squares)
         self.squares[square_idx] = new_squares[0]
         self.squares.extend(new_squares[1:])
-        new_square_indices = [square_idx] + list(range(num_squares_before, len(self.squares)))
+        new_square_indices = [
+            square_idx
+        ] + list(range(num_squares_before, len(self.squares)))
 
         # find new square(s) for each point
         for p in all_pts:
@@ -303,5 +329,8 @@ class PhaseMap:
         # round to integer
         res = math.floor(k + 0.5)
         if not np.isclose(res, k):
-            raise ValueError('New mesh size {} is inconsistent with the given size {}.'.format(m, n))
+            raise ValueError(
+                'New mesh size {} is inconsistent with the given size {}.'.
+                format(m, n)
+            )
         return res

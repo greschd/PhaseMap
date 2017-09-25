@@ -15,6 +15,7 @@ from fsc.export import export
 
 from .._container import PhaseMap, Square, Point, StepDict
 
+
 @export
 @singledispatch
 def encode(obj):
@@ -23,21 +24,26 @@ def encode(obj):
     """
     raise TypeError('cannot JSONify {} object {}'.format(type(obj), obj))
 
+
 @encode.register(np.bool_)
 def _(obj):
     return bool(obj)
+
 
 @encode.register(numbers.Real)
 def _(obj):
     return float(obj)
 
+
 @encode.register(numbers.Complex)
 def _(obj):
     return dict(__complex__=True, real=encode(obj.real), imag=encode(obj.imag))
 
+
 @encode.register(Iterable)
 def _(obj):
     return list(obj)
+
 
 @encode.register(PhaseMap)
 def _(obj):
@@ -53,21 +59,18 @@ def _(obj):
         _split_next=obj._split_next
     )
 
+
 @encode.register(StepDict)
 def _(obj):
     return dict(
-        __stepdict__=True,
-        step=obj.step,
-        data_items=sorted(obj.data.items())
+        __stepdict__=True, step=obj.step, data_items=sorted(obj.data.items())
     )
+
 
 @encode.register(Point)
 def _(obj):
-    return dict(
-        __point__=True,
-        phase=obj.phase,
-        squares=list(obj.squares)
-    )
+    return dict(__point__=True, phase=obj.phase, squares=list(obj.squares))
+
 
 @encode.register(Square)
 def _(obj):
@@ -79,7 +82,9 @@ def _(obj):
         points=list(obj.points)
     )
 
+
 #-----------------------------------------------------------------------#
+
 
 @export
 @singledispatch
@@ -89,8 +94,10 @@ def decode(obj):
     """
     return obj
 
+
 def decode_complex(obj):
     return complex(obj['real'], obj['imag'])
+
 
 def decode_phasemap(obj):
     res = PhaseMap(mesh=obj['mesh'], limits=obj['limits'])
@@ -102,21 +109,25 @@ def decode_phasemap(obj):
     res._split_next = obj['_split_next']
     return res
 
+
 def decode_point(obj):
     res = Point(phase=obj['phase'])
     res.squares = set(obj['squares'])
     return res
-    
+
+
 def decode_square(obj):
     res = Square(corner=obj['corner'], size=obj['size'])
     res.phase = obj['phase']
     res.points = set([tuple(p) for p in obj['points']])
     return res
-    
+
+
 def decode_stepdict(obj):
     res = StepDict(step=obj['step'])
     res.data = {tuple(k): v for k, v in obj['data_items']}
     return res
+
 
 @decode.register(dict)
 def _(obj):
@@ -128,4 +139,3 @@ def _(obj):
         return globals()['decode_' + name](obj)
     else:
         return obj
-
