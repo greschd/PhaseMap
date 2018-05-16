@@ -28,7 +28,7 @@ class Square:
     def __init__(self, corner, size):
         self.corner = tuple(corner)
         self.phase = None
-        self.size = size
+        self.size = tuple(size)
         self.points = set()
 
 
@@ -209,7 +209,7 @@ class PhaseMap:
         if self.all_corners:
             for dist in itertools.product(range(-3, 4), repeat=self.dim):
                 yield tuple(
-                    p + d * (step / 2) for p, d in zip(point_frac, dist)
+                    p + d * (s / 2) for p, d, s in zip(point_frac, dist, step)
                 )
         else:
             for i, s in enumerate(step):
