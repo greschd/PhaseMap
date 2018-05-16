@@ -31,6 +31,12 @@ class Square:
         self.size = tuple(size)
         self.points = set()
 
+    def contains_point(self, point):
+        return all(
+            c <= p and p <= c + s
+            for p, c, s in zip(point, self.corner, self.size)
+        )
+
 
 @export
 class PhaseMap:
@@ -82,10 +88,10 @@ class PhaseMap:
         self._split_next = []
 
     def get_initial_points_frac(self):
-        return [
+        return set([
             tuple(i * s for i, s in zip(idx, self.step_sizes))
             for idx in itertools.product(*[range(m) for m in self.mesh])
-        ]
+        ]) - self.points.keys()
 
     def create_initial_squares(self):
         for i, corner in enumerate([
@@ -110,7 +116,7 @@ class PhaseMap:
         """
         Add a point to a given square. This adds the square to the point's list of squares and vice versa. If necessary the square is added to the relevant list of squares (to calculate now, to calculate in the next step).
         """
-        if self.pt_in_square(point_frac=point_frac, square_idx=square_idx):
+        if self.squares[square_idx].contains_point(point_frac):
             point = self.points[point_frac]
             square = self.squares[square_idx]
             square.points.add(point_frac)
@@ -195,14 +201,6 @@ class PhaseMap:
             self.split_square(square_idx)
         self._to_split = []
         assert len(self._to_split) == 0
-
-    def pt_in_square(self, *, point_frac, square_idx):
-        """Checks whether a given point is within a square."""
-        square = self.squares[square_idx]
-        return all(
-            p >= c and p <= c + s
-            for p, c, s in zip(point_frac, square.corner, square.size)
-        )
 
     def get_neighbour_pts(self, point_frac, step):
         # if all corners are calculated, the neighbours with the relevant squares can be further away

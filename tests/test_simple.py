@@ -136,6 +136,6 @@ def test_restart_nocalc(results_equal, num_steps):
         num_steps=num_steps,
         init_mesh=3,
         init_result=res,
-        listable=True
+        listable=False
     )
     results_equal(res, res_restart)
