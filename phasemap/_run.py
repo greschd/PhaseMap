@@ -45,22 +45,24 @@ def run(
 
     # initial calculation
     # calculate for every grid point
-    initial_idx = list(itertools.product(*[range(n) for n in init_mesh]))
+    points_frac = result_map.get_initial_points_frac()
     result_map.update(
-        initial_idx,
-        fct_listable([result_map.index_to_position(i) for i in initial_idx])
+        points_frac,
+        fct_listable([
+            result_map.fraction_to_position(pf) for pf in points_frac
+        ])
     )
     result_map.create_initial_squares()
 
     for step in range(num_steps):
         logger.info('starting evaluation step {}'.format(step))
-        result_map.extend()
+        result_map.decrease_step()
         while not result_map.step_done():
             to_calculate = result_map.pts_to_calculate()
             result_map.update(
                 to_calculate,
                 fct_listable([
-                    result_map.index_to_position(i) for i in to_calculate
+                    result_map.fraction_to_position(pf) for pf in to_calculate
                 ])
             )
             result_map.split_all()

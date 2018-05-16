@@ -9,6 +9,7 @@ import math
 import copy
 import numbers
 import itertools
+from fractions import Fraction
 
 import numpy as np
 from fsc.export import export
@@ -38,67 +39,6 @@ class Square:
         self.points = set()
 
 
-class StepDict:
-    """
-    Wrapper for a dictionary with integer tuples as keys. It allows for setting a 'step', which is a multiplier between the keys as shown to the outside and their internal representation. The purpose of this is to allow storing more data than is currently shown to the outside, recovering it when necessary.
-    """
-
-    def __init__(self, step, data=None):
-        self.step = list(step)
-        self.data = data if data is not None else dict()
-
-    def _idx_to_key(self, idx):
-        return tuple(i * s for i, s in zip(idx, self.step))
-
-    def __getitem__(self, idx):
-        return self.data[self._idx_to_key(idx)]
-
-    def __setitem__(self, idx, value):
-        self.data[self._idx_to_key(idx)] = value
-
-    def get(self, idx, default=None):
-        return self.data.get(self._idx_to_key(idx), default)
-
-    def keys(self):
-        res = set()
-        for key in self.data.keys():
-            if all(k % s == 0 for k, s in zip(key, self.step)):
-                res.add(tuple(k // s for k, s in zip(key, self.step)))
-        return res
-
-    def values(self):
-        res = []
-        for key, val in self.data.items():
-            if all(k % s == 0 for k, s in zip(key, self.step)):
-                res.append(val)
-        return res
-
-    def items(self):
-        res = []
-        for key, val in self.data.items():
-            if all(k % s == 0 for k, s in zip(key, self.step)):
-                res.append(
-                    (tuple(k // s for k, s in zip(key, self.step)), val)
-                )
-        return res
-
-    def extend(self, k_list=1):
-        if isinstance(k_list, numbers.Integral):
-            k_list = [k_list] * len(self.step)
-        for i in range(len(self.step)):
-            if k_list[i] < 0:
-                self.step[i] *= 2**-k_list[i]
-                k_list[i] = 0
-            while self.step[i] > 1 and k_list[i] > 0:
-                assert self.step[i] % 2 == 0
-                k_list[i] -= 1
-                self.step[i] //= 2
-        self.data = {
-            tuple(i * 2**k for i, k in zip(idx, k_list)): val
-            for idx, val in self.data.items()
-        }
-
-
 @export
 class PhaseMap:
     """
@@ -121,8 +61,9 @@ class PhaseMap:
         # consistency checks
         if len(mesh) != len(limits):
             raise ValueError(
-                'Inconsistent dimensions for mesh ({}) and limits ({})'.
-                format(mesh, limits)
+                'Inconsistent dimensions for mesh ({}) and limits ({})'.format(
+                    mesh, limits
+                )
             )
         if min(mesh) <= 1:
             raise ValueError('Mesh size must be at least 2 in each direction.')
@@ -132,52 +73,54 @@ class PhaseMap:
 
         self.dim = len(mesh)
         self.mesh = list(mesh)
+        self.step_sizes = [Fraction(1, m - 1) for m in self.mesh]
         self.limits = list(tuple(l) for l in limits)
         if init_map is None:
-            self.points = StepDict(step=[1] * self.dim)
+            self.points = dict()
         else:
             self.points = init_map.points
             # remove squares
             for v in self.points.values():
                 v.squares = set()
-            # set the correct step or extend the points
-            k_list = [
-                self._get_k(m, n) for m, n in zip(self.mesh, init_map.mesh)
-            ]
-            self.points.extend(k_list)
         self.squares = list()
         self.all_corners = all_corners
         self._to_split = []
         self._to_calculate = []
         self._split_next = []
 
-    def create_initial_squares(self):
-        for i, corner in enumerate(
-            itertools.product(*[range(n - 1) for n in self.mesh])
-        ):
-            self.squares.append(Square(corner=corner))
-            for pt in itertools.product(*[(c, c + 1) for c in corner]):
-                self.add_point(point_idx=pt, square_idx=i)
-
-    def index_to_position(self, idx):
-        """Returns the position on the phase map corresponding to a given index."""
-        pos_param = (i / (m - 1) for i, m in zip(idx, self.mesh))
+    def get_initial_points_frac(self):
         return [
-            l[0] * (1 - x) + l[1] * x for x, l in zip(pos_param, self.limits)
+            tuple(i * s for i, s in zip(idx, self.step_sizes))
+            for idx in itertools.product(*[range(m) for m in self.mesh])
         ]
+
+    def create_initial_squares(self):
+        for i, corner in enumerate([
+            tuple(i * s for i, s in zip(idx, self.step_sizes))
+            for idx in itertools.product(*[range(m - 1) for m in self.mesh])
+        ]):
+            self.squares.append(Square(corner=corner))
+            for pt in itertools.product(
+                *[(c, c + s) for c, s in zip(corner, self.step_sizes)]
+            ):
+                self.add_point(point_frac=pt, square_idx=i)
+
+    def fraction_to_position(self, frac):
+        """Returns the position on the phase map corresponding to a given fraction."""
+        return [l[0] * (1 - x) + l[1] * x for x, l in zip(frac, self.limits)]
 
     def step_done(self):
         """Returns whether the current step is completely done."""
         return not (self._to_calculate or self._to_split)
 
-    def add_point(self, *, point_idx, square_idx):
+    def add_point(self, *, point_frac, square_idx):
         """
         Add a point to a given square. This adds the square to the point's list of squares and vice versa. If necessary the square is added to the relevant list of squares (to calculate now, to calculate in the next step).
         """
-        if self.pt_in_square(point_idx=point_idx, square_idx=square_idx):
-            point = self.points[point_idx]
+        if self.pt_in_square(point_frac=point_frac, square_idx=square_idx):
+            point = self.points[point_frac]
             square = self.squares[square_idx]
-            square.points.add(point_idx)
+            square.points.add(point_frac)
             point.squares.add(square_idx)
             # adding the first point determines the phase
             if square.phase is None and len(square.points) == 1:
@@ -194,17 +137,8 @@ class PhaseMap:
                     assert square_idx not in self._split_next
                     self._split_next.append(square_idx)
 
-    def extend(self):
-        """Doubles the size of the system, adjusting the points and squares accordingly."""
-        self.mesh = [2 * m - 1 for m in self.mesh]
-        self.points.extend()
-        for s in self.squares:
-            s.size *= 2
-            s.points = {tuple(2 * p for p in pt) for pt in s.points}
-            s.corner = tuple(2 * c for c in s.corner)
-        # split_next are now to calculate (size > 1)
-        self._to_calculate = self._split_next
-        self._split_next = []
+    def decrease_step(self):
+        self.step_sizes = [s / 2 for s in self.step_sizes]
 
     def _get_new_pts(self, square_idx):
         """Returns the points to calculate for splitting a given square."""
@@ -239,16 +173,16 @@ class PhaseMap:
         self._to_calculate = []
         return list(pts_all - self.points.keys())
 
-    def update(self, pts, values):
+    def update(self, pts_frac, values):
         """
         Sets the value for the given points.
 
-        :param pts: A list of tuples, giving the index of the points.
+        :param pts: A list of tuples, giving the fractional coordinate of the points.
 
         :param values: The values corresponding to each point.
         :type values: list
         """
-        for p, v in zip(pts, values):
+        for p, v in zip(pts_frac, values):
             self.points[p] = Point(phase=v)
 
     def split_all(self):
@@ -258,28 +192,27 @@ class PhaseMap:
         self._to_split = []
         assert len(self._to_split) == 0
 
-    def pt_in_square(self, *, point_idx, square_idx):
+    def pt_in_square(self, *, point_frac, square_idx):
         """Checks whether a given point is within a square."""
         square = self.squares[square_idx]
         return all(
             p >= c and p <= c + square.size
-            for p, c in zip(point_idx, square.corner)
+            for p, c in zip(point_frac, square.corner)
         )
 
-    def get_neighbour_pts(self, point_idx, step):
+    def get_neighbour_pts(self, point_frac, step):
         # if all corners are calculated, the neighbours with the relevant squares can be further away
         if self.all_corners:
-            assert step % 2 == 0
             for dist in itertools.product(range(-3, 4), repeat=self.dim):
                 yield tuple(
-                    p + d * (step // 2) for p, d in zip(point_idx, dist)
+                    p + d * (step / 2) for p, d in zip(point_frac, dist)
                 )
         else:
-            for i in range(self.dim):
-                for s in [-step, step]:
+            for i, s in enumerate(step):
+                for direction in [-1, 1]:
                     yield tuple(
-                        p + s if i == j else p
-                        for j, p in enumerate(point_idx)
+                        p + s * direction if i == j else p
+                        for j, p in enumerate(point_frac)
                     )
 
     def split_square(self, square_idx):
@@ -299,38 +232,26 @@ class PhaseMap:
                     continue
                 square_candidates.update(pt.squares)
             for s in square_candidates:
-                self.add_point(square_idx=s, point_idx=p)
+                self.add_point(square_idx=s, point=p)
         all_pts = new_pts | old_pts
 
         # create new squares
-        assert old_square.size % 2 == 0
-        new_size = old_square.size // 2
+        new_size = tuple(s / 2 for s in old_square.size)
         new_squares = [
             Square(corner=corner, size=new_size)
-            for corner in
-            itertools.product(*[(c, c + new_size) for c in old_square.corner])
+            for corner in itertools.product(
+                *[(c, c + s) for c, s in zip(old_square.corner, new_size)]
+            )
         ]
         # replace square in container
         num_squares_before = len(self.squares)
         self.squares[square_idx] = new_squares[0]
         self.squares.extend(new_squares[1:])
-        new_square_indices = [
-            square_idx
-        ] + list(range(num_squares_before, len(self.squares)))
+        new_square_indices = [square_idx] + list(
+            range(num_squares_before, len(self.squares))
+        )
 
         # find new square(s) for each point
         for p in all_pts:
             for n in new_square_indices:
-                self.add_point(point_idx=p, square_idx=n)
-
-    @staticmethod
-    def _get_k(m, n):
-        k = math.log2((m - 1) / (n - 1))
-        # round to integer
-        res = math.floor(k + 0.5)
-        if not np.isclose(res, k):
-            raise ValueError(
-                'New mesh size {} is inconsistent with the given size {}.'.
-                format(m, n)
-            )
-        return res
+                self.add_point(point=p, square_idx=n)

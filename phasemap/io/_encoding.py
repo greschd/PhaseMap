@@ -13,7 +13,7 @@ from collections.abc import Iterable
 import numpy as np
 from fsc.export import export
 
-from .._container import PhaseMap, Square, Point, StepDict
+from .._container import PhaseMap, Square, Point
 
 
 @export
@@ -57,13 +57,6 @@ def _(obj):
         _to_split=obj._to_split,
         _to_calculate=obj._to_calculate,
         _split_next=obj._split_next
-    )
-
-
-@encode.register(StepDict)
-def _(obj):
-    return dict(
-        __stepdict__=True, step=obj.step, data_items=sorted(obj.data.items())
     )
 
 
@@ -120,12 +113,6 @@ def decode_square(obj):
     res = Square(corner=obj['corner'], size=obj['size'])
     res.phase = obj['phase']
     res.points = set([tuple(p) for p in obj['points']])
-    return res
-
-
-def decode_stepdict(obj):
-    res = StepDict(step=obj['step'])
-    res.data = {tuple(k): v for k, v in obj['data_items']}
     return res
 
 

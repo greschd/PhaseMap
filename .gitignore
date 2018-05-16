@@ -18,6 +18,7 @@ files*.txt
 # pytest caches
 tests/.cache
 .cache/v/cache
+.pytest_cache/v/cache
 .coverage
 .coverage*
 htmlcov
