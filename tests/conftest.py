@@ -1,10 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-#
-# Author:  Dominik Gresch <greschd@gmx.ch>
-# Date:    11.09.2016 13:37:50 CEST
-# File:    conftest.py
-
+import os
 import json
 import operator
 import functools
@@ -33,8 +27,9 @@ def compare_data(request, test_name, scope="session"):
         if val is None:
             request.config.cache.set(
                 full_name,
-                json.
-                loads(json.dumps(data, default=phasemap.io._encoding.encode))
+                json.loads(
+                    json.dumps(data, default=phasemap.io._encoding.encode)
+                )
             )
             raise ValueError('Reference data does not exist.')
         else:
@@ -116,5 +111,17 @@ def normalize_squares():
     def inner(squares):
         return set((s.corner, s.phase, s.size, tuple(sorted(s.points)))
                    for s in squares)
+
+    return inner
+
+
+@pytest.fixture
+def sample():
+    def inner(name):
+        return os.path.join(
+            os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), 'samples'
+            ), name
+        )
 
     return inner

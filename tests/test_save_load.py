@@ -27,6 +27,28 @@ def phase(val):
     return [line(x, y) + circle(x, y) for x, y in val]
 
 
+def phase2(pos):
+    if pos[0] >= 0 and pos[0] < 0.3:
+        if pos[1] > 0.4 and pos[1] < 0.6:
+            return 1
+
+    if pos[0] > 0.4 and pos[0] < 0.6:
+        if pos[1] >= 0 and pos[1] < 0.6:
+            return 1
+    if pos[0] > 0.4 and pos[0] < 0.6:
+        if pos[1] >= 0.6:
+            return 2
+
+    if pos[0] >= 0 and pos[0] < 0.1:
+        if pos[1] >= 0 and pos[1] < 0.1:
+            return 1
+
+    if (pos[0] - 0.5)**2 + (pos[1] - 0.5)**2 < 0.1:
+        return 3
+
+    return 0
+
+
 @pytest.mark.parametrize('num_steps', range(2, 5))
 @pytest.mark.parametrize('serializer', [json, msgpack, pickle])
 def test_consistency(results_equal, num_steps, serializer):
@@ -40,3 +62,11 @@ def test_consistency(results_equal, num_steps, serializer):
         pm.io.save(res, f.name, serializer=serializer)
         res2 = pm.io.load(f.name, serializer=serializer)
     results_equal(res, res2)
+
+
+def test_load(results_equal, sample):
+    res_loaded = pm.io.load(sample('res.json'))
+    res_new = pm.run(
+        phase2, [(0, 1), (0, 1)], num_steps=5, init_mesh=2, listable=False
+    )
+    results_equal(res_loaded, res_new)
