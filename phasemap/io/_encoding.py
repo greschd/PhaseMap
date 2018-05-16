@@ -2,6 +2,7 @@ import numbers
 import contextlib
 from functools import singledispatch
 from collections.abc import Iterable
+from fractions import Fraction
 
 import numpy as np
 from fsc.export import export
@@ -21,6 +22,11 @@ def encode(obj):
 @encode.register(np.bool_)
 def _(obj):
     return bool(obj)
+
+
+@encode.register(Fraction)
+def _(obj):
+    return dict(__fraction__=True, n=obj.numerator, d=obj.denominator)
 
 
 @encode.register(numbers.Real)
@@ -106,6 +112,11 @@ def decode_square(obj):
     res = Square(corner=obj['corner'], size=obj['size'])
     res.phase = obj['phase']
     res.points = set([tuple(p) for p in obj['points']])
+    return res
+
+
+def decode_fraction(obj):
+    res = Fraction(obj['n'], obj['d'])
     return res
 
 
