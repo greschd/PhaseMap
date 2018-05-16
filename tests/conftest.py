@@ -3,6 +3,7 @@ import json
 import operator
 import functools
 from itertools import zip_longest
+from collections import namedtuple
 from collections.abc import Iterable
 
 import pytest
@@ -64,12 +65,12 @@ def results_equal(squares_idx_equal, squares_equal):
         assert res1.dim == res2.dim
         assert res1.mesh == res2.mesh
         assert res1.limits == res2.limits
+        squares_equal(res1.squares, res2.squares)
         for p in res1.points.keys() | res2.points.keys():
             v1, v2 = res1.points[p], res2.points[p]
             assert v1.phase == v2.phase
             squares_idx_equal(v1.squares, res1, v2.squares, res2)
 
-        squares_equal(res1.squares, res2.squares)
         assert res1.all_corners == res2.all_corners
         squares_idx_equal(res1._split_next, res1, res2._split_next, res2)
         assert res1._to_split == res2._to_split
@@ -88,6 +89,11 @@ def squares_idx_equal(normalize_squares_from_idx):
                                           )
 
     return inner
+
+
+normalized_square = namedtuple(
+    'normalized_square', ['corner', 'phase', 'size', 'points']
+)
 
 
 @pytest.fixture
@@ -112,8 +118,14 @@ def normalize_squares_from_idx(normalize_squares):
 @pytest.fixture
 def normalize_squares():
     def inner(squares):
-        return set((s.corner, s.phase, s.size, tuple(sorted(s.points)))
-                   for s in squares)
+        return set(
+            normalized_square(
+                corner=s.corner,
+                phase=s.phase,
+                size=s.size,
+                points=tuple(sorted(s.points))
+            ) for s in squares
+        )
 
     return inner
 

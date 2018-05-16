@@ -86,7 +86,7 @@ def test_3d(
     compare_result_equal(res, tag='with_encoding')
 
 
-@pytest.mark.parametrize('init_mesh', range(2, 9))
+@pytest.mark.parametrize('init_mesh', range(2, 3))
 @pytest.mark.parametrize('num_steps_1', range(3))
 @pytest.mark.parametrize('num_steps_2', range(3))
 def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2):
@@ -115,8 +115,8 @@ def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2):
         listable=True
     )
     assert sorted([(k, v.phase) for k, v in res.points.items()]
-                  ) == sorted([(k, v.phase) for k, v in res2.points.items()])
-    results_equal(res, res2)
+                  ) == sorted([(k, v.phase) for k, v in res3.points.items()])
+    results_equal(res, res3)
 
 
 @pytest.mark.parametrize('num_steps', range(3))
