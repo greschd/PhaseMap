@@ -86,30 +86,56 @@ def test_3d(
     compare_result_equal(res, tag='with_encoding')
 
 
+@pytest.mark.parametrize('init_mesh', range(2, 9))
 @pytest.mark.parametrize('num_steps_1', range(3))
 @pytest.mark.parametrize('num_steps_2', range(3))
-def test_restart(results_equal, num_steps_1, num_steps_2):
+def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2):
+    print(init_mesh)
+    print(num_steps_1)
+    print(num_steps_2)
     num_steps_total = num_steps_1 + num_steps_2
     res = pm.run(
         phase1, [(-1, 1), (-1, 1)],
         num_steps=num_steps_total,
-        init_mesh=2,
+        init_mesh=init_mesh,
         listable=True
     )
 
     res2 = pm.run(
         phase1, [(-1, 1), (-1, 1)],
         num_steps=num_steps_1,
-        init_mesh=2,
+        init_mesh=init_mesh,
         listable=True
     )
-    res2 = pm.run(
+    res3 = pm.run(
         phase1, [(-1, 1), (-1, 1)],
         num_steps=num_steps_total,
         init_result=res2,
-        init_mesh=2,
+        init_mesh=init_mesh,
         listable=True
     )
     assert sorted([(k, v.phase) for k, v in res.points.items()]
                   ) == sorted([(k, v.phase) for k, v in res2.points.items()])
     results_equal(res, res2)
+
+
+@pytest.mark.parametrize('num_steps', range(3))
+def test_restart_nocalc(results_equal, num_steps):
+    def error(x):
+        raise ValueError(x)
+
+    res = pm.run(
+        phase1, [(-1, 1), (-1, 1)],
+        num_steps=num_steps,
+        init_mesh=3,
+        listable=True
+    )
+
+    res_restart = pm.run(
+        error, [(-1, 1), (-1, 1)],
+        num_steps=num_steps,
+        init_mesh=3,
+        init_result=res,
+        listable=True
+    )
+    results_equal(res, res_restart)

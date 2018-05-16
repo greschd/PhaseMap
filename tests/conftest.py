@@ -80,11 +80,12 @@ def results_equal(squares_idx_equal, squares_equal):
 
 
 @pytest.fixture
-def squares_idx_equal(normalize_square_idx):
+def squares_idx_equal(normalize_squares_from_idx):
     def inner(squares1, res1, squares2, res2):
-        assert normalize_square_idx(squares1, res1) == normalize_square_idx(
-            squares2, res2
-        )
+        assert normalize_squares_from_idx(squares1,
+                                          res1) == normalize_squares_from_idx(
+                                              squares2, res2
+                                          )
 
     return inner
 
@@ -98,8 +99,10 @@ def squares_equal(normalize_squares):
 
 
 @pytest.fixture
-def normalize_square_idx(normalize_squares):
+def normalize_squares_from_idx(normalize_squares):
     def inner(squares, res):
+        # print(squares, res)
+        # print('res.squares', res.squares)
         squares_evaluated = [res.squares[idx] for idx in squares]
         return normalize_squares(squares_evaluated)
 
