@@ -46,11 +46,9 @@ def plot_squares(num_steps):
     res = pm.run(
         phase_fct, [(0, 1), (0, 1)],
         num_steps=num_steps,
-        init_mesh=3,
+        init_mesh=2,
         listable=False
     )
-    print(res.squares)
-    print(res.squares[0].size)
 
     pm.plot.squares(res)
     plt.savefig('squares.pdf', bbox_inches='tight')

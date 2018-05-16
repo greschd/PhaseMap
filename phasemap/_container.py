@@ -32,7 +32,7 @@ class Square:
     - the points are stored by their index (position)
     """
 
-    def __init__(self, corner, size=1):
+    def __init__(self, corner, size):
         self.corner = tuple(corner)
         self.phase = None
         self.size = size
@@ -99,11 +99,11 @@ class PhaseMap:
             tuple(i * s for i, s in zip(idx, self.step_sizes))
             for idx in itertools.product(*[range(m - 1) for m in self.mesh])
         ]):
-            self.squares.append(Square(corner=corner))
+            self.squares.append(Square(corner=corner, size=self.step_sizes))
             for pt in itertools.product(
                 *[(c, c + s) for c, s in zip(corner, self.step_sizes)]
             ):
-                self.add_point(point_frac=pt, square_idx=i)
+                self.add_point_to_square(point_frac=pt, square_idx=i)
 
     def fraction_to_position(self, frac):
         """Returns the position on the phase map corresponding to a given fraction."""
@@ -113,7 +113,7 @@ class PhaseMap:
         """Returns whether the current step is completely done."""
         return not (self._to_calculate or self._to_split)
 
-    def add_point(self, *, point_frac, square_idx):
+    def add_point_to_square(self, *, point_frac, square_idx):
         """
         Add a point to a given square. This adds the square to the point's list of squares and vice versa. If necessary the square is added to the relevant list of squares (to calculate now, to calculate in the next step).
         """
@@ -129,37 +129,48 @@ class PhaseMap:
             elif (square.phase is not None) and (square.phase != point.phase):
                 square.phase = None
                 # larger squares can be split in the current iteration
-                if square.size > 1:
+                if any(
+                    sq > st for sq, st in zip(square.size, self.step_sizes)
+                ):
+                    assert all(
+                        sq > st
+                        for sq, st in zip(square.size, self.step_sizes)
+                    )
                     assert square_idx not in self._to_calculate
                     self._to_calculate.append(square_idx)
-                # size 1 squares will be split in the next iteration
                 else:
                     assert square_idx not in self._split_next
                     self._split_next.append(square_idx)
 
     def decrease_step(self):
         self.step_sizes = [s / 2 for s in self.step_sizes]
+        assert not self._to_calculate
+        self._to_calculate = self._split_next
+        self._split_next = []
 
     def _get_new_pts(self, square_idx):
         """Returns the points to calculate for splitting a given square."""
         pts_new = set()
         square = self.squares[square_idx]
-        assert square.size % 2 == 0
+        assert all(sq > st for sq, st in zip(square.size, self.step_sizes))
         # corner points
         if self.all_corners:
             pts_new.update(
                 itertools.product(
-                    *[(c, c + square.size // 2, c + square.size)
-                      for c in square.corner]
+                    *[(c, c + s / 2, c + s)
+                      for c, s in zip(square.corner, square.size)]
                 )
             )
         else:
             pts_new.update(
-                itertools.
-                product(*[(c, c + square.size) for c in square.corner])
+                itertools.product(
+                    *[(c, c + s) for c, s in zip(square.corner, square.size)]
+                )
             )
             # middle point
-            pts_new.add(tuple(c + square.size // 2 for c in square.corner))
+            pts_new.add(
+                tuple(c + s / 2 for c, s in zip(square.corner, square.size))
+            )
         return pts_new
 
     def pts_to_calculate(self):
@@ -196,8 +207,8 @@ class PhaseMap:
         """Checks whether a given point is within a square."""
         square = self.squares[square_idx]
         return all(
-            p >= c and p <= c + square.size
-            for p, c in zip(point_frac, square.corner)
+            p >= c and p <= c + s
+            for p, c, s in zip(point_frac, square.corner, square.size)
         )
 
     def get_neighbour_pts(self, point_frac, step):
@@ -232,7 +243,7 @@ class PhaseMap:
                     continue
                 square_candidates.update(pt.squares)
             for s in square_candidates:
-                self.add_point(square_idx=s, point=p)
+                self.add_point_to_square(square_idx=s, point_frac=p)
         all_pts = new_pts | old_pts
 
         # create new squares
@@ -254,4 +265,4 @@ class PhaseMap:
         # find new square(s) for each point
         for p in all_pts:
             for n in new_square_indices:
-                self.add_point(point=p, square_idx=n)
+                self.add_point_to_square(point_frac=p, square_idx=n)

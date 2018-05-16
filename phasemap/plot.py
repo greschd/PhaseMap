@@ -30,8 +30,8 @@ def _plot(func, phase_map, *, axes=None, add_cbar=True, **kwargs):
     else:
         fig = axes.figure
 
-    xlim = [0, phase_map.mesh[0] - 1]
-    ylim = [0, phase_map.mesh[1] - 1]
+    xlim = [0, 1]
+    ylim = [0, 1]
     axes.set_xlim(xlim)
     axes.set_ylim(ylim)
     axes.set_xticks(xlim)
@@ -94,9 +94,9 @@ def squares(
         # don't do this in the signature, otherwise it gets set at import time
         cmap = plt.get_cmap()
 
+    all_vals = sorted(set([p.phase for p in phase_map.points.values()]))
     sqrs = [s for s in phase_map.squares if s.phase is not None]
     vals = [s.phase for s in sqrs]
-    all_vals = sorted(set(vals))
 
     norm = Normalize()
     if scale_val is None:
@@ -111,8 +111,8 @@ def squares(
         axes.add_patch(
             Rectangle(
                 xy=s.corner,
-                width=s.size,
-                height=s.size,
+                width=s.size[0],
+                height=s.size[1],
                 **ChainMap(rect_properties, dict(facecolor=c, edgecolor=c))
             )
         )
