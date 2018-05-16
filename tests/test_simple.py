@@ -1,11 +1,6 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-#
-# Author:  Dominik Gresch <greschd@gmx.ch>
-# Date:    29.08.2016 04:11:07 CEST
-# File:    test.py
-
+import json
 import copy
+import tempfile
 
 import pytest
 import numpy as np
@@ -86,10 +81,11 @@ def test_3d(
     compare_result_equal(res, tag='with_encoding')
 
 
-@pytest.mark.parametrize('init_mesh', range(2, 3))
+@pytest.mark.parametrize('init_mesh', range(2, 5))
 @pytest.mark.parametrize('num_steps_1', range(3))
 @pytest.mark.parametrize('num_steps_2', range(3))
-def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2):
+@pytest.mark.parametrize('save', [True, False])
+def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2, save):
     print(init_mesh)
     print(num_steps_1)
     print(num_steps_2)
@@ -107,6 +103,10 @@ def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2):
         init_mesh=init_mesh,
         listable=True
     )
+    if save:
+        with tempfile.NamedTemporaryFile() as tmpf:
+            pm.io.save(res2, tmpf.name, serializer=json)
+            res2 = pm.io.load(tmpf.name, serializer=json)
     res3 = pm.run(
         phase1, [(-1, 1), (-1, 1)],
         num_steps=num_steps_total,
