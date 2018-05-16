@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-#
-# Author:  Dominik Gresch <greschd@gmx.ch>
-# Date:    27.09.2016 13:22:14 CEST
-# File:    plot.py
 """
 This module contains functions for plotting the phase diagram. The functions are based upon the :py:mod:`matplotlib <matplotlib.pyplot>` package.
 """

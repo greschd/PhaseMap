@@ -1,10 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-#
-# Author:  Dominik Gresch <greschd@gmx.ch>
-# Date:    20.09.2016 11:31:24 CEST
-# File:    _container.py
-
 import math
 import copy
 import numbers
