@@ -1,13 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-#
-# Author:  Dominik Gresch <greschd@gmx.ch>
-# Date:    08.04.2016 13:58:36 CEST
-# File:    test_doc.py
-
 import sys
-import pytest
-import importlib
 
 import fsc.export
 
@@ -25,7 +16,7 @@ def test_all_doc():
             del sys.modules[key]
     fsc.export.test_doc()
     try:
-        import phasemap
+        import phasemap  # pylint: disable=unused-variable
     finally:
         # reset to the previous phasemap -- just doing import breaks pickle
         for key in list(sys.modules.keys()):

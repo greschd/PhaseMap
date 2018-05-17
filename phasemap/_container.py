@@ -1,6 +1,3 @@
-import math
-import copy
-import numbers
 import itertools
 from fractions import Fraction
 

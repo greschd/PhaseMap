@@ -19,7 +19,7 @@ setup(
         'numpy', 'matplotlib', 'msgpack-python', 'decorator', 'fsc.export',
         'fsc.iohelper'
     ],
-    extras_require={'dev': ['yapf==0.21', 'pre-commit', 'pytest']},
+    extras_require={'dev': ['yapf==0.21', 'pre-commit', 'pytest', 'pylint']},
     long_description=README,
     classifiers=[
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',

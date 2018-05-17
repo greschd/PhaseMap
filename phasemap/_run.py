@@ -1,7 +1,5 @@
 import numbers
-import itertools
 
-import numpy as np
 from fsc.export import export
 
 from ._container import PhaseMap

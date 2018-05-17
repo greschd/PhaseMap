@@ -1,4 +1,3 @@
-import sys
 import logging
 
 __all__ = ['logger']

@@ -1,13 +1,11 @@
+# pylint: disable=unused-argument,redefined-outer-name,protected-access
+
 import os
 import json
 import operator
-import functools
-from itertools import zip_longest
 from collections import namedtuple
-from collections.abc import Iterable
 
 import pytest
-import numpy as np
 
 import phasemap
 
@@ -15,7 +13,7 @@ import phasemap
 @pytest.fixture
 def test_name(request):
     """Returns module_name.function_name for a given test"""
-    return request.module.__name__ + '/' + request._parent_request._pyfuncitem.name
+    return request.module.__name__ + '/' + request._parent_request._pyfuncitem.name  # pylint: disable=protected-access
 
 
 @pytest.fixture
@@ -66,10 +64,10 @@ def results_equal(squares_idx_equal, squares_equal):
         assert res1.mesh == res2.mesh
         assert res1.limits == res2.limits
         squares_equal(res1.squares, res2.squares)
-        for p in res1.points.keys() | res2.points.keys():
-            v1, v2 = res1.points[p], res2.points[p]
-            assert v1.phase == v2.phase
-            squares_idx_equal(v1.squares, res1, v2.squares, res2)
+        for coord in res1.points.keys() | res2.points.keys():
+            point1, point2 = res1.points[coord], res2.points[coord]
+            assert point1.phase == point2.phase
+            squares_idx_equal(point1.squares, res1, point2.squares, res2)
 
         assert res1.all_corners == res2.all_corners
         squares_idx_equal(res1._split_next, res1, res2._split_next, res2)
@@ -91,8 +89,8 @@ def squares_idx_equal(normalize_squares_from_idx):
     return inner
 
 
-normalized_square = namedtuple(
-    'normalized_square', ['corner', 'phase', 'size', 'points']
+NormalizedSquare = namedtuple(
+    'NormalizedSquare', ['corner', 'phase', 'size', 'points']
 )
 
 
@@ -117,7 +115,7 @@ def normalize_squares_from_idx(normalize_squares):
 def normalize_squares():
     def inner(squares):
         return set(
-            normalized_square(
+            NormalizedSquare(
                 corner=s.corner,
                 phase=s.phase,
                 size=s.size,

@@ -1,9 +1,7 @@
 import json
-import copy
 import tempfile
 
 import pytest
-import numpy as np
 import phasemap as pm
 
 
@@ -11,7 +9,7 @@ def circle(x, y, z=0):
     return 2 if x**2 + y**2 + z**2 < 1 else 0
 
 
-def line(x, y, z=0):
+def line(x, y, z=0):  # pylint: disable=unused-argument
     return 1 if x > 0.5 or y < 0.2 else 0
 
 
