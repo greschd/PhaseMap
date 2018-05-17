@@ -121,7 +121,7 @@ def normalize_squares():
                 corner=s.corner,
                 phase=s.phase,
                 size=s.size,
-                points=tuple(sorted(s.points))
+                points=tuple(sorted(tuple(x) for x in s.points))
             ) for s in squares
         )
 

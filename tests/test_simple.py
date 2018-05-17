@@ -56,7 +56,8 @@ def test_phase(
         all_corners=all_corners,
         listable=listable
     )
-    compare_equal(sorted([(k, v.phase) for k, v in res.points.items()]))
+
+    compare_equal(sorted([(tuple(k), v.phase) for k, v in res.points.items()]))
     compare_result_equal(res, tag='with_encoding')
 
 
@@ -77,7 +78,7 @@ def test_3d(
         all_corners=all_corners,
         listable=listable
     )
-    compare_equal(sorted([(k, v.phase) for k, v in res.points.items()]))
+    compare_equal(sorted([(tuple(k), v.phase) for k, v in res.points.items()]))
     compare_result_equal(res, tag='with_encoding')
 
 
@@ -111,8 +112,9 @@ def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2, save):
         init_mesh=init_mesh,
         listable=True
     )
-    assert sorted([(k, v.phase) for k, v in res.points.items()]
-                  ) == sorted([(k, v.phase) for k, v in res3.points.items()])
+    assert sorted([
+        (tuple(k), v.phase) for k, v in res.points.items()
+    ]) == sorted([(tuple(k), v.phase) for k, v in res3.points.items()])
     results_equal(res, res3)
 
 

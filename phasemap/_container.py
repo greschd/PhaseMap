@@ -8,6 +8,21 @@ import numpy as np
 from fsc.export import export
 
 
+class Coordinate(np.ndarray):
+    def __new__(cls, coord):
+        coord_list = [Fraction(x) for x in coord]
+        self = super().__new__(cls, shape=(len(coord_list), ), dtype=object)
+        self[:] = coord_list
+        self.flags.writeable = False
+        return self
+
+    def __hash__(self):
+        return hash(tuple(self))
+
+    def __eq__(self, other):
+        return super().__eq__(other).all()
+
+
 class Point:
     """
     The squares are stored by their index in the PhaseMap.squares list.
@@ -26,16 +41,14 @@ class Square:
     """
 
     def __init__(self, corner, size):
-        self.corner = tuple(corner)
+        self.corner = Coordinate(corner)
         self.phase = None
-        self.size = tuple(size)
+        self.size = Coordinate(size)
         self.points = set()
 
     def contains_point(self, point):
-        return all(
-            c <= p and p <= c + s
-            for p, c, s in zip(point, self.corner, self.size)
-        )
+        return np.all(self.corner <= point
+                      ) and np.all(point <= self.corner + self.size)
 
 
 @export
@@ -89,13 +102,13 @@ class PhaseMap:
 
     def get_initial_points_frac(self):
         return set([
-            tuple(i * s for i, s in zip(idx, self.step_sizes))
+            Coordinate([i * s for i, s in zip(idx, self.step_sizes)])
             for idx in itertools.product(*[range(m) for m in self.mesh])
         ]) - self.points.keys()
 
     def create_initial_squares(self):
         for i, corner in enumerate([
-            tuple(i * s for i, s in zip(idx, self.step_sizes))
+            Coordinate([i * s for i, s in zip(idx, self.step_sizes)])
             for idx in itertools.product(*[range(m - 1) for m in self.mesh])
         ]):
             self.squares.append(Square(corner=corner, size=self.step_sizes))
@@ -128,13 +141,8 @@ class PhaseMap:
             elif (square.phase is not None) and (square.phase != point.phase):
                 square.phase = None
                 # larger squares can be split in the current iteration
-                if any(
-                    sq > st for sq, st in zip(square.size, self.step_sizes)
-                ):
-                    assert all(
-                        sq > st
-                        for sq, st in zip(square.size, self.step_sizes)
-                    )
+                if np.any(square.size > self.step_sizes):
+                    assert np.all(square.size > self.step_sizes)
                     assert square_idx not in self._to_calculate
                     self._to_calculate.append(square_idx)
                 else:
@@ -151,24 +159,26 @@ class PhaseMap:
         """Returns the points to calculate for splitting a given square."""
         pts_new = set()
         square = self.squares[square_idx]
-        assert all(sq > st for sq, st in zip(square.size, self.step_sizes))
+        assert np.all(square.size > self.step_sizes)
         # corner points
         if self.all_corners:
             pts_new.update(
-                itertools.product(
+                Coordinate(x) for x in itertools.product(
                     *[(c, c + s / 2, c + s)
                       for c, s in zip(square.corner, square.size)]
                 )
             )
         else:
             pts_new.update(
-                itertools.product(
+                Coordinate(x) for x in itertools.product(
                     *[(c, c + s) for c, s in zip(square.corner, square.size)]
                 )
             )
             # middle point
             pts_new.add(
-                tuple(c + s / 2 for c, s in zip(square.corner, square.size))
+                Coordinate([
+                    c + s / 2 for c, s in zip(square.corner, square.size)
+                ])
             )
         return pts_new
 
@@ -206,16 +216,16 @@ class PhaseMap:
         # if all corners are calculated, the neighbours with the relevant squares can be further away
         if self.all_corners:
             for dist in itertools.product(range(-3, 4), repeat=self.dim):
-                yield tuple(
+                yield Coordinate([
                     p + d * (s / 2) for p, d, s in zip(point_frac, dist, step)
-                )
+                ])
         else:
             for i, s in enumerate(step):
                 for direction in [-1, 1]:
-                    yield tuple(
+                    yield Coordinate([
                         p + s * direction if i == j else p
                         for j, p in enumerate(point_frac)
-                    )
+                    ])
 
     def split_square(self, square_idx):
         old_square = self.squares[square_idx]
@@ -238,7 +248,7 @@ class PhaseMap:
         all_pts = new_pts | old_pts
 
         # create new squares
-        new_size = tuple(s / 2 for s in old_square.size)
+        new_size = old_square.size / 2
         new_squares = [
             Square(corner=corner, size=new_size)
             for corner in itertools.product(

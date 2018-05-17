@@ -7,7 +7,7 @@ from fractions import Fraction
 import numpy as np
 from fsc.export import export
 
-from .._container import PhaseMap, Square, Point
+from .._container import PhaseMap, Square, Point, Coordinate
 
 
 @export
@@ -57,6 +57,11 @@ def _(obj):
         _to_calculate=obj._to_calculate,
         _split_next=obj._split_next
     )
+
+
+@encode.register(Coordinate)
+def _(obj):
+    return dict(__coord__=True, c=list(obj))
 
 
 @encode.register(Point)
@@ -113,6 +118,10 @@ def decode_square(obj):
     res.phase = obj['phase']
     res.points = set([tuple(p) for p in obj['points']])
     return res
+
+
+def decode_coord(obj):
+    return Coordinate(obj['c'])
 
 
 def decode_fraction(obj):
