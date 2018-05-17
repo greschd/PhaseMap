@@ -81,14 +81,11 @@ def test_3d(
     compare_result_equal(res, tag='with_encoding')
 
 
-@pytest.mark.parametrize('init_mesh', range(2, 5))
-@pytest.mark.parametrize('num_steps_1', range(3))
-@pytest.mark.parametrize('num_steps_2', range(3))
+@pytest.mark.parametrize('init_mesh', [2, 4])
+@pytest.mark.parametrize('num_steps_1', [0, 2])
+@pytest.mark.parametrize('num_steps_2', [0, 1])
 @pytest.mark.parametrize('save', [True, False])
 def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2, save):
-    print(init_mesh)
-    print(num_steps_1)
-    print(num_steps_2)
     num_steps_total = num_steps_1 + num_steps_2
     res = pm.run(
         phase1, [(-1, 1), (-1, 1)],

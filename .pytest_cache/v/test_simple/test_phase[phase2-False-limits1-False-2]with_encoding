@@ -37,35 +37,16 @@
   "points": [
     [
       [
-        0.0,
-        0.0
-      ],
-      {
-        "__point__": true,
-        "phase": 1,
-        "squares": [
-          0
-        ]
-      }
-    ],
-    [
-      [
-        0.0,
-        0.5
-      ],
-      {
-        "__point__": true,
-        "phase": 1,
-        "squares": [
-          0,
-          1
-        ]
-      }
-    ],
-    [
-      [
-        0.0,
-        1.0
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        },
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 1
+        }
       ],
       {
         "__point__": true,
@@ -77,8 +58,38 @@
     ],
     [
       [
-        0.5,
-        0.0
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 1
+        }
+      ],
+      {
+        "__point__": true,
+        "phase": 2,
+        "squares": [
+          31,
+          15
+        ]
+      }
+    ],
+    [
+      [
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        }
       ],
       {
         "__point__": true,
@@ -91,8 +102,59 @@
     ],
     [
       [
-        0.5,
-        0.5
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        },
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        }
+      ],
+      {
+        "__point__": true,
+        "phase": 1,
+        "squares": [
+          0
+        ]
+      }
+    ],
+    [
+      [
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        },
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        }
+      ],
+      {
+        "__point__": true,
+        "phase": 1,
+        "squares": [
+          0,
+          1
+        ]
+      }
+    ],
+    [
+      [
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        }
       ],
       {
         "__point__": true,
@@ -107,35 +169,16 @@
     ],
     [
       [
-        0.5,
-        1.0
-      ],
-      {
-        "__point__": true,
-        "phase": 2,
-        "squares": [
-          31,
-          15
-        ]
-      }
-    ],
-    [
-      [
-        1.0,
-        0.0
-      ],
-      {
-        "__point__": true,
-        "phase": 0,
-        "squares": [
-          8
-        ]
-      }
-    ],
-    [
-      [
-        1.0,
-        0.5
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        }
       ],
       {
         "__point__": true,
@@ -148,8 +191,37 @@
     ],
     [
       [
-        1.0,
-        1.0
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        }
+      ],
+      {
+        "__point__": true,
+        "phase": 0,
+        "squares": [
+          8
+        ]
+      }
+    ],
+    [
+      [
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 1
+        }
       ],
       {
         "__point__": true,
@@ -161,8 +233,16 @@
     ],
     [
       [
-        0.25,
-        0.75
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        }
       ],
       {
         "__point__": true,
@@ -177,8 +257,16 @@
     ],
     [
       [
-        0.75,
-        0.25
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        }
       ],
       {
         "__point__": true,
@@ -193,8 +281,16 @@
     ],
     [
       [
-        0.75,
-        0.75
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        }
       ],
       {
         "__point__": true,
@@ -209,8 +305,16 @@
     ],
     [
       [
-        0.375,
-        0.875
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 7
+        }
       ],
       {
         "__point__": true,
@@ -225,8 +329,16 @@
     ],
     [
       [
-        0.5,
-        0.75
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        }
       ],
       {
         "__point__": true,
@@ -241,8 +353,16 @@
     ],
     [
       [
-        0.25,
-        0.5
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        }
       ],
       {
         "__point__": true,
@@ -256,8 +376,16 @@
     ],
     [
       [
-        0.0,
-        0.75
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        }
       ],
       {
         "__point__": true,
@@ -270,8 +398,16 @@
     ],
     [
       [
-        0.125,
-        0.625
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        }
       ],
       {
         "__point__": true,
@@ -286,8 +422,16 @@
     ],
     [
       [
-        0.375,
-        0.625
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        }
       ],
       {
         "__point__": true,
@@ -302,8 +446,16 @@
     ],
     [
       [
-        0.5,
-        0.25
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        }
       ],
       {
         "__point__": true,
@@ -317,8 +469,16 @@
     ],
     [
       [
-        0.25,
-        1.0
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 1
+        }
       ],
       {
         "__point__": true,
@@ -331,8 +491,16 @@
     ],
     [
       [
-        0.625,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ],
       {
         "__point__": true,
@@ -347,8 +515,16 @@
     ],
     [
       [
-        0.75,
-        0.0
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        }
       ],
       {
         "__point__": true,
@@ -361,8 +537,16 @@
     ],
     [
       [
-        0.75,
-        0.5
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        }
       ],
       {
         "__point__": true,
@@ -377,8 +561,16 @@
     ],
     [
       [
-        0.625,
-        0.375
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 3
+        }
       ],
       {
         "__point__": true,
@@ -393,8 +585,16 @@
     ],
     [
       [
-        0.625,
-        0.625
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        }
       ],
       {
         "__point__": true,
@@ -409,8 +609,16 @@
     ],
     [
       [
-        0.75,
-        1.0
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 1
+        }
       ],
       {
         "__point__": true,
@@ -423,8 +631,16 @@
     ],
     [
       [
-        0.625,
-        0.875
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 7
+        }
       ],
       {
         "__point__": true,
@@ -442,789 +658,1957 @@
     {
       "__square__": true,
       "corner": [
-        0.0,
-        0.0
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        },
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        }
       ],
       "phase": 1,
       "points": [
         [
-          0.5,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ],
         [
-          0.5,
-          0.0
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          }
         ],
         [
-          0.0,
-          0.0
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          }
         ],
         [
-          0.0,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ],
         [
-          0.25,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ],
         [
-          0.5,
-          0.25
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          }
         ]
       ],
       "size": [
-        0.5,
-        0.5
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.0,
-        0.5
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        },
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.0,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ],
         [
-          0.125,
-          0.625
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.5,
-        0.0
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.5,
-          0.0
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          }
         ],
         [
-          0.625,
-          0.125
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 1
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.5,
-        0.5
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.5,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ],
         [
-          0.625,
-          0.625
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.0,
-        0.75
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.0,
-          1.0
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 1
+          }
         ],
         [
-          0.25,
-          0.75
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          }
         ],
         [
-          0.25,
-          1.0
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 1
+          }
         ],
         [
-          0.0,
-          0.75
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          }
         ]
       ],
       "size": [
-        0.25,
-        0.25
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.25,
-        0.5
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.25,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ],
         [
-          0.375,
-          0.625
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.25,
-        0.75
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.375,
-          0.875
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 7
+          }
         ],
         [
-          0.25,
-          0.75
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.5,
-        0.25
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.5,
-          0.25
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          }
         ],
         [
-          0.625,
-          0.375
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 3
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.75,
-        0.0
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        }
       ],
       "phase": 0,
       "points": [
         [
-          1.0,
-          0.0
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          }
         ],
         [
-          0.75,
-          0.25
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          }
         ],
         [
-          0.75,
-          0.0
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          }
         ]
       ],
       "size": [
-        0.25,
-        0.25
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.75,
-        0.25
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        }
       ],
       "phase": 0,
       "points": [
         [
-          1.0,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ],
         [
-          0.75,
-          0.25
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          }
         ],
         [
-          0.75,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ]
       ],
       "size": [
-        0.25,
-        0.25
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.5,
-        0.75
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.625,
-          0.875
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 7
+          }
         ],
         [
-          0.5,
-          0.75
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.75,
-        0.5
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        }
       ],
       "phase": 0,
       "points": [
         [
-          1.0,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ],
         [
-          0.75,
-          0.75
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          }
         ],
         [
-          0.75,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ]
       ],
       "size": [
-        0.25,
-        0.25
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.75,
-        0.75
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.75,
-          1.0
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 1
+          }
         ],
         [
-          0.75,
-          0.75
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          }
         ],
         [
-          1.0,
-          1.0
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 1
+          }
         ]
       ],
       "size": [
-        0.25,
-        0.25
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.25,
-        0.875
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 7
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.25,
-          1.0
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 1
+          }
         ],
         [
-          0.375,
-          0.875
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 7
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.375,
-        0.75
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.375,
-          0.875
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 7
+          }
         ],
         [
-          0.5,
-          0.75
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.375,
-        0.875
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 7
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.5,
-          1.0
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 1
+          }
         ],
         [
-          0.375,
-          0.875
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 7
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.0,
-        0.625
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.0,
-          0.75
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          }
         ],
         [
-          0.125,
-          0.625
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.125,
-        0.5
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.25,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ],
         [
-          0.125,
-          0.625
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.125,
-        0.625
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.25,
-          0.75
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          }
         ],
         [
-          0.125,
-          0.625
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.25,
-        0.625
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.25,
-          0.75
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          }
         ],
         [
-          0.375,
-          0.625
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.375,
-        0.5
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.5,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ],
         [
-          0.375,
-          0.625
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.375,
-        0.625
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 3
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.5,
-          0.75
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          }
         ],
         [
-          0.375,
-          0.625
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.5,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.5,
-          0.25
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          }
         ],
         [
-          0.625,
-          0.125
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 1
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.625,
-        0.0
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        },
+        {
+          "__fraction__": true,
+          "d": 1,
+          "n": 0
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.75,
-          0.0
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          }
         ],
         [
-          0.625,
-          0.125
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 1
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.625,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.75,
-          0.25
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          }
         ],
         [
-          0.625,
-          0.125
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 1
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.5,
-        0.375
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 3
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.5,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ],
         [
-          0.625,
-          0.375
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 3
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.625,
-        0.25
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 1
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.75,
-          0.25
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 1
+          }
         ],
         [
-          0.625,
-          0.375
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 3
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.625,
-        0.375
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 3
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.75,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ],
         [
-          0.625,
-          0.375
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 3
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.5,
-        0.625
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.5,
-          0.75
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          }
         ],
         [
-          0.625,
-          0.625
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.625,
-        0.5
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        },
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.75,
-          0.5
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
         ],
         [
-          0.625,
-          0.625
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.625,
-        0.625
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.75,
-          0.75
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          }
         ],
         [
-          0.625,
-          0.625
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.5,
-        0.875
+        {
+          "__fraction__": true,
+          "d": 2,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 7
+        }
       ],
       "phase": null,
       "points": [
         [
-          0.5,
-          1.0
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 1
+          }
         ],
         [
-          0.625,
-          0.875
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 7
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.625,
-        0.75
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        },
+        {
+          "__fraction__": true,
+          "d": 4,
+          "n": 3
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.625,
-          0.875
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 7
+          }
         ],
         [
-          0.75,
-          0.75
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     },
     {
       "__square__": true,
       "corner": [
-        0.625,
-        0.875
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 5
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 7
+        }
       ],
       "phase": 0,
       "points": [
         [
-          0.75,
-          1.0
+          {
+            "__fraction__": true,
+            "d": 4,
+            "n": 3
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 1
+          }
         ],
         [
-          0.625,
-          0.875
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 5
+          },
+          {
+            "__fraction__": true,
+            "d": 8,
+            "n": 7
+          }
         ]
       ],
       "size": [
-        0.125,
-        0.125
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        },
+        {
+          "__fraction__": true,
+          "d": 8,
+          "n": 1
+        }
       ]
     }
   ]

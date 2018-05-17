@@ -107,8 +107,6 @@ def squares_equal(normalize_squares):
 @pytest.fixture
 def normalize_squares_from_idx(normalize_squares):
     def inner(squares, res):
-        # print(squares, res)
-        # print('res.squares', res.squares)
         squares_evaluated = [res.squares[idx] for idx in squares]
         return normalize_squares(squares_evaluated)
 
