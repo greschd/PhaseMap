@@ -76,9 +76,11 @@ class PhaseMap:
             )
         if min(mesh) <= 1:
             raise ValueError('Mesh size must be at least 2 in each direction.')
-        for l in limits:
-            if len(l) != 2:
-                raise ValueError('Limit {} does not have length 2.'.format(l))
+        for lim in limits:
+            if len(lim) != 2:
+                raise ValueError(
+                    'Limit {} does not have length 2.'.format(lim)
+                )
 
         self.dim = len(mesh)
         self.mesh = list(mesh)
@@ -89,8 +91,8 @@ class PhaseMap:
         else:
             self.points = init_map.points
             # remove squares
-            for v in self.points.values():
-                v.squares = set()
+            for data_point in self.points.values():
+                data_point.squares = set()
         self.squares = list()
         self.all_corners = all_corners
         self._to_split = []
@@ -109,10 +111,10 @@ class PhaseMap:
             for idx in itertools.product(*[range(m - 1) for m in self.mesh])
         ]):
             self.squares.append(Square(corner=corner, size=self.step_sizes))
-            for pt in itertools.product(
+            for coord in itertools.product(
                 *[(c, c + s) for c, s in zip(corner, self.step_sizes)]
             ):
-                self.add_point_to_square(point_frac=pt, square_idx=i)
+                self.add_point_to_square(point_frac=coord, square_idx=i)
 
     def fraction_to_position(self, frac):
         """Returns the position on the phase map corresponding to a given fraction."""
@@ -152,7 +154,7 @@ class PhaseMap:
         self._to_calculate = self._split_next
         self._split_next = []
 
-    def _get_new_pts(self, square_idx):
+    def _get_new_coords(self, square_idx):
         """Returns the points to calculate for splitting a given square."""
         pts_new = set()
         square = self.squares[square_idx]
@@ -185,7 +187,7 @@ class PhaseMap:
         """
         pts_all = set()
         for square_idx in self._to_calculate:
-            pts_all.update(self._get_new_pts(square_idx))
+            pts_all.update(self._get_new_coords(square_idx))
         self._to_split = self._to_calculate
         self._to_calculate = []
         return list(pts_all - self.points.keys())
@@ -199,8 +201,8 @@ class PhaseMap:
         :param values: The values corresponding to each point.
         :type values: list
         """
-        for p, v in zip(pts_frac, values):
-            self.points[p] = Point(phase=v)
+        for coord, phase in zip(pts_frac, values):
+            self.points[coord] = Point(phase=phase)
 
     def split_all(self):
         """Splits all squares that are currently marked for splitting."""
@@ -228,21 +230,25 @@ class PhaseMap:
         old_square = self.squares[square_idx]
 
         # get points which have not been added to the square yet
-        new_pts = self._get_new_pts(square_idx)
-        old_pts = old_square.points
-        for p in old_pts:
-            self.points[p].squares.remove(square_idx)
+        new_coords = self._get_new_coords(square_idx)
+        old_coords = old_square.points
+        for coord in old_coords:
+            self.points[coord].squares.remove(square_idx)
         # get neighbouring squares for new points
-        for p in new_pts - old_pts:
+        for coord in new_coords - old_coords:
             square_candidates = set()
-            for n in self.get_neighbour_pts(p, step=old_square.size):
-                pt = self.points.get(n, None)
-                if pt is None:
+            for neighbour_coord in self.get_neighbour_pts(
+                coord, step=old_square.size
+            ):
+                neighbour_point = self.points.get(neighbour_coord, None)
+                if neighbour_point is None:
                     continue
-                square_candidates.update(pt.squares)
-            for s in square_candidates:
-                self.add_point_to_square(square_idx=s, point_frac=p)
-        all_pts = new_pts | old_pts
+                square_candidates.update(neighbour_point.squares)
+            for candidate_idx in square_candidates:
+                self.add_point_to_square(
+                    square_idx=candidate_idx, point_frac=coord
+                )
+        all_coords = new_coords | old_coords
 
         # create new squares
         new_size = old_square.size / 2
@@ -261,6 +267,8 @@ class PhaseMap:
         )
 
         # find new square(s) for each point
-        for p in all_pts:
-            for n in new_square_indices:
-                self.add_point_to_square(point_frac=p, square_idx=n)
+        for coord in all_coords:
+            for new_square_idx in new_square_indices:
+                self.add_point_to_square(
+                    point_frac=coord, square_idx=new_square_idx
+                )

@@ -140,12 +140,10 @@ def points(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
         norm.autoscale(scale_val)
 
     point_colors = defaultdict(list)
-    for p, v in pts.items():
-        point_colors[cmap(norm(v.phase))].append(p)
+    for coord, data_point in pts.items():
+        point_colors[cmap(norm(data_point.phase))].append(coord)
 
-    for color, points in point_colors.items():
-        axes.scatter([pt[0] for pt in points], [pt[1] for pt in points],
-                     color=color,
-                     **kwargs)
+    for color, coordinates in point_colors.items():
+        axes.scatter(*np.array(coordinates).T, color=color, **kwargs)
 
     return axes, cmap, norm, all_vals

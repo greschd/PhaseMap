@@ -17,6 +17,7 @@ logger = logging.getLogger('phasemap')
 logger.setLevel(logging.INFO)
 DEFAULT_HANDLER = logging.StreamHandler(sys.stdout)
 logger.addHandler(DEFAULT_HANDLER)
+POINT_SIZE = 5
 
 
 def phase_fct(pos):
@@ -42,48 +43,37 @@ def phase_fct(pos):
     return 0
 
 
-def plot_squares(num_steps):
-    res = pm.run(
+def run(num_steps):
+    return pm.run(
         phase_fct, [(0, 1), (0, 1)],
         num_steps=num_steps,
         init_mesh=2,
         listable=False
     )
 
+
+def plot_squares(res):
     pm.plot.squares(res)
     plt.savefig('squares.pdf', bbox_inches='tight')
 
 
-def plot_points(num_steps):
-    res = pm.run(
-        phase_fct, [(0, 1), (0, 1)],
-        num_steps=num_steps,
-        init_mesh=2,
-        listable=False
-    )
-
-    pm.plot.points(res, s=0.5, lw=0.)
+def plot_points(res):
+    pm.plot.points(res, s=POINT_SIZE, lw=0.)
     plt.savefig('points.pdf', bbox_inches='tight')
 
 
-def plot_combined(num_steps):
-    res = pm.run(
-        phase_fct, [(0, 1), (0, 1)],
-        num_steps=num_steps,
-        init_mesh=2,
-        listable=False
-    )
-
+def plot_combined(res):
     fig, ax = plt.subplots(figsize=[4.2, 4])
     ax.set_aspect(1.)
     pm.plot.squares(
         res, axes=ax, zorder=0, add_cbar=False, lw=0.1, edgecolor='k'
     )
-    pm.plot.points(res, axes=ax, edgecolors='k', lw=0.1, s=0.5)
+    pm.plot.points(res, axes=ax, edgecolors='k', lw=0.1, s=POINT_SIZE)
     plt.savefig('combined.pdf', bbox_inches='tight')
 
 
 if __name__ == '__main__':
-    plot_squares(8)
-    plot_points(8)
-    plot_combined(8)
+    res = run(6)
+    plot_squares(res)
+    plot_points(res)
+    plot_combined(res)
