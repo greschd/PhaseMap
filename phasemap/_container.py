@@ -27,6 +27,7 @@ class Point:
 
     def __init__(self, phase):
         self.phase = phase
+        # TODO: Remove
         self.squares = set()
 
 
@@ -232,6 +233,7 @@ class PhaseMap:
         # get points which have not been added to the square yet
         new_coords = self._get_new_coords(square_idx)
         old_coords = old_square.points
+        # TODO: Remove
         for coord in old_coords:
             self.points[coord].squares.remove(square_idx)
         # get neighbouring squares for new points
@@ -243,6 +245,7 @@ class PhaseMap:
                 neighbour_point = self.points.get(neighbour_coord, None)
                 if neighbour_point is None:
                     continue
+                # TODO: Replace
                 square_candidates.update(neighbour_point.squares)
             for candidate_idx in square_candidates:
                 self.add_point_to_square(

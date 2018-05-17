@@ -111,7 +111,7 @@ def squares(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
 @_plot
 def points(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
     """
-    Plots the phase diagram as a collection of squares, which are colored according to the estimate of the phase in a given square. TODO: FIX!!!!!
+    Plots the phase diagram as a collection of squares, which are colored according to the estimate of the phase in a given square.
 
     :param axes: Axes where the plot is drawn.
     :type axes: :py:mod:`matplotlib <matplotlib.pyplot>` axes
