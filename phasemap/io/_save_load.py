@@ -6,5 +6,5 @@ __all__ = ['save', 'load']
 
 IO_HANDLER = SerializerDispatch(_encoding)
 
-save = IO_HANDLER.save
-load = IO_HANDLER.load
+save = IO_HANDLER.save  # pylint: disable=invalid-name
+load = IO_HANDLER.load  # pylint: disable=invalid-name

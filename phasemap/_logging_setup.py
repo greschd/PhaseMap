@@ -2,4 +2,4 @@ import logging
 
 __all__ = ['logger']
 
-logger = logging.getLogger('phasemap')
+LOGGER = logging.getLogger('phasemap')

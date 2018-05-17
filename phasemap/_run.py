@@ -3,7 +3,7 @@ import numbers
 from fsc.export import export
 
 from ._container import PhaseMap
-from ._logging_setup import logger
+from ._logging_setup import LOGGER
 
 
 @export
@@ -46,7 +46,7 @@ def run(
     result_map.create_initial_squares()
 
     for step in range(num_steps):
-        logger.info('starting evaluation step {}'.format(step))
+        LOGGER.info('starting evaluation step {}'.format(step))
         result_map.decrease_step()
         while not result_map.step_done():
             to_calculate = result_map.pts_to_calculate()

@@ -1,3 +1,5 @@
+# pylint: disable=protected-access
+
 import numbers
 import contextlib
 from functools import singledispatch

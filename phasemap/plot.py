@@ -39,7 +39,6 @@ def _plot(func, phase_map, *, axes=None, add_cbar=True, **kwargs):
         fig.subplots_adjust(right=0.9)
         cbar_ax = fig.add_axes([0.95, 0.1, 0.04, 0.8])
 
-        max_val = vals[-1]
         color_vals = [norm(c) for c in vals]
         cbar_cmap = ListedColormap([cmap(v) for v in color_vals])
         c_bar = ColorbarBase(
@@ -56,15 +55,7 @@ def _plot(func, phase_map, *, axes=None, add_cbar=True, **kwargs):
 
 @export
 @_plot
-def squares(
-    phase_map,
-    *,
-    axes=None,
-    add_cbar=True,
-    scale_val=None,
-    cmap=None,
-    **kwargs
-):
+def squares(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
     """
     Plots the phase diagram as a collection of squares, which are colored according to the estimate of the phase in a given square.
 
@@ -98,16 +89,18 @@ def squares(
     else:
         norm.autoscale(scale_val)
 
-    colors = cmap([norm(v) for v in vals])
+    square_colors = cmap([norm(v) for v in vals])
 
     rect_properties = ChainMap(kwargs, dict(lw=0))
-    for c, s in zip(colors, sqrs):
+    for color, square in zip(square_colors, sqrs):
         axes.add_patch(
             Rectangle(
-                xy=s.corner,
-                width=s.size[0],
-                height=s.size[1],
-                **ChainMap(rect_properties, dict(facecolor=c, edgecolor=c))
+                xy=square.corner,
+                width=square.size[0],
+                height=square.size[1],
+                **ChainMap(
+                    rect_properties, dict(facecolor=color, edgecolor=color)
+                )
             )
         )
 
@@ -116,15 +109,7 @@ def squares(
 
 @export
 @_plot
-def points(
-    phase_map,
-    *,
-    axes=None,
-    add_cbar=True,
-    scale_val=None,
-    cmap=None,
-    **kwargs
-):
+def points(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
     """
     Plots the phase diagram as a collection of squares, which are colored according to the estimate of the phase in a given square. TODO: FIX!!!!!
 
@@ -158,9 +143,9 @@ def points(
     for p, v in pts.items():
         point_colors[cmap(norm(v.phase))].append(p)
 
-    for c, p in point_colors.items():
-        axes.scatter([pt[0] for pt in p], [pt[1] for pt in p],
-                     color=c,
+    for color, points in point_colors.items():
+        axes.scatter([pt[0] for pt in points], [pt[1] for pt in points],
+                     color=color,
                      **kwargs)
 
     return axes, cmap, norm, all_vals
