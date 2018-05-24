@@ -1,5 +1,6 @@
 import numbers
 
+import numpy as np
 from fsc.export import export
 
 from ._container import PhaseMap
@@ -13,16 +14,16 @@ def run(
     init_mesh=5,
     num_steps=5,
     all_corners=False,
-    listable=False,
+    vectorized=False,
     init_result=None
 ):
     """
     init_mesh as int -> same in all dimensions. Otherwise as list of int.
     """
-    if not listable:
-        fct_listable = lambda pts: [fct(p) for p in pts]
+    if not vectorized:
+        fct_vec = lambda vec: np.array([fct(x) for x in vec])
     else:
-        fct_listable = fct
+        fct_vec = fct
     # setting up the PhaseMap object
     if isinstance(init_mesh, numbers.Integral):
         init_mesh = [init_mesh] * len(limits)
@@ -39,7 +40,7 @@ def run(
     points_frac = result_map.get_initial_points_frac()
     result_map.update(
         points_frac,
-        fct_listable([
+        fct_vec([
             result_map.fraction_to_position(pf) for pf in points_frac
         ])
     )
@@ -52,7 +53,7 @@ def run(
             to_calculate = result_map.pts_to_calculate()
             result_map.update(
                 to_calculate,
-                fct_listable([
+                fct_vec([
                     result_map.fraction_to_position(pf) for pf in to_calculate
                 ])
             )

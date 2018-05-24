@@ -121,14 +121,11 @@ def phase_fct(pos):
 if __name__ == '__main__':
 
     NUM_STEPS = 10
-    #~ plt.set_cmap()
     res = pm.get_phase_map(
         phase_fct, [(0, 1), (0, 1)],
         num_steps=NUM_STEPS,
         init_mesh=2,
-        listable=False
     )
-    #~ res2 = pm.get_phase_map(phase_fct, [(0, 1), (0, 1)], num_steps=NUM_STEPS, init_mesh=2, listable=False, init_result=res)
 
     BORDEAUX = '#770044'
     GREY = '#AAAAAA'
@@ -138,52 +135,3 @@ if __name__ == '__main__':
     cmap = ListedColormap([GREY, BORDEAUX, BLUE, ORANGE])
     pm.plot.squares(res, cmap=cmap)
     plt.savefig('foo.pdf', bbox_inches='tight')
-
-    #~ print(res.points)
-    #~ print(res.points[(0.5, 0.5)].squares)
-    #~ res = pm.get_phase_map(phase, [(-1, 1), (-1, 1)], num_steps=NUM_STEPS, init_mesh=3, listable=False)
-    #~ with Timer('bar'):
-    #~ res2 = pm.get_phase_map(phase, [(0, 1), (0, 1)], num_steps=NUM_STEPS, init_mesh=3, all_corners=True)
-    #~ NUM_STEPS = 6
-    #~ with Timer('foo3'):
-    #~ res3 = pm.get_phase_map(phase, [(-1.1, 1.1), (-1.1, 1.1), (-1.1, 1.1)], num_steps=NUM_STEPS, init_mesh=3)
-    #~ with Timer('bar3'):
-    #~ res4 = pm.get_phase_map(phase, [(-1.1, 1.1), (-1.1, 1.1), (-1.1, 1.1)], num_steps=NUM_STEPS, init_mesh=3, all_corners=True)
-
-    #~ fig, ax = plt.subplots(figsize=[4, 4])
-    #~ items = res.points.items()
-    #~ pos = [p for p, v in items]
-    #~ val = [v.phase for p, v in items]
-    #~ cmap_irregular(val, pos, fill_lines=False, axis=ax)
-
-    #~ plt.savefig('test2.pdf')
-
-    #~ plot(res.squares, res.mesh[0] - 1, 100, res.points, savefile='test.svg')
-    #~ plot(res2.squares, res2.mesh[0] - 1, 100, res.points, savefile='test2.svg')
-
-    #~ fig, ax = plt.subplots(figsize=[4, 4])
-    #~ items = res2.points.items()
-    #~ pos = [p for p, v in items]
-    #~ val = [v.phase for p, v in items]
-    #~ cmap_irregular(val, pos, fill_lines=False, axis=ax)
-
-    #~ plt.savefig('test3.pdf')
-
-    #~ print('pt ratio', len(res.points.items()) / len(res2.points.items()))
-    #~ print(len(res3.points.items()) / len(res4.points.items()))
-
-    #~ SLICE = 5
-    #~ plot([s for s in res.squares if s.position[2] <= SLICE and s.position[2] + s.size >= SLICE], res.mesh[0], 100, {})
-    #~ A = np.zeros([m // 2 + 1 for m in res.mesh[:2]], dtype=int) - 1
-    #~ for k, v in res.points.items():
-    #~ if k[2] != 2**5:
-    #~ continue
-    #~ A[k[:2]] = v.phase
-    #~ if all(kval % 2 == 0 for kval in k):
-    #~ A[tuple(kval // 2 for kval in k)[:2]] = v.phase
-    #~ print(len(res.points))
-    #~ print(len(res2.items()))
-    #~ print(res._to_calculate)
-    #~ plt.imshow(A.T, interpolation='none', origin='lower')
-    #~ plt.colorbar()
-    #~ plt.savefig('plot2.pdf', rasterize=False, bbox_inches='tight')

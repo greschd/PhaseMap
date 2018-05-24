@@ -39,12 +39,12 @@ def phase2(pos):
 @pytest.mark.parametrize('num_steps', range(0, 5))
 @pytest.mark.parametrize('all_corners', [False, True])
 @pytest.mark.parametrize(
-    'phase, listable, limits', [(phase1, True, [(-1, 1), (-1, 1)]),
+    'phase, vectorized, limits', [(phase1, True, [(-1, 1), (-1, 1)]),
                                 (phase2, False, [(0, 1), (0, 1)])]
 )
 def test_phase(
     compare_equal, compare_result_equal, num_steps, all_corners, phase,
-    listable, limits
+    vectorized, limits
 ):
     res = pm.run(
         phase,
@@ -52,7 +52,7 @@ def test_phase(
         num_steps=num_steps,
         init_mesh=3,
         all_corners=all_corners,
-        listable=listable
+        vectorized=vectorized
     )
 
     compare_equal(sorted([(tuple(k), v.phase) for k, v in res.points.items()]))
@@ -62,11 +62,11 @@ def test_phase(
 @pytest.mark.parametrize('num_steps', range(0, 3))
 @pytest.mark.parametrize('all_corners', [False, True])
 @pytest.mark.parametrize(
-    'phase, listable, limits', [(phase1, True, [(-1, 1), (-1, 1), (-1, 1)])]
+    'phase, vectorized, limits', [(phase1, True, [(-1, 1), (-1, 1), (-1, 1)])]
 )
 def test_3d(
     compare_equal, compare_result_equal, num_steps, all_corners, phase,
-    listable, limits
+    vectorized, limits
 ):
     res = pm.run(
         phase,
@@ -74,7 +74,7 @@ def test_3d(
         num_steps=num_steps,
         init_mesh=3,
         all_corners=all_corners,
-        listable=listable
+        vectorized=vectorized
     )
     compare_equal(sorted([(tuple(k), v.phase) for k, v in res.points.items()]))
     compare_result_equal(res, tag='with_encoding')
@@ -90,14 +90,14 @@ def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2, save):
         phase1, [(-1, 1), (-1, 1)],
         num_steps=num_steps_total,
         init_mesh=init_mesh,
-        listable=True
+        vectorized=True
     )
 
     res2 = pm.run(
         phase1, [(-1, 1), (-1, 1)],
         num_steps=num_steps_1,
         init_mesh=init_mesh,
-        listable=True
+        vectorized=True
     )
     if save:
         with tempfile.NamedTemporaryFile() as tmpf:
@@ -108,7 +108,7 @@ def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2, save):
         num_steps=num_steps_total,
         init_result=res2,
         init_mesh=init_mesh,
-        listable=True
+        vectorized=True
     )
     assert sorted([
         (tuple(k), v.phase) for k, v in res.points.items()
@@ -125,7 +125,7 @@ def test_restart_nocalc(results_equal, num_steps):
         phase1, [(-1, 1), (-1, 1)],
         num_steps=num_steps,
         init_mesh=3,
-        listable=True
+        vectorized=True
     )
 
     res_restart = pm.run(
@@ -133,6 +133,6 @@ def test_restart_nocalc(results_equal, num_steps):
         num_steps=num_steps,
         init_mesh=3,
         init_result=res,
-        listable=False
+        vectorized=False
     )
     results_equal(res, res_restart)

@@ -6,14 +6,14 @@ NOT_FOUND = object()
 
 @export
 class DataPointCache:
-    def __init__(self, func, data=None, listable=False):
+    def __init__(self, func, data=None, vectorized=False):
         if data is None:
             self.data = dict()
         else:
             self.data = data
 
-        if not listable:
-            self.func = lambda coord_array: np.array([func(coord) for coord in coord_array])
+        if not vectorized:
+            self.func = lambda vec: np.array([func(x) for x in vec])
         else:
             self.func = func
 

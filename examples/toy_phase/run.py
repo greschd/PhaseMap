@@ -48,7 +48,6 @@ def run(num_steps):
         phase_fct, [(0, 1), (0, 1)],
         num_steps=num_steps,
         init_mesh=2,
-        listable=False
     )
 
 

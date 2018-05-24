@@ -56,7 +56,7 @@ def test_consistency(results_equal, num_steps, serializer):
         phase, [(-1, 1), (-1, 1)],
         num_steps=num_steps,
         init_mesh=3,
-        listable=True
+        vectorized=True
     )
     with tempfile.NamedTemporaryFile('w+') as f:
         pm.io.save(res, f.name, serializer=serializer)
@@ -67,6 +67,6 @@ def test_consistency(results_equal, num_steps, serializer):
 def test_load(results_equal, sample):
     res_loaded = pm.io.load(sample('res.json'))
     res_new = pm.run(
-        phase2, [(0, 1), (0, 1)], num_steps=5, init_mesh=2, listable=False
+        phase2, [(0, 1), (0, 1)], num_steps=5, init_mesh=2, vectorized=False
     )
     results_equal(res_loaded, res_new)
