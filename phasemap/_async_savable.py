@@ -16,6 +16,9 @@ class AsyncSavable(abc.ABC):
 
     @asynccontextmanager
     async def run_save_loop(self, event_loop):
+        """
+        Context manager to run the task which regularly saves the object.
+        """
         save_task = event_loop.create_task(self._save_loop())
         await asyncio.sleep(0.) # Allow the save loop to start.
         yield
@@ -23,6 +26,9 @@ class AsyncSavable(abc.ABC):
         await save_task
 
     async def _save_loop(self):
+        """
+        Regularly saves the object when needed. Upon being cancelled, the object is saved again before exiting.
+        """
         try:
             if not self._save_file:
                 return
@@ -33,10 +39,16 @@ class AsyncSavable(abc.ABC):
             self._do_save_if_needed()
 
     def _do_save_if_needed(self):
+        """
+        Save the object if it needs saving.
+        """
         if self._needs_saving:
             self._needs_saving = False
             self._do_save()
 
     @abc.abstractmethod
     def _do_save(self):
+        """
+        Abstract method for saving the object. This needs to be overriden by child classes to implement the serialization.
+        """
         pass
