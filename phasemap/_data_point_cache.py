@@ -3,6 +3,7 @@ from fsc.export import export
 
 NOT_FOUND = object()
 
+
 @export
 class DataPointCache:
     def __init__(self, func, data=None, listable=False):
@@ -17,7 +18,9 @@ class DataPointCache:
             self.func = func
 
     def __call__(self, coord_array):
-        result = np.array([self.data.get(coord, NOT_FOUND) for coord in coord_array])
+        result = np.array([
+            self.data.get(coord, NOT_FOUND) for coord in coord_array
+        ])
         cache_miss_idx = np.nonzero(result == NOT_FOUND)[0]
         if cache_miss_idx.size > 0:
             missing_coord = coord_array[cache_miss_idx]

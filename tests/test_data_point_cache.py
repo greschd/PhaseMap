@@ -3,11 +3,14 @@ import numpy as np
 
 from phasemap._data_point_cache import DataPointCache
 
+
 def echo(x):
     return x
 
+
 def error(x):
     raise ValueError(x)
+
 
 @pytest.mark.parametrize('listable', [True, False])
 def test_data_point_cache(listable):

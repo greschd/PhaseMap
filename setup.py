@@ -20,7 +20,10 @@ setup(
         'fsc.iohelper'
     ],
     extras_require={
-        'dev': ['yapf==0.21', 'pre-commit', 'pytest', 'pytest-cov', 'pylint', 'prospector']
+        'dev': [
+            'yapf==0.21', 'pre-commit', 'pytest', 'pytest-cov', 'pylint',
+            'prospector'
+        ]
     },
     long_description=README,
     classifiers=[
