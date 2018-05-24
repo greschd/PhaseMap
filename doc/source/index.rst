@@ -7,12 +7,12 @@
 .. title:: Overview
 
 .. container:: section
-    
+
     is a tool for calculating phase diagrams. It uses a quadtree algorithm that tracks the phase boundary. The key advantage of this approach is that it **scales** with the **dimension of the phase boundary** instead of the full phase space. This is especially important when evaluating a single point in the phase space is an expensive operation.
 
-    .. rubric:: Please cite
-
-    * Dominik Gresch, Mario Könz, Donjan Rodic, Alexey A. Soluyanov, Matthias Troyer *"Boundary Search Algorithm for Mapping Phase Diagrams."* [in preparation]
+    .. .. rubric:: Please cite
+    ..
+    .. * Dominik Gresch *"Thesis Title."*, PhD Thesis, ETH Zurich, 20XX.
 
 .. rubric:: Parts of the documentation
 
@@ -38,6 +38,6 @@ The development version of PhaseMap is hosted on `GitHub <http://github.com/Z2Pa
 .. toctree::
     :maxdepth: 2
     :hidden:
-    
+
     tutorial.rst
     reference.rst

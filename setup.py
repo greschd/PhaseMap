@@ -22,7 +22,7 @@ setup(
     extras_require={
         'dev': [
             'yapf==0.21', 'pre-commit', 'pytest', 'pytest-cov', 'pylint',
-            'prospector'
+            'prospector', 'sphinx', 'sphinx-rtd-theme'
         ]
     },
     long_description=README,
