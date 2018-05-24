@@ -1,5 +1,5 @@
-python_3.5:   
-    image: python:3.5
+python_3.6:
+    image: python:3.6
 
     script:
         - pip install .
@@ -7,8 +7,8 @@ python_3.5:
         - cd tests
         - py.test
 
-python_3.6:
-    image: python:3.6
+python_3.7:
+    image: python:3.7
 
     script:
         - pip install .
