@@ -58,7 +58,7 @@ def compare_result_equal(compare_data, results_equal):
 
 
 @pytest.fixture
-def results_equal(squares_idx_equal, squares_equal):
+def results_equal(squares_equal_from_idx, squares_equal):
     def inner(res1, res2):
         assert res1.dim == res2.dim
         assert res1.mesh == res2.mesh
@@ -67,10 +67,11 @@ def results_equal(squares_idx_equal, squares_equal):
         for coord in res1.points.keys() | res2.points.keys():
             point1, point2 = res1.points[coord], res2.points[coord]
             assert point1.phase == point2.phase
-            squares_idx_equal(point1.squares, res1, point2.squares, res2)
 
         assert res1.all_corners == res2.all_corners
-        squares_idx_equal(res1._split_next, res1, res2._split_next, res2)
+        squares_equal_from_idx(
+            idx1=res1._split_next, res1=res1, idx2=res2._split_next, res2=res2
+        )
         assert res1._to_split == res2._to_split
         assert res1._to_calculate == res2._to_calculate
         return True
@@ -79,18 +80,18 @@ def results_equal(squares_idx_equal, squares_equal):
 
 
 @pytest.fixture
-def squares_idx_equal(normalize_squares_from_idx):
-    def inner(squares1, res1, squares2, res2):
-        assert normalize_squares_from_idx(squares1,
+def squares_equal_from_idx(normalize_squares_from_idx):
+    def inner(idx1, res1, idx2, res2):
+        assert normalize_squares_from_idx(idx1,
                                           res1) == normalize_squares_from_idx(
-                                              squares2, res2
+                                              idx2, res2
                                           )
 
     return inner
 
 
 NormalizedSquare = namedtuple(
-    'NormalizedSquare', ['corner', 'phase', 'size', 'points']
+    'NormalizedSquare', ['corner', 'phase', 'size']
 )
 
 
@@ -104,8 +105,8 @@ def squares_equal(normalize_squares):
 
 @pytest.fixture
 def normalize_squares_from_idx(normalize_squares):
-    def inner(squares, res):
-        squares_evaluated = [res.squares[idx] for idx in squares]
+    def inner(idx, res):
+        squares_evaluated = [res.squares[i] for i in idx]
         return normalize_squares(squares_evaluated)
 
     return inner
@@ -119,7 +120,6 @@ def normalize_squares():
                 corner=s.corner,
                 phase=s.phase,
                 size=s.size,
-                points=tuple(sorted(tuple(x) for x in s.points))
             ) for s in squares
         )
 

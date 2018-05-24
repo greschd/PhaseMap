@@ -2,6 +2,7 @@ from fractions import Fraction
 
 import numpy as np
 
+
 class Coordinate(np.ndarray):
     def __new__(cls, coord):
         coord_list = [Fraction(x) for x in coord]
