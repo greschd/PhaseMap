@@ -6,6 +6,9 @@ except ImportError:
     from async_generator import asynccontextmanager
 
 class AsyncSavable(abc.ABC):
+    """
+    Base class for classes which periodically save their state while performing an asynchronous calculation.
+    """
     def __init__(self, save_file, delay=1.):
         self._save_file = save_file
         self._delay = delay
