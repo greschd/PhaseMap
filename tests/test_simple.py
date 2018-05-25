@@ -5,46 +5,17 @@ import pytest
 import phasemap as pm
 
 
-def circle(x, y, z=0):
-    return 2 if x**2 + y**2 + z**2 < 1 else 0
+from phases import phase1, phase2
 
 
-def line(x, y, z=0):  # pylint: disable=unused-argument
-    return 1 if x > 0.5 or y < 0.2 else 0
-
-
-def phase1(val):
-    return [line(*v) + circle(*v) for v in val]
-
-
-def phase2(pos):
-    if pos[0] >= 0 and pos[0] < 0.3:
-        if pos[1] > 0.4 and pos[1] < 0.6:
-            return 1
-
-    if pos[0] > 0.4 and pos[0] < 0.6:
-        if pos[1] >= 0 and pos[1] < 0.6:
-            return 1
-    if pos[0] > 0.4 and pos[0] < 0.6:
-        if pos[1] >= 0.6:
-            return 2
-
-    if pos[0] >= 0 and pos[0] < 0.1:
-        if pos[1] >= 0 and pos[1] < 0.1:
-            return 1
-
-    return 0
-
-
-@pytest.mark.parametrize('num_steps', range(0, 5))
+@pytest.mark.parametrize('num_steps', [0, 1, 3])
 @pytest.mark.parametrize('all_corners', [False, True])
 @pytest.mark.parametrize(
-    'phase, vectorized, limits', [(phase1, True, [(-1, 1), (-1, 1)]),
-                                (phase2, False, [(0, 1), (0, 1)])]
+    'phase, limits', [(phase1, [(-1, 1), (-1, 1)]),
+                      (phase2, [(0, 1), (0, 1)])]
 )
 def test_phase(
-    compare_equal, compare_result_equal, num_steps, all_corners, phase,
-    vectorized, limits
+    compare_equal, compare_result_equal, num_steps, all_corners, phase, limits
 ):
     res = pm.run(
         phase,
@@ -52,29 +23,25 @@ def test_phase(
         num_steps=num_steps,
         init_mesh=3,
         all_corners=all_corners,
-        vectorized=vectorized
     )
 
     compare_equal(sorted([(tuple(k), v.phase) for k, v in res.points.items()]))
     compare_result_equal(res, tag='with_encoding')
 
 
-@pytest.mark.parametrize('num_steps', range(0, 3))
 @pytest.mark.parametrize('all_corners', [False, True])
 @pytest.mark.parametrize(
-    'phase, vectorized, limits', [(phase1, True, [(-1, 1), (-1, 1), (-1, 1)])]
+    'phase, limits', [(phase1, [(-1, 1), (-1, 1), (-1, 1)])]
 )
 def test_3d(
-    compare_equal, compare_result_equal, num_steps, all_corners, phase,
-    vectorized, limits
+    compare_equal, compare_result_equal, all_corners, phase, limits
 ):
     res = pm.run(
         phase,
         limits=limits,
-        num_steps=num_steps,
+        num_steps=1,
         init_mesh=3,
         all_corners=all_corners,
-        vectorized=vectorized
     )
     compare_equal(sorted([(tuple(k), v.phase) for k, v in res.points.items()]))
     compare_result_equal(res, tag='with_encoding')
@@ -90,14 +57,12 @@ def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2, save):
         phase1, [(-1, 1), (-1, 1)],
         num_steps=num_steps_total,
         init_mesh=init_mesh,
-        vectorized=True
     )
 
     res2 = pm.run(
         phase1, [(-1, 1), (-1, 1)],
         num_steps=num_steps_1,
         init_mesh=init_mesh,
-        vectorized=True
     )
     if save:
         with tempfile.NamedTemporaryFile() as tmpf:
@@ -108,7 +73,6 @@ def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2, save):
         num_steps=num_steps_total,
         init_result=res2,
         init_mesh=init_mesh,
-        vectorized=True
     )
     assert sorted([
         (tuple(k), v.phase) for k, v in res.points.items()
@@ -125,7 +89,6 @@ def test_restart_nocalc(results_equal, num_steps):
         phase1, [(-1, 1), (-1, 1)],
         num_steps=num_steps,
         init_mesh=3,
-        vectorized=True
     )
 
     res_restart = pm.run(
@@ -133,6 +96,5 @@ def test_restart_nocalc(results_equal, num_steps):
         num_steps=num_steps,
         init_mesh=3,
         init_result=res,
-        vectorized=False
     )
     results_equal(res, res_restart)
