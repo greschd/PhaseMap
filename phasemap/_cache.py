@@ -5,7 +5,7 @@ NOT_FOUND = object()
 
 
 @export
-class DataPointCache:
+class FuncCache:
     def __init__(self, func, data=None):
         self.func = func
         if data is None:
