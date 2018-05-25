@@ -21,10 +21,9 @@ setup(
     description='Algorithm for mapping phase diagrams',
     install_requires=[
         'numpy', 'matplotlib', 'msgpack-python', 'decorator', 'fsc.export',
-        'fsc.iohelper'
+        'fsc.iohelper', 'fsc.async-tools'
     ],
     extras_require={
-        ':python_version < "3.7"': ['async-generator'],
         'dev': [
             'yapf==0.21', 'pre-commit', 'pytest', 'pytest-cov', 'pylint',
             'prospector', 'sphinx', 'sphinx-rtd-theme'
