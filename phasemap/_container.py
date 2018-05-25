@@ -7,34 +7,6 @@ from fsc.export import export
 from ._coordinate import Coordinate
 
 
-class Point:
-    """
-    The squares are stored by their index in the PhaseMap.squares list.
-    """
-
-    def __init__(self, phase):
-        self.phase = phase
-        # TODO: Remove
-        self.squares = set()
-
-
-class Square:
-    """
-    - corner is the vertex with the lowest indices
-    - phase is None if there is no point in the square or there are points with different phases
-    - the points are stored by their index (position)
-    """
-
-    def __init__(self, corner, size):
-        self.corner = Coordinate(corner)
-        self.phase = None
-        self.size = Coordinate(size)
-        self.points = set()
-
-    def contains_point(self, point):
-        return np.all(self.corner <= point
-                      ) and np.all(point <= self.corner + self.size)
-
 
 @export
 class PhaseMap:
@@ -83,9 +55,9 @@ class PhaseMap:
                 data_point.squares = set()
         self.squares = list()
         self.all_corners = all_corners
-        self._to_split = []
-        self._to_calculate = []
-        self._split_next = []
+        # self._to_split = []
+        # self._to_calculate = []
+        # self._split_next = []
 
     def get_initial_points_frac(self):
         return set([
@@ -108,9 +80,9 @@ class PhaseMap:
         """Returns the position on the phase map corresponding to a given fraction."""
         return [l[0] * (1 - x) + l[1] * x for x, l in zip(frac, self.limits)]
 
-    def step_done(self):
-        """Returns whether the current step is completely done."""
-        return not (self._to_calculate or self._to_split)
+    # def step_done(self):
+    #     """Returns whether the current step is completely done."""
+    #     return not (self._to_calculate or self._to_split)
 
     def add_point_to_square(self, *, point_frac, square_idx):
         """
