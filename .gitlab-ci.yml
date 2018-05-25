@@ -1,8 +1,9 @@
 python_3.6:
-    image: python:3.6
+  image: python:3.6
 
-    script:
-        - pip install .
-        - pip install pytest
-        - cd tests
-        - py.test
+  script:
+    - pip install git+https://github.com/FrescolinoGroup/pyasynctools.git#egg=fsc.async-tools
+    - pip install .
+    - pip install pytest
+    - cd tests
+    - py.test
