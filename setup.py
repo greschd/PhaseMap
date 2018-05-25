@@ -2,8 +2,8 @@ import re
 import sys
 from setuptools import setup
 
-if sys.version_info < (3, 6):
-    raise 'Must use Python version 3.6 or higher.'
+if sys.version_info < (3, 5):
+    raise 'Must use Python version 3.5 or higher.'
 
 README = r"""The PhaseMap algorithm maps a phase diagram, given a function to evaluate the phase at a given point. The number of phase evaluations needed scales with the dimension of the phase boundary, instead of the dimenstion of the phase space. Thus, this algorithm is efficient when evaluating the phase is relatively expensive.
 """
