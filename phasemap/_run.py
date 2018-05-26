@@ -14,23 +14,53 @@ def run(
     limits,
     init_mesh=5,
     num_steps=5,
-    all_corners=False,
-    init_result=None
+    # all_corners=False,
+    # init_result=None
 ):
-    if isinstance(init_mesh, numbers.Integral):
-        init_mesh = [init_mesh] * len(limits)
-    if any(m < 2 for m in init_mesh):
-        raise ValueError('Mesh must be >= 2 for each dimension.')
-    dim = len(init_mesh)
 
 
-def _get_initial_squares(init_mesh):
-    size = np.array([Fraction(1, m - 1) for m in init_mesh])
-    corners = itertools.product(*[
-        [i * s for i in range(m)] for s, m in zip(size, init_mesh)
-    ])
-    squares = [Square(corner=c, size=s) for c, s in zip(corners, size)]
-    for i, sq1 in enumerate(squares):
-        for sq2 in squares[i + 1:]:
-            sq1.process_possible_neighbour(sq2)
-    return squares
+
+class _RunImpl:
+    def __init__(
+        self,
+        fct,
+        limits,
+        init_mesh=5,
+        num_steps=5,
+    ):
+        self._init_dimensions(limits=limits, init_mesh=init_mesh, num_steps=num_steps)
+        self._squares = set(self._get_initial_squares())
+
+
+    def _init_dimensions(self, limits, init_mesh, num_steps):
+        self._limit_corner = np.array([low for low, high in limits])
+        self._limit_size = np.array([high - low for low, high in limits])
+        self._dim = len(limits)
+
+        self._validate_init_mesh(init_mesh)
+
+        self._max_size = Coordinate([Fraction(1, m - 1) for m in self._init_mesh])
+        self._min_size = self._max_size / 2**num_steps
+
+    def _validate_init_mesh(self, init_mesh):
+        if isinstance(init_mesh, numbers.Integral):
+            init_mesh = [init_mesh] * self._dim
+        else:
+            if len(init_mesh) != self._dim:
+                raise ValueError("Length of 'init_mesh' {} does not match the dimension {} of the 'limits'.".format(len(init_mesh), self._dim))
+        if any(m < 2 for m in init_mesh):
+            raise ValueError('Mesh must be >= 2 for each dimension.')
+        self._init_mesh = init_mesh
+
+    def _get_initial_squares(self):
+        corners = itertools.product(*[
+            [i * s for i in range(m)] for s, m in zip(self._max_size, self._init_mesh)
+        ])
+        squares = [Square(corner=c, size=s) for c, s in zip(corners, size)]
+        for i, sq1 in enumerate(squares):
+            for sq2 in squares[i + 1:]:
+                sq1.process_possible_neighbour(sq2)
+        return squares
+
+    def _coordinate_to_position(self, coord):
+        return self._limit_corner + coord * self._limit_size
