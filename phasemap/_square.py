@@ -1,3 +1,7 @@
+import numpy as np
+
+from ._coordinate import Coordinate
+
 class Square:
     """
     - corner is the vertex with the lowest indices
@@ -13,6 +17,9 @@ class Square:
 
     def __hash__(self):
         return hash((self.corner, self.size))
+
+    def __eq__(self, other):
+        return np.all(self.corner == other.corner) and np.all(self.size == other.size)
 
     def contains_point(self, point):
         return np.all(self.corner <= point) and np.all(point <= self.corner + self.size)

@@ -13,10 +13,10 @@ class FuncCache:
         else:
             self.data = data
 
-    def __call__(self, coord):
+    async def __call__(self, inp):
         try:
-            return self.data[coord]
+            return self.data[inp]
         except KeyError:
-            result = self.func(coord)
-            self.data[coord] = result
+            result = self.func(inp)
+            self.data[inp] = result
             return result

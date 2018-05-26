@@ -1,10 +1,14 @@
+import asyncio
 import numbers
+import itertools
 from fractions import Fraction
 
 import numpy as np
 from fsc.export import export
 
 from ._square import Square
+from ._cache import FuncCache
+from ._coordinate import Coordinate
 from ._logging_setup import LOGGER
 
 
@@ -17,7 +21,7 @@ def run(
     # all_corners=False,
     # init_result=None
 ):
-
+    return _RunImpl(fct=fct, limits=limits, init_mesh=init_mesh, num_steps=num_steps)
 
 
 class _RunImpl:
@@ -31,6 +35,15 @@ class _RunImpl:
         self._init_dimensions(limits=limits, init_mesh=init_mesh, num_steps=num_steps)
         self._squares = set(self._get_initial_squares())
 
+        self._loop = asyncio.get_event_loop()
+        self._split_futures = dict()
+        for sq in self._squares:
+            self._schedule_split_square(sq)
+        self._loop.run_until_complete(self._run())
+
+    async def _run(self):
+        while not all(fut.done() for fut in self._split_futures.values()):
+            await asyncio.sleep(1.)
 
     def _init_dimensions(self, limits, init_mesh, num_steps):
         self._limit_corner = np.array([low for low, high in limits])
@@ -52,15 +65,27 @@ class _RunImpl:
             raise ValueError('Mesh must be >= 2 for each dimension.')
         self._init_mesh = init_mesh
 
+    def _coordinate_to_position(self, coord):
+        return self._limit_corner + coord * self._limit_size
+
     def _get_initial_squares(self):
         corners = itertools.product(*[
-            [i * s for i in range(m)] for s, m in zip(self._max_size, self._init_mesh)
+            [i * s for i in range(m - 1)] for s, m in zip(self._max_size, self._init_mesh)
         ])
-        squares = [Square(corner=c, size=s) for c, s in zip(corners, size)]
+        squares = [Square(corner=c, size=self._max_size) for c in corners]
         for i, sq1 in enumerate(squares):
             for sq2 in squares[i + 1:]:
                 sq1.process_possible_neighbour(sq2)
         return squares
 
-    def _coordinate_to_position(self, coord):
-        return self._limit_corner + coord * self._limit_size
+    # @FuncCache
+    def _schedule_split_square(self, square):
+        if square in self._split_futures:
+            return
+        if np.all(square.size <= self._min_size):
+            return
+        fut = asyncio.ensure_future(self._split_square(square), loop=self._loop)
+        self._split_futures[square] = fut
+
+    async def _split_square(self, square):
+        print('splitting', square, square.corner)
