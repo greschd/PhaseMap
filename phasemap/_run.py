@@ -1,9 +1,10 @@
 import numbers
+from fractions import Fraction
 
 import numpy as np
 from fsc.export import export
 
-from ._container import PhaseMap
+from ._square import Square
 from ._logging_setup import LOGGER
 
 
@@ -16,38 +17,20 @@ def run(
     all_corners=False,
     init_result=None
 ):
-    """
-    init_mesh as int -> same in all dimensions. Otherwise as list of int.
-    """
-    # setting up the PhaseMap object
     if isinstance(init_mesh, numbers.Integral):
         init_mesh = [init_mesh] * len(limits)
+    if any(m < 2 for m in init_mesh):
+        raise ValueError('Mesh must be >= 2 for each dimension.')
+    dim = len(init_mesh)
 
-    result_map = PhaseMap(
-        mesh=init_mesh,
-        limits=limits,
-        all_corners=all_corners,
-        init_map=init_result
-    )
 
-    # initial calculation
-    # calculate for every grid point
-    points_frac = result_map.get_initial_points_frac()
-    result_map.update(
-        points_frac,
-        [fct(coord) for coord in points_frac]
-    )
-    result_map.create_initial_squares()
-
-    for step in range(num_steps):
-        LOGGER.info('starting evaluation step {}'.format(step))
-        result_map.decrease_step()
-        while not result_map.step_done():
-            to_calculate = result_map.pts_to_calculate()
-            result_map.update(
-                to_calculate,
-                [fct(result_map.fraction_to_position(pf)) for pf in to_calculate]
-            )
-            result_map.split_all()
-
-    return result_map
+def _get_initial_squares(init_mesh):
+    size = np.array([Fraction(1, m - 1) for m in init_mesh])
+    corners = itertools.product(*[
+        [i * s for i in range(m)] for s, m in zip(size, init_mesh)
+    ])
+    squares = [Square(corner=c, size=s) for c, s in zip(corners, size)]
+    for i, sq1 in enumerate(squares):
+        for sq2 in squares[i + 1:]:
+            sq1.process_possible_neighbour(sq2)
+    return squares
