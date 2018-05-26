@@ -33,6 +33,8 @@ class _RunImpl:
         num_steps=5,
     ):
         self._init_dimensions(limits=limits, init_mesh=init_mesh, num_steps=num_steps)
+
+        self._func = FuncCache(fct)
         self._squares = set(self._get_initial_squares())
 
         self._loop = asyncio.get_event_loop()

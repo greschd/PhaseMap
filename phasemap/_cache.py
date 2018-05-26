@@ -1,3 +1,5 @@
+from collections.abc import Awaitable
+
 import numpy as np
 from fsc.export import export
 
@@ -18,5 +20,7 @@ class FuncCache:
             return self.data[inp]
         except KeyError:
             result = self.func(inp)
+            if isinstance(result, Awaitable):
+                result = await result
             self.data[inp] = result
             return result
