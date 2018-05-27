@@ -2,6 +2,8 @@ import numpy as np
 
 from ._coordinate import Coordinate
 
+PHASE_UNDEFINED = object()
+
 class Square:
     """
     - corner is the vertex with the lowest indices
@@ -21,8 +23,19 @@ class Square:
     def __eq__(self, other):
         return np.all(self.corner == other.corner) and np.all(self.size == other.size)
 
-    def contains_point(self, point):
-        return np.all(self.corner <= point) and np.all(point <= self.corner + self.size)
+    def contains_coord(self, coord):
+        return np.all(self.corner <= coord) and np.all(coord <= self.corner + self.size)
+
+    def add_point(self, coord, phase):
+        if self.phase is PHASE_UNDEFINED:
+            return
+        if self.contains_coord(coord):
+            if self.phase is None:
+                self.phase = phase
+            elif self.phase == phase:
+                return
+            else:
+                self.phase = PHASE_UNDEFINED
 
     def is_neighbour(self, other):
         assert np.all(self.corner != other.corner)

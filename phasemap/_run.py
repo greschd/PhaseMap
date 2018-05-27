@@ -6,7 +6,7 @@ from fractions import Fraction
 import numpy as np
 from fsc.export import export
 
-from ._square import Square
+from ._square import Square, PHASE_UNDEFINED
 from ._cache import FuncCache
 from ._coordinate import Coordinate
 from ._logging_setup import LOGGER
@@ -34,7 +34,7 @@ class _RunImpl:
     ):
         self._init_dimensions(limits=limits, init_mesh=init_mesh, num_steps=num_steps)
 
-        self._func = FuncCache(fct)
+        self._func = FuncCache(lambda coord: fct(self._coordinate_to_position(coord)))
         self._squares = set(self._get_initial_squares())
 
         self._loop = asyncio.get_event_loop()
@@ -90,4 +90,36 @@ class _RunImpl:
         self._split_futures[square] = fut
 
     async def _split_square(self, square):
-        print('splitting', square, square.corner)
+        print('splitting', square.corner, square.size)
+
+        coordinate_stencil = np.array(
+            [[Fraction(1, 2)] * self._dim] +
+            list(itertools.product([0, 1], repeat=self._dim))
+        )
+        coords = square.corner + coordinate_stencil * square.size
+        phases = await asyncio.gather(*[
+            self._func(c) for c in coords
+        ])
+        corner_stencil = np.array(list(itertools.product([0, Fraction(1, 2)], repeat=self._dim)))
+        new_size = square.size / 2
+        new_corners = square.corner + corner_stencil * square.size
+        # create new squares
+        new_squares = [Square(corner=c, size=new_size) for c in new_corners]
+        old_neighbours = list(square.neighbours)
+        self._squares.update(new_squares)
+        # add points to new squares and neighbours
+        for sq in new_squares + old_neighbours:
+            for c, p in zip(coords, phases):
+                sq.add_point(coord=c, phase=p)
+                if sq.phase is PHASE_UNDEFINED:
+                    self._schedule_split_square(sq)
+                    break
+
+        # update neighbour maps
+        for new_sq in new_squares:
+            for old_nb in old_neighbours:
+                new_sq.process_possible_neighbour(old_nb)
+
+        # remove old square
+        self._squares.discard(square)
+        square.delete_from_neighbours()
