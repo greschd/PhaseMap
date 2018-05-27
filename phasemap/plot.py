@@ -13,6 +13,7 @@ from matplotlib.patches import Rectangle
 from matplotlib.colorbar import ColorbarBase
 from matplotlib.colors import Normalize, ListedColormap
 
+from ._square import PHASE_UNDEFINED
 
 @decorator.decorator
 def _plot(func, phase_map, *, axes=None, add_cbar=True, **kwargs):
@@ -79,8 +80,8 @@ def squares(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
         # don't do this in the signature, otherwise it gets set at import time
         cmap = plt.get_cmap()
 
-    all_vals = sorted(set([p.phase for p in phase_map.points.values()]))
-    sqrs = [s for s in phase_map.squares if s.phase is not None]
+    all_vals = sorted(set(phase_map.points.values()))
+    sqrs = [s for s in phase_map.squares if s.phase not in (None, PHASE_UNDEFINED)]
     vals = [s.phase for s in sqrs]
 
     norm = Normalize()
@@ -131,7 +132,7 @@ def points(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
         cmap = plt.get_cmap()
 
     pts = phase_map.points
-    all_vals = sorted(set([p.phase for p in pts.values()]))
+    all_vals = sorted(set(pts.values()))
 
     norm = Normalize()
     if scale_val is None:
@@ -140,8 +141,8 @@ def points(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
         norm.autoscale(scale_val)
 
     point_colors = defaultdict(list)
-    for coord, data_point in pts.items():
-        point_colors[cmap(norm(data_point.phase))].append(coord)
+    for coord, phase in pts.items():
+        point_colors[cmap(norm(phase))].append(coord)
 
     for color, coordinates in point_colors.items():
         axes.scatter(*np.array(coordinates).T, color=color, **kwargs)

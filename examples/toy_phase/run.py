@@ -17,7 +17,7 @@ logger = logging.getLogger('phasemap')
 logger.setLevel(logging.INFO)
 DEFAULT_HANDLER = logging.StreamHandler(sys.stdout)
 logger.addHandler(DEFAULT_HANDLER)
-POINT_SIZE = 5
+POINT_SIZE = 1
 
 
 def phase_fct(pos):
@@ -72,7 +72,7 @@ def plot_combined(res):
 
 
 if __name__ == '__main__':
-    res = run(6)
+    res = run(8)
     plot_squares(res)
     plot_points(res)
     plot_combined(res)

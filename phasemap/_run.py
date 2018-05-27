@@ -2,6 +2,7 @@ import asyncio
 import numbers
 import itertools
 from fractions import Fraction
+from collections import ChainMap
 
 import numpy as np
 from fsc.export import export
@@ -34,23 +35,41 @@ class _RunImpl:
     ):
         self._init_dimensions(limits=limits, init_mesh=init_mesh, num_steps=num_steps)
 
+        # TODO: Save data in result
         self._func = FuncCache(lambda coord: fct(self._coordinate_to_position(coord)))
-        self._squares = set(self._get_initial_squares())
+        # TODO: Move to result
+        self.squares = set(self._get_initial_squares())
 
         self._loop = asyncio.get_event_loop()
-        self._split_futures = dict()
-        for sq in self._squares:
+        self._split_futures_done = dict()
+        self._split_futures_pending = dict()
+        self._split_futures = ChainMap(self._split_futures_pending, self._split_futures_done)
+        for sq in self.squares:
             self._schedule_split_square(sq)
         self._loop.run_until_complete(self._run())
 
+    # TODO: Move to Result
+    @property
+    def points(self):
+        return self._func.data
+
     async def _run(self):
-        while not all(fut.done() for fut in self._split_futures.values()):
-            await asyncio.sleep(1.)
+        while not self._check_done():
+            await asyncio.sleep(2.)
+
+    def _check_done(self):
+        for square, fut in list(self._split_futures_pending.items()):
+            if fut.done():
+                self._split_futures_pending.pop(square)
+                self._split_futures_done[square] = fut
+        return not self._split_futures_pending
 
     def _init_dimensions(self, limits, init_mesh, num_steps):
         self._limit_corner = np.array([low for low, high in limits])
         self._limit_size = np.array([high - low for low, high in limits])
         self._dim = len(limits)
+        # TODO: Move to Result
+        self.limits = limits
 
         self._validate_init_mesh(init_mesh)
 
@@ -90,8 +109,6 @@ class _RunImpl:
         self._split_futures[square] = fut
 
     async def _split_square(self, square):
-        print('splitting', square.corner, square.size)
-
         coordinate_stencil = np.array(
             [[Fraction(1, 2)] * self._dim] +
             list(itertools.product([0, 1], repeat=self._dim))
@@ -106,20 +123,26 @@ class _RunImpl:
         # create new squares
         new_squares = [Square(corner=c, size=new_size) for c in new_corners]
         old_neighbours = list(square.neighbours)
-        self._squares.update(new_squares)
+        self.squares.update(new_squares)
         # add points to new squares and neighbours
         for sq in new_squares + old_neighbours:
             for c, p in zip(coords, phases):
                 sq.add_point(coord=c, phase=p)
-                if sq.phase is PHASE_UNDEFINED:
-                    self._schedule_split_square(sq)
-                    break
+            # add existing points
+            for c, p in square._points.items():
+                sq.add_point(coord=c, phase=p)
+            if sq.phase is PHASE_UNDEFINED:
+                self._schedule_split_square(sq)
+
 
         # update neighbour maps
         for new_sq in new_squares:
             for old_nb in old_neighbours:
                 new_sq.process_possible_neighbour(old_nb)
+        for i, new_sq1 in enumerate(new_squares):
+            for new_sq2 in new_squares[i + 1:]:
+                new_sq1.process_possible_neighbour(new_sq2)
 
         # remove old square
-        self._squares.discard(square)
+        self.squares.discard(square)
         square.delete_from_neighbours()

@@ -16,6 +16,7 @@ class Square:
         self.phase = None
         self.size = Coordinate(size)
         self.neighbours = set()
+        self._points = dict()
 
     def __hash__(self):
         return hash((self.corner, self.size))
@@ -27,9 +28,8 @@ class Square:
         return np.all(self.corner <= coord) and np.all(coord <= self.corner + self.size)
 
     def add_point(self, coord, phase):
-        if self.phase is PHASE_UNDEFINED:
-            return
         if self.contains_coord(coord):
+            self._points[coord] = phase
             if self.phase is None:
                 self.phase = phase
             elif self.phase == phase:
@@ -38,7 +38,7 @@ class Square:
                 self.phase = PHASE_UNDEFINED
 
     def is_neighbour(self, other):
-        assert np.all(self.corner != other.corner)
+        assert not self.corner == other.corner
         return (
             np.all(self.corner + self.size >= other.corner) and
             np.all(other.corner + other.size >= self.corner)
