@@ -19,7 +19,6 @@ def run(
     limits,
     init_mesh=5,
     num_steps=5,
-    # all_corners=False,
     # init_result=None
 ):
     return _RunImpl(

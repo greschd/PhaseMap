@@ -54,7 +54,6 @@ def _(obj):
         mesh=obj.mesh,
         points=obj.points.items(),
         squares=obj.squares,
-        all_corners=obj.all_corners,
         _to_split=obj._to_split,
         _to_calculate=obj._to_calculate,
         _split_next=obj._split_next
@@ -102,7 +101,6 @@ def decode_phasemap(obj):
     res = PhaseMap(mesh=obj['mesh'], limits=obj['limits'])
     res.points = {tuple(k): v for k, v in decode(obj['points'])}
     res.squares = decode(obj['squares'])
-    res.all_corners = obj['all_corners']
     res._to_split = obj['_to_split']
     res._to_calculate = obj['_to_calculate']
     res._split_next = obj['_split_next']

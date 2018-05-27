@@ -8,36 +8,32 @@ from phases import phase1, phase2
 
 
 @pytest.mark.parametrize('num_steps', [0, 1, 3])
-@pytest.mark.parametrize('all_corners', [False, True])
 @pytest.mark.parametrize(
     'phase, limits', [(phase1, [(-1, 1), (-1, 1)]), (phase2, [(0, 1), (0, 1)])]
 )
 def test_phase(
-    compare_equal, compare_result_equal, num_steps, all_corners, phase, limits
+    compare_equal, compare_result_equal, num_steps, phase, limits
 ):
     res = pm.run(
         phase,
         limits,
         num_steps=num_steps,
         init_mesh=3,
-        all_corners=all_corners,
     )
 
     compare_equal(sorted([(tuple(k), v.phase) for k, v in res.points.items()]))
     compare_result_equal(res, tag='with_encoding')
 
 
-@pytest.mark.parametrize('all_corners', [False, True])
 @pytest.mark.parametrize(
     'phase, limits', [(phase1, [(-1, 1), (-1, 1), (-1, 1)])]
 )
-def test_3d(compare_equal, compare_result_equal, all_corners, phase, limits):
+def test_3d(compare_equal, compare_result_equal, phase, limits):
     res = pm.run(
         phase,
         limits=limits,
         num_steps=1,
         init_mesh=3,
-        all_corners=all_corners,
     )
     compare_equal(sorted([(tuple(k), v.phase) for k, v in res.points.items()]))
     compare_result_equal(res, tag='with_encoding')

@@ -68,7 +68,6 @@ def results_equal(squares_equal_from_idx, squares_equal):
             point1, point2 = res1.points[coord], res2.points[coord]
             assert point1.phase == point2.phase
 
-        assert res1.all_corners == res2.all_corners
         squares_equal_from_idx(
             idx1=res1._split_next, res1=res1, idx2=res2._split_next, res2=res2
         )
