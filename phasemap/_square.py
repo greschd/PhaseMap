@@ -4,6 +4,7 @@ from ._coordinate import Coordinate
 
 PHASE_UNDEFINED = object()
 
+
 class Square:
     """
     - corner is the vertex with the lowest indices
@@ -22,10 +23,12 @@ class Square:
         return hash((self.corner, self.size))
 
     def __eq__(self, other):
-        return np.all(self.corner == other.corner) and np.all(self.size == other.size)
+        return np.all(self.corner == other.corner
+                      ) and np.all(self.size == other.size)
 
     def contains_coord(self, coord):
-        return np.all(self.corner <= coord) and np.all(coord <= self.corner + self.size)
+        return np.all(self.corner <= coord
+                      ) and np.all(coord <= self.corner + self.size)
 
     def add_point(self, coord, phase):
         if self.contains_coord(coord):
@@ -40,8 +43,8 @@ class Square:
     def is_neighbour(self, other):
         assert not self.corner == other.corner
         return (
-            np.all(self.corner + self.size >= other.corner) and
-            np.all(other.corner + other.size >= self.corner)
+            np.all(self.corner + self.size >= other.corner)
+            and np.all(other.corner + other.size >= self.corner)
         )
 
     def process_possible_neighbour(self, square):

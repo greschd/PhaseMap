@@ -45,7 +45,8 @@ def phase_fct(pos):
 
 def run(num_steps):
     return pm.run(
-        phase_fct, [(0, 1), (0, 1)],
+        phase_fct,
+        [(0, 1), (0, 1)],
         num_steps=num_steps,
         init_mesh=2,
     )

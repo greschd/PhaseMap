@@ -21,7 +21,8 @@ from phases import phase1, phase2
 @pytest.mark.parametrize('serializer', [json, msgpack, pickle])
 def test_consistency(results_equal, num_steps, serializer):
     res = pm.run(
-        phase1, [(-1, 1), (-1, 1)],
+        phase1,
+        [(-1, 1), (-1, 1)],
         num_steps=num_steps,
         init_mesh=3,
     )
@@ -33,7 +34,5 @@ def test_consistency(results_equal, num_steps, serializer):
 
 def test_load(results_equal, sample):
     res_loaded = pm.io.load(sample('res.json'))
-    res_new = pm.run(
-        phase2, [(0, 1), (0, 1)], num_steps=5, init_mesh=2
-    )
+    res_new = pm.run(phase2, [(0, 1), (0, 1)], num_steps=5, init_mesh=2)
     results_equal(res_loaded, res_new)

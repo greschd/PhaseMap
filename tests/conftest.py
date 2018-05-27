@@ -90,9 +90,7 @@ def squares_equal_from_idx(normalize_squares_from_idx):
     return inner
 
 
-NormalizedSquare = namedtuple(
-    'NormalizedSquare', ['corner', 'phase', 'size']
-)
+NormalizedSquare = namedtuple('NormalizedSquare', ['corner', 'phase', 'size'])
 
 
 @pytest.fixture

@@ -4,15 +4,13 @@ import tempfile
 import pytest
 import phasemap as pm
 
-
 from phases import phase1, phase2
 
 
 @pytest.mark.parametrize('num_steps', [0, 1, 3])
 @pytest.mark.parametrize('all_corners', [False, True])
 @pytest.mark.parametrize(
-    'phase, limits', [(phase1, [(-1, 1), (-1, 1)]),
-                      (phase2, [(0, 1), (0, 1)])]
+    'phase, limits', [(phase1, [(-1, 1), (-1, 1)]), (phase2, [(0, 1), (0, 1)])]
 )
 def test_phase(
     compare_equal, compare_result_equal, num_steps, all_corners, phase, limits
@@ -33,9 +31,7 @@ def test_phase(
 @pytest.mark.parametrize(
     'phase, limits', [(phase1, [(-1, 1), (-1, 1), (-1, 1)])]
 )
-def test_3d(
-    compare_equal, compare_result_equal, all_corners, phase, limits
-):
+def test_3d(compare_equal, compare_result_equal, all_corners, phase, limits):
     res = pm.run(
         phase,
         limits=limits,
@@ -54,13 +50,15 @@ def test_3d(
 def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2, save):
     num_steps_total = num_steps_1 + num_steps_2
     res = pm.run(
-        phase1, [(-1, 1), (-1, 1)],
+        phase1,
+        [(-1, 1), (-1, 1)],
         num_steps=num_steps_total,
         init_mesh=init_mesh,
     )
 
     res2 = pm.run(
-        phase1, [(-1, 1), (-1, 1)],
+        phase1,
+        [(-1, 1), (-1, 1)],
         num_steps=num_steps_1,
         init_mesh=init_mesh,
     )
@@ -69,7 +67,8 @@ def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2, save):
             pm.io.save(res2, tmpf.name, serializer=json)
             res2 = pm.io.load(tmpf.name, serializer=json)
     res3 = pm.run(
-        phase1, [(-1, 1), (-1, 1)],
+        phase1,
+        [(-1, 1), (-1, 1)],
         num_steps=num_steps_total,
         init_result=res2,
         init_mesh=init_mesh,
@@ -86,13 +85,15 @@ def test_restart_nocalc(results_equal, num_steps):
         raise ValueError(x)
 
     res = pm.run(
-        phase1, [(-1, 1), (-1, 1)],
+        phase1,
+        [(-1, 1), (-1, 1)],
         num_steps=num_steps,
         init_mesh=3,
     )
 
     res_restart = pm.run(
-        error, [(-1, 1), (-1, 1)],
+        error,
+        [(-1, 1), (-1, 1)],
         num_steps=num_steps,
         init_mesh=3,
         init_result=res,

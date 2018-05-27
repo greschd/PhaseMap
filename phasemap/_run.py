@@ -22,7 +22,9 @@ def run(
     # all_corners=False,
     # init_result=None
 ):
-    return _RunImpl(fct=fct, limits=limits, init_mesh=init_mesh, num_steps=num_steps)
+    return _RunImpl(
+        fct=fct, limits=limits, init_mesh=init_mesh, num_steps=num_steps
+    )
 
 
 class _RunImpl:
@@ -33,17 +35,23 @@ class _RunImpl:
         init_mesh=5,
         num_steps=5,
     ):
-        self._init_dimensions(limits=limits, init_mesh=init_mesh, num_steps=num_steps)
+        self._init_dimensions(
+            limits=limits, init_mesh=init_mesh, num_steps=num_steps
+        )
 
         # TODO: Save data in result
-        self._func = FuncCache(lambda coord: fct(self._coordinate_to_position(coord)))
+        self._func = FuncCache(
+            lambda coord: fct(self._coordinate_to_position(coord))
+        )
         # TODO: Move to result
         self.squares = set(self._get_initial_squares())
 
         self._loop = asyncio.get_event_loop()
         self._split_futures_done = dict()
         self._split_futures_pending = dict()
-        self._split_futures = ChainMap(self._split_futures_pending, self._split_futures_done)
+        self._split_futures = ChainMap(
+            self._split_futures_pending, self._split_futures_done
+        )
         for sq in self.squares:
             self._schedule_split_square(sq)
         self._loop.run_until_complete(self._run())
@@ -73,7 +81,9 @@ class _RunImpl:
 
         self._validate_init_mesh(init_mesh)
 
-        self._max_size = Coordinate([Fraction(1, m - 1) for m in self._init_mesh])
+        self._max_size = Coordinate([
+            Fraction(1, m - 1) for m in self._init_mesh
+        ])
         self._min_size = self._max_size / 2**num_steps
 
     def _validate_init_mesh(self, init_mesh):
@@ -81,7 +91,10 @@ class _RunImpl:
             init_mesh = [init_mesh] * self._dim
         else:
             if len(init_mesh) != self._dim:
-                raise ValueError("Length of 'init_mesh' {} does not match the dimension {} of the 'limits'.".format(len(init_mesh), self._dim))
+                raise ValueError(
+                    "Length of 'init_mesh' {} does not match the dimension {} of the 'limits'.".
+                    format(len(init_mesh), self._dim)
+                )
         if any(m < 2 for m in init_mesh):
             raise ValueError('Mesh must be >= 2 for each dimension.')
         self._init_mesh = init_mesh
@@ -90,9 +103,10 @@ class _RunImpl:
         return self._limit_corner + coord * self._limit_size
 
     def _get_initial_squares(self):
-        corners = itertools.product(*[
-            [i * s for i in range(m - 1)] for s, m in zip(self._max_size, self._init_mesh)
-        ])
+        corners = itertools.product(
+            *[[i * s for i in range(m - 1)]
+              for s, m in zip(self._max_size, self._init_mesh)]
+        )
         squares = [Square(corner=c, size=self._max_size) for c in corners]
         for i, sq1 in enumerate(squares):
             for sq2 in squares[i + 1:]:
@@ -105,19 +119,20 @@ class _RunImpl:
             return
         if np.all(square.size <= self._min_size):
             return
-        fut = asyncio.ensure_future(self._split_square(square), loop=self._loop)
+        fut = asyncio.ensure_future(
+            self._split_square(square), loop=self._loop
+        )
         self._split_futures[square] = fut
 
     async def _split_square(self, square):
-        coordinate_stencil = np.array(
-            [[Fraction(1, 2)] * self._dim] +
-            list(itertools.product([0, 1], repeat=self._dim))
-        )
+        coordinate_stencil = np.array([[Fraction(1, 2)] * self._dim] + list(
+            itertools.product([0, 1], repeat=self._dim)
+        ))
         coords = square.corner + coordinate_stencil * square.size
-        phases = await asyncio.gather(*[
-            self._func(c) for c in coords
-        ])
-        corner_stencil = np.array(list(itertools.product([0, Fraction(1, 2)], repeat=self._dim)))
+        phases = await asyncio.gather(*[self._func(c) for c in coords])
+        corner_stencil = np.array(
+            list(itertools.product([0, Fraction(1, 2)], repeat=self._dim))
+        )
         new_size = square.size / 2
         new_corners = square.corner + corner_stencil * square.size
         # create new squares
@@ -133,7 +148,6 @@ class _RunImpl:
                 sq.add_point(coord=c, phase=p)
             if sq.phase is PHASE_UNDEFINED:
                 self._schedule_split_square(sq)
-
 
         # update neighbour maps
         for new_sq in new_squares:

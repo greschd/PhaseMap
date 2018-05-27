@@ -15,6 +15,7 @@ from matplotlib.colors import Normalize, ListedColormap
 
 from ._square import PHASE_UNDEFINED
 
+
 @decorator.decorator
 def _plot(func, phase_map, *, axes=None, add_cbar=True, **kwargs):
     # create axes if it does not exist
@@ -81,7 +82,9 @@ def squares(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
         cmap = plt.get_cmap()
 
     all_vals = sorted(set(phase_map.points.values()))
-    sqrs = [s for s in phase_map.squares if s.phase not in (None, PHASE_UNDEFINED)]
+    sqrs = [
+        s for s in phase_map.squares if s.phase not in (None, PHASE_UNDEFINED)
+    ]
     vals = [s.phase for s in sqrs]
 
     norm = Normalize()

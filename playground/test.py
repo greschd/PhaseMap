@@ -122,7 +122,8 @@ if __name__ == '__main__':
 
     NUM_STEPS = 10
     res = pm.get_phase_map(
-        phase_fct, [(0, 1), (0, 1)],
+        phase_fct,
+        [(0, 1), (0, 1)],
         num_steps=NUM_STEPS,
         init_mesh=2,
     )

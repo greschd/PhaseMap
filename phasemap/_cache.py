@@ -1,6 +1,5 @@
 from collections.abc import Awaitable
 
-import numpy as np
 from fsc.export import export
 
 NOT_FOUND = object()
