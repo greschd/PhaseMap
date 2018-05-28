@@ -11,9 +11,7 @@ from phases import phase1, phase2
 @pytest.mark.parametrize(
     'phase, limits', [(phase1, [(-1, 1), (-1, 1)]), (phase2, [(0, 1), (0, 1)])]
 )
-def test_phase(
-    compare_equal, compare_result_equal, num_steps, phase, limits
-):
+def test_phase(compare_equal, compare_result_equal, num_steps, phase, limits):
     res = pm.run(
         phase,
         limits,

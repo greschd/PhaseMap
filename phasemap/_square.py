@@ -16,7 +16,7 @@ class Square:
         self.corner = Coordinate(corner)
         self.phase = None
         self.size = Coordinate(size)
-        self.neighbours = set()
+        self._neighbours = set()
         self._points = dict()
 
     def __hash__(self):
@@ -53,11 +53,11 @@ class Square:
             square.add_neighbour(self)
 
     def add_neighbour(self, square):
-        self.neighbours.add(square)
+        self._neighbours.add(square)
 
     def delete_from_neighbours(self):
-        for n in self.neighbours:
+        for n in self._neighbours:
             n.delete_neighbour(self)
 
     def delete_neighbour(self, square):
-        self.neighbours.discard(square)
+        self._neighbours.discard(square)

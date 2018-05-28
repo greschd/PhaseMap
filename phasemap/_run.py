@@ -10,6 +10,7 @@ from fsc.export import export
 from ._square import Square, PHASE_UNDEFINED
 from ._cache import FuncCache
 from ._coordinate import Coordinate
+from ._result import Result
 from ._logging_setup import LOGGER
 
 
@@ -23,7 +24,7 @@ def run(
 ):
     return _RunImpl(
         fct=fct, limits=limits, init_mesh=init_mesh, num_steps=num_steps
-    )
+    ).execute()
 
 
 class _RunImpl:
@@ -38,12 +39,14 @@ class _RunImpl:
             limits=limits, init_mesh=init_mesh, num_steps=num_steps
         )
 
-        # TODO: Save data in result
         self._func = FuncCache(
             lambda coord: fct(self._coordinate_to_position(coord))
         )
-        # TODO: Move to result
-        self.squares = set(self._get_initial_squares())
+        self.result = Result(
+            squares=set(self._get_initial_squares()),
+            points=self._func.data,
+            limits=limits
+        )
 
         self._loop = asyncio.get_event_loop()
         self._split_futures_done = dict()
@@ -53,12 +56,18 @@ class _RunImpl:
         )
         for sq in self.squares:
             self._schedule_split_square(sq)
-        self._loop.run_until_complete(self._run())
 
-    # TODO: Move to Result
+    def execute(self):
+        self._loop.run_until_complete(self._run())
+        return self.result
+
     @property
     def points(self):
-        return self._func.data
+        return self.result.points
+
+    @property
+    def squares(self):
+        return self.result.squares
 
     async def _run(self):
         while not self._check_done():
@@ -75,8 +84,6 @@ class _RunImpl:
         self._limit_corner = np.array([low for low, high in limits])
         self._limit_size = np.array([high - low for low, high in limits])
         self._dim = len(limits)
-        # TODO: Move to Result
-        self.limits = limits
 
         self._validate_init_mesh(init_mesh)
 
@@ -136,7 +143,7 @@ class _RunImpl:
         new_corners = square.corner + corner_stencil * square.size
         # create new squares
         new_squares = [Square(corner=c, size=new_size) for c in new_corners]
-        old_neighbours = list(square.neighbours)
+        old_neighbours = list(square._neighbours)
         self.squares.update(new_squares)
         # add points to new squares and neighbours
         for sq in new_squares + old_neighbours:
