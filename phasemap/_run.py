@@ -71,20 +71,12 @@ class _RunImpl:
         self._split_futures = ChainMap(
             self._split_futures_pending, self._split_futures_done
         )
-        for sqr in self.boxes:
+        for sqr in self.result.boxes:
             self._schedule_split_box(sqr)
 
     def execute(self):
         self._loop.run_until_complete(self._run())
         return self.result
-
-    @property
-    def points(self):
-        return self.result.points
-
-    @property
-    def boxes(self):
-        return self.result.boxes
 
     async def _run(self):
         while not self._check_done():
@@ -159,7 +151,7 @@ class _RunImpl:
         # create new boxes
         new_boxes = [Box(corner=c, size=new_size) for c in new_corners]
         old_neighbours = list(box._neighbours)  # pylint: disable=protected-access
-        self.boxes.update(new_boxes)
+        self.result.boxes.update(new_boxes)
         # add points to new boxes and neighbours
         for sqr in new_boxes + old_neighbours:
             for c, p in zip(coords, phases):
@@ -179,5 +171,5 @@ class _RunImpl:
                 new_sq1.process_certain_neighbour(new_sq2)
 
         # remove old box
-        self.boxes.discard(box)
+        self.result.boxes.discard(box)
         box.delete_from_neighbours()
