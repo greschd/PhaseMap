@@ -6,7 +6,7 @@ python_3.5:
     - pip install .
     - pip install pytest
     - cd tests
-    - py.test
+    - pytest --no-plot-compare
 
 python_3.6:
   image: python:3.6
@@ -16,4 +16,4 @@ python_3.6:
     - pip install .
     - pip install pytest
     - cd tests
-    - py.test
+    - pytest --no-plot-compare
