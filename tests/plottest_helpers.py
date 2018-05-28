@@ -42,9 +42,8 @@ def assert_image_equal(disable_diff_save, pytestconfig, test_name):
         else:
             with tempfile.NamedTemporaryFile(suffix='.png') as temp_file:
                 plt.savefig(temp_file.name)
-                if not pytestconfig.option.no_plot_compare:
-                    assert compare_images(
-                        path, temp_file.name, tol=tol, in_decorator=True
-                    ) is None
+                assert compare_images(
+                    path, temp_file.name, tol=tol, in_decorator=True
+                ) is None
 
     return inner

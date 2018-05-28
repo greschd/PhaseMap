@@ -18,7 +18,7 @@ from ._logging_setup import LOGGER
 
 
 @export
-def run(
+def run(  # pylint: disable=too-many-arguments
     fct,
     limits,
     init_mesh=5,
@@ -26,7 +26,8 @@ def run(
     init_result=None,
     save_file=None,
     load=False,
-    load_quiet=True
+    load_quiet=True,
+    serializer='auto',
 ):
     """Run the PhaseMap algorithm.
 
@@ -50,6 +51,8 @@ def run(
         Determines whether the initial result is loaded from the ``save_file``.
     load_quiet: bool
         Determines if the error is suppressed when the initial result cannot be loaded from the ``save_file``.
+    serializer: module
+        Serializer used to save and load the result.
 
     Returns
     -------
@@ -62,7 +65,7 @@ def run(
                 "Inconsistent input: 'init_result' and 'load' cannot be set simultaneously."
             )
         try:
-            init_result = _io.load(save_file)
+            init_result = _io.load(save_file, serializer=serializer)
         except IOError as err:
             if not load_quiet:
                 raise err
@@ -79,6 +82,7 @@ def run(
         num_steps=num_steps,
         init_points=init_points,
         save_file=save_file,
+        serializer=serializer,
     ).execute()
 
 
@@ -90,9 +94,11 @@ class _RunImpl:
         init_mesh=5,
         num_steps=5,
         init_points=None,
-        save_file=None
+        save_file=None,
+        serializer='auto',
     ):
         self._save_file = save_file
+        self._serializer = serializer
         self._init_dimensions(
             limits=limits, init_mesh=init_mesh, num_steps=num_steps
         )
@@ -222,4 +228,4 @@ class _RunImpl:
     def _save(self):
         if self._save_file is None:
             return
-        _io.save(self.result, self._save_file)
+        _io.save(self.result, self._save_file, serializer=self._serializer)
