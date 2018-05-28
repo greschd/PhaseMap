@@ -8,21 +8,34 @@ This is the reference for the classes and functions defined in the :mod:`phasema
 .. automodule:: phasemap
     :members:
     :imported-members:
-    
-Submodule :mod:`phasemap.plot`
-------------------------------
+
+
+Plotting Results
+----------------
 
 .. automodule:: phasemap.plot
     :members:
     :imported-members:
 
-Submodule :mod:`phasemap.io`
-----------------------------
+Saving and Loading Results
+--------------------------
 
 .. automodule:: phasemap.io
     :members:
     :imported-members:
-    
+
     .. autofunction:: phasemap.io.save
 
     .. autofunction:: phasemap.io.load
+
+Data classes
+------------
+
+.. automodule:: phasemap._result
+    :members:
+
+.. automodule:: phasemap._box
+    :members:
+
+.. automodule:: phasemap._coordinate
+    :members:

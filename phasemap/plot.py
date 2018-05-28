@@ -17,7 +17,7 @@ from ._box import PHASE_UNDEFINED
 
 
 @decorator.decorator
-def _plot(func, phase_map, *, axes=None, add_cbar=True, **kwargs):
+def _plot(func, result, *, axes=None, add_cbar=True, **kwargs):
     # create axes if it does not exist
     if axes is None:
         fig = plt.figure(figsize=[4, 4])
@@ -32,10 +32,10 @@ def _plot(func, phase_map, *, axes=None, add_cbar=True, **kwargs):
     axes.set_ylim(ylim)
     axes.set_xticks(xlim)
     axes.set_yticks(ylim)
-    axes.set_xticklabels(phase_map.limits[0])
-    axes.set_yticklabels(phase_map.limits[1])
+    axes.set_xticklabels(result.limits[0])
+    axes.set_yticklabels(result.limits[1])
 
-    axes, cmap, norm, vals = func(phase_map, axes=axes, **kwargs)
+    axes, cmap, norm, vals = func(result, axes=axes, **kwargs)
 
     if add_cbar:
         fig.subplots_adjust(right=0.9)
@@ -57,34 +57,31 @@ def _plot(func, phase_map, *, axes=None, add_cbar=True, **kwargs):
 
 @export
 @_plot
-def boxes(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
+def boxes(result, *, axes=None, scale_val=None, cmap=None, **kwargs):
     """
     Plots the phase diagram as a collection of boxes, which are colored according to the estimate of the phase in a given box.
 
-    :param phase_map: Result of the phase mapping run.
-    :type phase_map: :class:`.PhaseMap`
-
-    :param axes: Axes where the plot is drawn.
-    :type axes: :py:mod:`matplotlib <matplotlib.pyplot>` axes
-
-    :param add_cbar: Determines whether a colorbar is added to the figure.
-    :type add_cbar: bool
-
-    :param scale_val: Values to which the colormap is scaled. By default, the colormap is scaled to the set of values which occur in the boxes.
-    :type scale_val: list
-
-    :param cmap: The colormap which is used to plot the phases. The colormap should take values normalized to [0, 1] and return a 4-tuple specifying the RGBA value (again normalized to [0, 1].
-
-    :param kwargs: Keyword arguments passed to :py:class:`matplotlib.patches.Rectangle`.
+    Parameters
+    ----------
+    result: .Result
+        Result of the :func:`.run` phase diagram calculation.
+    axes: :py:mod:`matplotlib <matplotlib.pyplot>` axes
+        Axes where the plot is drawn.
+    add_cbar: bool
+        Determines whether a colorbar is added to the figure.
+    scale_val: list
+        Values to which the colormap is scaled. By default, the colormap is scaled to the set of values which occur in the boxes.
+    cmap:
+        The colormap which is used to plot the phases. The colormap should take values normalized to [0, 1] and return a 4-tuple specifying the RGBA value (again normalized to [0, 1].
+    kwargs:
+        Keyword arguments passed to :py:class:`matplotlib.patches.Rectangle`.
     """
     if cmap is None:
         # don't do this in the signature, otherwise it gets set at import time
         cmap = plt.get_cmap()
 
-    all_vals = sorted(set(phase_map.points.values()))
-    sqrs = [
-        s for s in phase_map.boxes if s.phase not in (None, PHASE_UNDEFINED)
-    ]
+    all_vals = sorted(set(result.points.values()))
+    sqrs = [s for s in result.boxes if s.phase not in (None, PHASE_UNDEFINED)]
     vals = [s.phase for s in sqrs]
 
     norm = Normalize()
@@ -113,28 +110,30 @@ def boxes(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
 
 @export
 @_plot
-def points(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
+def points(result, *, axes=None, scale_val=None, cmap=None, **kwargs):
     """
     Plots the phase diagram as a collection of boxes, which are colored according to the estimate of the phase in a given box.
 
-    :param axes: Axes where the plot is drawn.
-    :type axes: :py:mod:`matplotlib <matplotlib.pyplot>` axes
-
-    :param add_cbar: Determines whether a colorbar is added to the figure.
-    :type add_cbar: bool
-
-    :param scale_val: Values to which the colormap is scaled. By default, the colormap is scaled to the set of values which occur in the boxes.
-    :type scale_val: list
-
-    :param cmap: The colormap which is used to plot the phases. The colormap should take values normalized to [0, 1] and return a 4-tuple specifying the RGBA value (again normalized to [0, 1].
-
-    :param kwargs: Keyword arguments passed to :py:meth:`scatter <matplotlib.axes.Axes.scatter>`.
+    Parameters
+    ----------
+    result: Result
+        Result of the :func:`.run` phase diagram calculation.
+    axes: :py:mod:`matplotlib <matplotlib.pyplot>` axes
+        Axes where the plot is drawn.
+    add_cbar: bool
+        Determines whether a colorbar is added to the figure.
+    scale_val: list
+        Values to which the colormap is scaled. By default, the colormap is scaled to the set of values which occur in the boxes.
+    cmap:
+        The colormap which is used to plot the phases. The colormap should take values normalized to [0, 1] and return a 4-tuple specifying the RGBA value (again normalized to [0, 1].
+    kwargs:
+        Keyword arguments passed to :py:meth:`scatter <matplotlib.axes.Axes.scatter>`.
     """
     if cmap is None:
         # don't do this in the signature, otherwise it gets set at import time
         cmap = plt.get_cmap()
 
-    pts = phase_map.points
+    pts = result.points
     all_vals = sorted(set(pts.values()))
 
     norm = Normalize()

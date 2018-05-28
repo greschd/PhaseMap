@@ -21,15 +21,23 @@ def run(fct, limits, init_mesh=5, num_steps=5, init_result=None):
 
     Create an initial set of boxes, and then recursively split boxes of undefined phase until they reach a given minimum size.
 
-    Args:
-        fct: The function which evaluates the phase at a given point. Can be either a synchronous or asynchronous (async def) function.
-        limits: Boundaries of the region where the phase diagram is evaluated.
-        init_mesh: Size of the initial grid, either as an integer, or a list of integers (one for each dimension).
-        num_steps: The maximum number of times each box is split.
-        init_result: Input result, which is used to cache function evaluations.
+    Parameters
+    ----------
+    fct:
+        The function which evaluates the phase at a given point. Can be either a synchronous or asynchronous (async def) function.
+    limits:
+        Boundaries of the region where the phase diagram is evaluated.
+    init_mesh:
+        Size of the initial grid, either as an integer, or a list of integers (one for each dimension).
+    num_steps: int
+        The maximum number of times each box is split.
+    init_result: Result
+        Input result, which is used to cache function evaluations.
 
-    Returns:
-        Result: Contains the resulting boxes and points, and the given 'limits'.
+    Returns
+    -------
+    Result:
+        Contains the resulting boxes and points, and the given 'limits'.
     """
     return _RunImpl(
         fct=fct,
