@@ -1,0 +1,152 @@
+{
+  "__result__": true,
+  "boxes": [
+    {
+      "__box__": true,
+      "corner": {
+        "__coord__": true,
+        "c": [
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
+        ]
+      },
+      "phase": null,
+      "size": {
+        "__coord__": true,
+        "c": [
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
+        ]
+      }
+    },
+    {
+      "__box__": true,
+      "corner": {
+        "__coord__": true,
+        "c": [
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          }
+        ]
+      },
+      "phase": null,
+      "size": {
+        "__coord__": true,
+        "c": [
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
+        ]
+      }
+    },
+    {
+      "__box__": true,
+      "corner": {
+        "__coord__": true,
+        "c": [
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          }
+        ]
+      },
+      "phase": null,
+      "size": {
+        "__coord__": true,
+        "c": [
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
+        ]
+      }
+    },
+    {
+      "__box__": true,
+      "corner": {
+        "__coord__": true,
+        "c": [
+          {
+            "__fraction__": true,
+            "d": 1,
+            "n": 0
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
+        ]
+      },
+      "phase": null,
+      "size": {
+        "__coord__": true,
+        "c": [
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          },
+          {
+            "__fraction__": true,
+            "d": 2,
+            "n": 1
+          }
+        ]
+      }
+    }
+  ],
+  "limits": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      1
+    ]
+  ],
+  "points": []
+}

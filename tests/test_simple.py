@@ -4,14 +4,14 @@ import tempfile
 import pytest
 import phasemap as pm
 
-from phases import phase1, phase2
+from phases import phase1, phase2, phase3
 
 
 @pytest.mark.parametrize('num_steps', [0, 1, 3])
 @pytest.mark.parametrize(
     'phase, limits', [(phase1, [(-1, 1), (-1, 1)]), (phase2, [(0, 1), (0, 1)])]
 )
-def test_phase(compare_equal, compare_result_equal, num_steps, phase, limits):
+def test_phase(compare_result_equal, num_steps, phase, limits):
     res = pm.run(
         phase,
         limits,
@@ -19,22 +19,31 @@ def test_phase(compare_equal, compare_result_equal, num_steps, phase, limits):
         init_mesh=3,
     )
 
-    compare_equal(sorted([(tuple(k), v.phase) for k, v in res.points.items()]))
-    compare_result_equal(res, tag='with_encoding')
+    compare_result_equal(res)
+
+
+def test_complex_phase(compare_result_equal):
+    res = pm.run(
+        phase3,
+        [(0, 1), (0, 1)],
+        num_steps=8,
+        init_mesh=2,
+    )
+
+    compare_result_equal(res)
 
 
 @pytest.mark.parametrize(
     'phase, limits', [(phase1, [(-1, 1), (-1, 1), (-1, 1)])]
 )
-def test_3d(compare_equal, compare_result_equal, phase, limits):
+def test_3d(compare_result_equal, phase, limits):
     res = pm.run(
         phase,
         limits=limits,
         num_steps=1,
         init_mesh=3,
     )
-    compare_equal(sorted([(tuple(k), v.phase) for k, v in res.points.items()]))
-    compare_result_equal(res, tag='with_encoding')
+    compare_result_equal(res)
 
 
 @pytest.mark.parametrize('init_mesh', [2, 4])
@@ -67,9 +76,6 @@ def test_restart(results_equal, init_mesh, num_steps_1, num_steps_2, save):
         init_result=res2,
         init_mesh=init_mesh,
     )
-    assert sorted([
-        (tuple(k), v.phase) for k, v in res.points.items()
-    ]) == sorted([(tuple(k), v.phase) for k, v in res3.points.items()])
     results_equal(res, res3)
 
 

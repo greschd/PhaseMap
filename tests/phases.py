@@ -32,3 +32,26 @@ def phase2(coord):
         return 3
 
     return 0
+
+
+def phase3(coord):
+    x, y = coord
+    if 0 <= x < 0.398:
+        if 0.4 < y < 0.6:
+            return 1
+
+    if 0.4 < x < 0.6:
+        if 0 <= y < 0.6:
+            return 1
+    if 0.4 < x < 0.6:
+        if y >= 0.6:
+            return -2
+
+    if 0 <= x < 0.1:
+        if y >= 0 and y < 0.1:
+            return 1
+
+    if (x - 0.5)**2 + (y - 0.5)**2 < 0.1:
+        return 3
+
+    return 0

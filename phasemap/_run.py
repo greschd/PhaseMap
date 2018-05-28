@@ -1,3 +1,4 @@
+import copy
 import asyncio
 import numbers
 import itertools
@@ -15,16 +16,27 @@ from ._logging_setup import LOGGER
 
 
 @export
-def run(
-    fct,
-    limits,
-    init_mesh=5,
-    num_steps=5,
-    # TODO: Implement init_result.
-    # init_result=None
-):
+def run(fct, limits, init_mesh=5, num_steps=5, init_result=None):
+    """Run the PhaseMap algorithm.
+
+    Create an initial set of boxes, and then recursively split boxes of undefined phase until they reach a given minimum size.
+
+    Args:
+        fct: The function which evaluates the phase at a given point. Can be either a synchronous or asynchronous (async def) function.
+        limits: Boundaries of the region where the phase diagram is evaluated.
+        init_mesh: Size of the initial grid, either as an integer, or a list of integers (one for each dimension).
+        num_steps: The maximum number of times each box is split.
+        init_result: Input result, which is used to cache function evaluations.
+
+    Returns:
+        Result: Contains the resulting boxes and points, and the given 'limits'.
+    """
     return _RunImpl(
-        fct=fct, limits=limits, init_mesh=init_mesh, num_steps=num_steps
+        fct=fct,
+        limits=limits,
+        init_mesh=init_mesh,
+        num_steps=num_steps,
+        init_points=getattr(init_result, 'points', None)
     ).execute()
 
 
@@ -35,16 +47,20 @@ class _RunImpl:
         limits,
         init_mesh=5,
         num_steps=5,
+        init_points=None,
     ):
         self._init_dimensions(
             limits=limits, init_mesh=init_mesh, num_steps=num_steps
         )
 
         self._func = FuncCache(
-            lambda coord: fct(self._coordinate_to_position(coord))
+            lambda coord: fct(self._coordinate_to_position(coord)),
+            data=copy.deepcopy(init_points)
         )
         self.result = Result(
             boxes=set(self._get_initial_boxes()),
+            # Note: 'points' needs to be the same object, not a copy. Otherwise
+            # it will not update when the '_func' is called.
             points=self._func.data,
             limits=limits
         )
@@ -72,7 +88,7 @@ class _RunImpl:
 
     async def _run(self):
         while not self._check_done():
-            await asyncio.sleep(2.)
+            await asyncio.sleep(0.)
 
     def _check_done(self):
         for box, fut in list(self._split_futures_pending.items()):
@@ -120,7 +136,6 @@ class _RunImpl:
                 sq1.process_possible_neighbour(sq2)
         return boxes
 
-    # @FuncCache
     def _schedule_split_box(self, box):
         if box in self._split_futures:
             return

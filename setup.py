@@ -21,7 +21,7 @@ setup(
     description='Algorithm for mapping phase diagrams',
     install_requires=[
         'numpy', 'matplotlib', 'msgpack-python', 'decorator', 'fsc.export',
-        'fsc.iohelper', 'fsc.async-tools'
+        'fsc.iohelper>=1.0.2', 'fsc.async-tools'
     ],
     extras_require={
         'dev': [

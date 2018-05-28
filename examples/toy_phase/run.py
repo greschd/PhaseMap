@@ -73,6 +73,7 @@ def plot_combined(res):
 
 if __name__ == '__main__':
     res = run(5)
+    pm.io.save(res, 'res.json')
     plot_boxes(res)
     plot_points(res)
     plot_combined(res)

@@ -7,18 +7,17 @@
 
 import tempfile
 import json
-import pickle
 
 import pytest
 import msgpack
 
 import phasemap as pm
 
-from phases import phase1, phase2
+from phases import phase1, phase3
 
 
 @pytest.mark.parametrize('num_steps', range(2, 5))
-@pytest.mark.parametrize('serializer', [json, msgpack, pickle])
+@pytest.mark.parametrize('serializer', [json, msgpack])
 def test_consistency(results_equal, num_steps, serializer):
     res = pm.run(
         phase1,
@@ -34,5 +33,5 @@ def test_consistency(results_equal, num_steps, serializer):
 
 def test_load(results_equal, sample):
     res_loaded = pm.io.load(sample('res.json'))
-    res_new = pm.run(phase2, [(0, 1), (0, 1)], num_steps=5, init_mesh=2)
+    res_new = pm.run(phase3, [(0, 1), (0, 1)], num_steps=5, init_mesh=2)
     results_equal(res_loaded, res_new)

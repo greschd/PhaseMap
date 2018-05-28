@@ -9,7 +9,9 @@ from fractions import Fraction
 import numpy as np
 from fsc.export import export
 
-from .._container import PhaseMap, Box, Point, Coordinate
+from .._box import Box, Sentinel
+from .._coordinate import Coordinate
+from .._result import Result
 
 
 @export
@@ -46,28 +48,19 @@ def _(obj):
     return list(obj)
 
 
-@encode.register(PhaseMap)
+@encode.register(Result)
 def _(obj):
     return dict(
-        __phasemap__=True,
-        limits=obj.limits,
-        mesh=obj.mesh,
+        __result__=True,
         points=obj.points.items(),
         boxes=obj.boxes,
-        _to_split=obj._to_split,
-        _to_calculate=obj._to_calculate,
-        _split_next=obj._split_next
+        limits=obj.limits,
     )
 
 
 @encode.register(Coordinate)
 def _(obj):
     return dict(__coord__=True, c=list(obj))
-
-
-@encode.register(Point)
-def _(obj):
-    return dict(__point__=True, phase=obj.phase, boxes=list(obj.boxes))
 
 
 @encode.register(Box)
@@ -77,8 +70,12 @@ def _(obj):
         corner=obj.corner,
         phase=obj.phase,
         size=obj.size,
-        points=list(obj.points)
     )
+
+
+@encode.register(Sentinel)
+def _(obj):
+    return dict(__sentinel__=True, value=obj._value)
 
 
 #-----------------------------------------------------------------------#
@@ -97,26 +94,18 @@ def decode_complex(obj):
     return complex(obj['real'], obj['imag'])
 
 
-def decode_phasemap(obj):
-    res = PhaseMap(mesh=obj['mesh'], limits=obj['limits'])
-    res.points = {tuple(k): v for k, v in decode(obj['points'])}
-    res.boxes = decode(obj['boxes'])
-    res._to_split = obj['_to_split']
-    res._to_calculate = obj['_to_calculate']
-    res._split_next = obj['_split_next']
-    return res
-
-
-def decode_point(obj):
-    res = Point(phase=obj['phase'])
-    res.boxes = set(obj['boxes'])
-    return res
+def decode_result(obj):
+    return Result(
+        points={k: v
+                for k, v in obj['points']},
+        boxes=obj['boxes'],
+        limits=obj['limits'],
+    )
 
 
 def decode_box(obj):
     res = Box(corner=obj['corner'], size=obj['size'])
     res.phase = obj['phase']
-    res.points = set([tuple(p) for p in obj['points']])
     return res
 
 
@@ -125,8 +114,11 @@ def decode_coord(obj):
 
 
 def decode_fraction(obj):
-    res = Fraction(obj['n'], obj['d'])
-    return res
+    return Fraction(obj['n'], obj['d'])
+
+
+def decode_sentinel(obj):
+    return Sentinel(obj['value'])
 
 
 @decode.register(dict)

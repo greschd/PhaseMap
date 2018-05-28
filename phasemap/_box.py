@@ -3,15 +3,22 @@ import numpy as np
 from ._coordinate import Coordinate
 
 
-class _Sentinel:
-    def __init__(self, value):
-        self._value = value
+class Sentinel:
+    __INSTANCES = dict()
+
+    def __new__(cls, value):
+        if value in cls.__INSTANCES:
+            return cls.__INSTANCES[value]
+        self = super().__new__(cls)
+        self._value = value  # pylint: disable=protected-access
+        cls.__INSTANCES[value] = self
+        return self
 
     def __repr__(self):
-        return repr(self._value)
+        return 'Sentinel({!r})'.format(self._value)
 
 
-PHASE_UNDEFINED = _Sentinel('undefined phase')
+PHASE_UNDEFINED = Sentinel('undefined phase')
 
 
 class Box:
@@ -21,7 +28,7 @@ class Box:
     - the points are stored by their index (position)
     """
 
-    def __init__(self, corner, size):
+    def __init__(self, *, corner, size):
         self.corner = Coordinate(corner)
         self.phase = None
         self.size = Coordinate(size)

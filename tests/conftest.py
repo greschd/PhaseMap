@@ -3,7 +3,6 @@
 import os
 import json
 import operator
-from collections import namedtuple
 
 import pytest
 
@@ -58,67 +57,24 @@ def compare_result_equal(compare_data, results_equal):
 
 
 @pytest.fixture
-def results_equal(boxes_equal_from_idx, boxes_equal):
+def results_equal(boxes_equal):
     def inner(res1, res2):
-        assert res1.dim == res2.dim
-        assert res1.mesh == res2.mesh
         assert res1.limits == res2.limits
         boxes_equal(res1.boxes, res2.boxes)
-        for coord in res1.points.keys() | res2.points.keys():
-            point1, point2 = res1.points[coord], res2.points[coord]
-            assert point1.phase == point2.phase
+        assert res1.points == res2.points
 
-        boxes_equal_from_idx(
-            idx1=res1._split_next, res1=res1, idx2=res2._split_next, res2=res2
-        )
-        assert res1._to_split == res2._to_split
-        assert res1._to_calculate == res2._to_calculate
         return True
 
     return inner
 
 
 @pytest.fixture
-def boxes_equal_from_idx(normalize_boxes_from_idx):
-    def inner(idx1, res1, idx2, res2):
-        assert normalize_boxes_from_idx(idx1,
-                                        res1) == normalize_boxes_from_idx(
-                                            idx2, res2
-                                        )
-
-    return inner
-
-
-NormalizedBox = namedtuple('NormalizedBox', ['corner', 'phase', 'size'])
-
-
-@pytest.fixture
-def boxes_equal(normalize_boxes):
+def boxes_equal():
     def inner(boxes1, boxes2):
-        assert normalize_boxes(boxes1) == normalize_boxes(boxes2)
-
-    return inner
-
-
-@pytest.fixture
-def normalize_boxes_from_idx(normalize_boxes):
-    def inner(idx, res):
-        boxes_evaluated = [res.boxes[i] for i in idx]
-        return normalize_boxes(boxes_evaluated)
-
-    return inner
-
-
-@pytest.fixture
-def normalize_boxes():
-    def inner(boxes):
-        return set(
-            NormalizedBox(
-                corner=s.corner,
-                phase=s.phase,
-                size=s.size,
-            ) for s in boxes
-        )
+        assert boxes1 == boxes2
+        box2_lookup = {b: b for b in boxes2}
+        for box1 in boxes1:
+            assert box1.phase == box2_lookup[box1].phase
 
     return inner
 
