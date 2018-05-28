@@ -48,8 +48,15 @@ class Box:
         )
 
     def contains_coord(self, coord):
-        return np.all(self.corner <= coord
-                      ) and np.all(coord <= self.corner + self.size)
+        # Faster than pure numpy operations because of the slow 'Fraction'.
+        # In this way, the remaining operations are not performed if one
+        # expression evaluates to False.
+        return (
+            all(c1 <= c2 for c1, c2 in zip(self.corner, coord)) and all(
+                c2 <= c1 + s
+                for c1, c2, s in zip(self.corner, coord, self.size)
+            )
+        )
 
     def add_point(self, coord, phase):
         if self.contains_coord(coord):
@@ -62,19 +69,18 @@ class Box:
                 self.phase = PHASE_UNDEFINED
 
     def is_neighbour(self, other):
-        assert not self.corner == other.corner
-        return (
-            np.all(self.corner + self.size >= other.corner)
-            and np.all(other.corner + other.size >= self.corner)
+        return all(
+            c1 + s1 >= c2 and c2 + s2 >= c1 for c1, s1, c2, s2 in
+            zip(self.corner, self.size, other.corner, other.size)
         )
 
     def process_possible_neighbour(self, box):
         if self.is_neighbour(box):
-            self.add_neighbour(box)
-            box.add_neighbour(self)
+            self.process_certain_neighbour(box)
 
-    def add_neighbour(self, box):
+    def process_certain_neighbour(self, box):
         self._neighbours.add(box)
+        box._neighbours.add(self)  # pylint: disable=protected-access
 
     def delete_from_neighbours(self):
         for n in self._neighbours:

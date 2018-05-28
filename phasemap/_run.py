@@ -176,7 +176,7 @@ class _RunImpl:
                 new_sq.process_possible_neighbour(old_nb)
         for i, new_sq1 in enumerate(new_boxes):
             for new_sq2 in new_boxes[i + 1:]:
-                new_sq1.process_possible_neighbour(new_sq2)
+                new_sq1.process_certain_neighbour(new_sq2)
 
         # remove old box
         self.boxes.discard(box)

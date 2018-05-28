@@ -13,9 +13,6 @@ import phasemap as pm
 import matplotlib.pyplot as plt
 plt.set_cmap('viridis')
 
-logger = logging.getLogger('phasemap')
-logger.setLevel(logging.DEBUG)
-
 POINT_SIZE = 5
 
 
