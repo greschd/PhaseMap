@@ -134,5 +134,5 @@ if __name__ == '__main__':
     GREEN = '#008833'
     ORANGE = '#EE6600'
     cmap = ListedColormap([GREY, BORDEAUX, BLUE, ORANGE])
-    pm.plot.squares(res, cmap=cmap)
+    pm.plot.boxes(res, cmap=cmap)
     plt.savefig('foo.pdf', bbox_inches='tight')

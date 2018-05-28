@@ -7,7 +7,7 @@ from collections import ChainMap
 import numpy as np
 from fsc.export import export
 
-from ._square import Square, PHASE_UNDEFINED
+from ._box import Box, PHASE_UNDEFINED
 from ._cache import FuncCache
 from ._coordinate import Coordinate
 from ._result import Result
@@ -44,7 +44,7 @@ class _RunImpl:
             lambda coord: fct(self._coordinate_to_position(coord))
         )
         self.result = Result(
-            squares=set(self._get_initial_squares()),
+            boxes=set(self._get_initial_boxes()),
             points=self._func.data,
             limits=limits
         )
@@ -55,8 +55,8 @@ class _RunImpl:
         self._split_futures = ChainMap(
             self._split_futures_pending, self._split_futures_done
         )
-        for sq in self.squares:
-            self._schedule_split_square(sq)
+        for sqr in self.boxes:
+            self._schedule_split_box(sqr)
 
     def execute(self):
         self._loop.run_until_complete(self._run())
@@ -67,18 +67,18 @@ class _RunImpl:
         return self.result.points
 
     @property
-    def squares(self):
-        return self.result.squares
+    def boxes(self):
+        return self.result.boxes
 
     async def _run(self):
         while not self._check_done():
             await asyncio.sleep(2.)
 
     def _check_done(self):
-        for square, fut in list(self._split_futures_pending.items()):
+        for box, fut in list(self._split_futures_pending.items()):
             if fut.done():
-                self._split_futures_pending.pop(square)
-                self._split_futures_done[square] = fut
+                self._split_futures_pending.pop(box)
+                self._split_futures_done[box] = fut
         return not self._split_futures_pending
 
     def _init_dimensions(self, limits, init_mesh, num_steps):
@@ -104,67 +104,65 @@ class _RunImpl:
                 )
         if any(m < 2 for m in init_mesh):
             raise ValueError('Mesh must be >= 2 for each dimension.')
-        self._init_mesh = init_mesh
+        self._init_mesh = init_mesh  # pylint: disable=attribute-defined-outside-init
 
     def _coordinate_to_position(self, coord):
         return self._limit_corner + coord * self._limit_size
 
-    def _get_initial_squares(self):
+    def _get_initial_boxes(self):
         corners = itertools.product(
             *[[i * s for i in range(m - 1)]
               for s, m in zip(self._max_size, self._init_mesh)]
         )
-        squares = [Square(corner=c, size=self._max_size) for c in corners]
-        for i, sq1 in enumerate(squares):
-            for sq2 in squares[i + 1:]:
+        boxes = [Box(corner=c, size=self._max_size) for c in corners]
+        for i, sq1 in enumerate(boxes):
+            for sq2 in boxes[i + 1:]:
                 sq1.process_possible_neighbour(sq2)
-        return squares
+        return boxes
 
     # @FuncCache
-    def _schedule_split_square(self, square):
-        if square in self._split_futures:
+    def _schedule_split_box(self, box):
+        if box in self._split_futures:
             return
-        if np.all(square.size <= self._min_size):
+        if np.all(box.size <= self._min_size):
             return
-        fut = asyncio.ensure_future(
-            self._split_square(square), loop=self._loop
-        )
-        self._split_futures[square] = fut
+        fut = asyncio.ensure_future(self._split_box(box), loop=self._loop)
+        self._split_futures[box] = fut
 
-    async def _split_square(self, square):
-        LOGGER.debug('Splitting {}.'.format(square))
+    async def _split_box(self, box):
+        LOGGER.debug('Splitting {}.'.format(box))
         coordinate_stencil = np.array([[Fraction(1, 2)] * self._dim] + list(
             itertools.product([0, 1], repeat=self._dim)
         ))
-        coords = square.corner + coordinate_stencil * square.size
+        coords = box.corner + coordinate_stencil * box.size
         phases = await asyncio.gather(*[self._func(c) for c in coords])
         corner_stencil = np.array(
             list(itertools.product([0, Fraction(1, 2)], repeat=self._dim))
         )
-        new_size = square.size / 2
-        new_corners = square.corner + corner_stencil * square.size
-        # create new squares
-        new_squares = [Square(corner=c, size=new_size) for c in new_corners]
-        old_neighbours = list(square._neighbours)
-        self.squares.update(new_squares)
-        # add points to new squares and neighbours
-        for sq in new_squares + old_neighbours:
+        new_size = box.size / 2
+        new_corners = box.corner + corner_stencil * box.size
+        # create new boxes
+        new_boxes = [Box(corner=c, size=new_size) for c in new_corners]
+        old_neighbours = list(box._neighbours)  # pylint: disable=protected-access
+        self.boxes.update(new_boxes)
+        # add points to new boxes and neighbours
+        for sqr in new_boxes + old_neighbours:
             for c, p in zip(coords, phases):
-                sq.add_point(coord=c, phase=p)
+                sqr.add_point(coord=c, phase=p)
             # add existing points
-            for c, p in square._points.items():
-                sq.add_point(coord=c, phase=p)
-            if sq.phase is PHASE_UNDEFINED:
-                self._schedule_split_square(sq)
+            for c, p in box._points.items():  # pylint: disable=protected-access
+                sqr.add_point(coord=c, phase=p)
+            if sqr.phase is PHASE_UNDEFINED:
+                self._schedule_split_box(sqr)
 
         # update neighbour maps
-        for new_sq in new_squares:
+        for new_sq in new_boxes:
             for old_nb in old_neighbours:
                 new_sq.process_possible_neighbour(old_nb)
-        for i, new_sq1 in enumerate(new_squares):
-            for new_sq2 in new_squares[i + 1:]:
+        for i, new_sq1 in enumerate(new_boxes):
+            for new_sq2 in new_boxes[i + 1:]:
                 new_sq1.process_possible_neighbour(new_sq2)
 
-        # remove old square
-        self.squares.discard(square)
-        square.delete_from_neighbours()
+        # remove old box
+        self.boxes.discard(box)
+        box.delete_from_neighbours()

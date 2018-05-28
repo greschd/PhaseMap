@@ -13,7 +13,7 @@ from matplotlib.patches import Rectangle
 from matplotlib.colorbar import ColorbarBase
 from matplotlib.colors import Normalize, ListedColormap
 
-from ._square import PHASE_UNDEFINED
+from ._box import PHASE_UNDEFINED
 
 
 @decorator.decorator
@@ -57,9 +57,9 @@ def _plot(func, phase_map, *, axes=None, add_cbar=True, **kwargs):
 
 @export
 @_plot
-def squares(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
+def boxes(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
     """
-    Plots the phase diagram as a collection of squares, which are colored according to the estimate of the phase in a given square.
+    Plots the phase diagram as a collection of boxes, which are colored according to the estimate of the phase in a given box.
 
     :param phase_map: Result of the phase mapping run.
     :type phase_map: :class:`.PhaseMap`
@@ -70,7 +70,7 @@ def squares(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
     :param add_cbar: Determines whether a colorbar is added to the figure.
     :type add_cbar: bool
 
-    :param scale_val: Values to which the colormap is scaled. By default, the colormap is scaled to the set of values which occur in the squares.
+    :param scale_val: Values to which the colormap is scaled. By default, the colormap is scaled to the set of values which occur in the boxes.
     :type scale_val: list
 
     :param cmap: The colormap which is used to plot the phases. The colormap should take values normalized to [0, 1] and return a 4-tuple specifying the RGBA value (again normalized to [0, 1].
@@ -83,7 +83,7 @@ def squares(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
 
     all_vals = sorted(set(phase_map.points.values()))
     sqrs = [
-        s for s in phase_map.squares if s.phase not in (None, PHASE_UNDEFINED)
+        s for s in phase_map.boxes if s.phase not in (None, PHASE_UNDEFINED)
     ]
     vals = [s.phase for s in sqrs]
 
@@ -93,15 +93,15 @@ def squares(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
     else:
         norm.autoscale(scale_val)
 
-    square_colors = cmap([norm(v) for v in vals])
+    box_colors = cmap([norm(v) for v in vals])
 
     rect_properties = ChainMap(kwargs, dict(lw=0))
-    for color, square in zip(square_colors, sqrs):
+    for color, box in zip(box_colors, sqrs):
         axes.add_patch(
             Rectangle(
-                xy=square.corner,
-                width=square.size[0],
-                height=square.size[1],
+                xy=box.corner,
+                width=box.size[0],
+                height=box.size[1],
                 **ChainMap(
                     rect_properties, dict(facecolor=color, edgecolor=color)
                 )
@@ -115,7 +115,7 @@ def squares(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
 @_plot
 def points(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
     """
-    Plots the phase diagram as a collection of squares, which are colored according to the estimate of the phase in a given square.
+    Plots the phase diagram as a collection of boxes, which are colored according to the estimate of the phase in a given box.
 
     :param axes: Axes where the plot is drawn.
     :type axes: :py:mod:`matplotlib <matplotlib.pyplot>` axes
@@ -123,7 +123,7 @@ def points(phase_map, *, axes=None, scale_val=None, cmap=None, **kwargs):
     :param add_cbar: Determines whether a colorbar is added to the figure.
     :type add_cbar: bool
 
-    :param scale_val: Values to which the colormap is scaled. By default, the colormap is scaled to the set of values which occur in the squares.
+    :param scale_val: Values to which the colormap is scaled. By default, the colormap is scaled to the set of values which occur in the boxes.
     :type scale_val: list
 
     :param cmap: The colormap which is used to plot the phases. The colormap should take values normalized to [0, 1] and return a 4-tuple specifying the RGBA value (again normalized to [0, 1].

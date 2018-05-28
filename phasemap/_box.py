@@ -14,10 +14,10 @@ class _Sentinel:
 PHASE_UNDEFINED = _Sentinel('undefined phase')
 
 
-class Square:
+class Box:
     """
     - corner is the vertex with the lowest indices
-    - phase is None if there is no point in the square or there are points with different phases
+    - phase is None if there is no point in the box or there are points with different phases
     - the points are stored by their index (position)
     """
 
@@ -61,17 +61,17 @@ class Square:
             and np.all(other.corner + other.size >= self.corner)
         )
 
-    def process_possible_neighbour(self, square):
-        if self.is_neighbour(square):
-            self.add_neighbour(square)
-            square.add_neighbour(self)
+    def process_possible_neighbour(self, box):
+        if self.is_neighbour(box):
+            self.add_neighbour(box)
+            box.add_neighbour(self)
 
-    def add_neighbour(self, square):
-        self._neighbours.add(square)
+    def add_neighbour(self, box):
+        self._neighbours.add(box)
 
     def delete_from_neighbours(self):
         for n in self._neighbours:
             n.delete_neighbour(self)
 
-    def delete_neighbour(self, square):
-        self._neighbours.discard(square)
+    def delete_neighbour(self, box):
+        self._neighbours.discard(box)

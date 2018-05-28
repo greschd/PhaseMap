@@ -31,7 +31,7 @@ def circle2(x, y, r=1):
     return 1 if (x**2 + y**2) < r**2 else 0
 
 
-#~ def square(x, y, l=0.5):
+#~ def box(x, y, l=0.5):
 #~ return 1 if (-l < x < l) and (-l < y < l) else 0
 
 

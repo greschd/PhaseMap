@@ -58,17 +58,17 @@ def compare_result_equal(compare_data, results_equal):
 
 
 @pytest.fixture
-def results_equal(squares_equal_from_idx, squares_equal):
+def results_equal(boxes_equal_from_idx, boxes_equal):
     def inner(res1, res2):
         assert res1.dim == res2.dim
         assert res1.mesh == res2.mesh
         assert res1.limits == res2.limits
-        squares_equal(res1.squares, res2.squares)
+        boxes_equal(res1.boxes, res2.boxes)
         for coord in res1.points.keys() | res2.points.keys():
             point1, point2 = res1.points[coord], res2.points[coord]
             assert point1.phase == point2.phase
 
-        squares_equal_from_idx(
+        boxes_equal_from_idx(
             idx1=res1._split_next, res1=res1, idx2=res2._split_next, res2=res2
         )
         assert res1._to_split == res2._to_split
@@ -79,45 +79,45 @@ def results_equal(squares_equal_from_idx, squares_equal):
 
 
 @pytest.fixture
-def squares_equal_from_idx(normalize_squares_from_idx):
+def boxes_equal_from_idx(normalize_boxes_from_idx):
     def inner(idx1, res1, idx2, res2):
-        assert normalize_squares_from_idx(idx1,
-                                          res1) == normalize_squares_from_idx(
-                                              idx2, res2
-                                          )
+        assert normalize_boxes_from_idx(idx1,
+                                        res1) == normalize_boxes_from_idx(
+                                            idx2, res2
+                                        )
 
     return inner
 
 
-NormalizedSquare = namedtuple('NormalizedSquare', ['corner', 'phase', 'size'])
+NormalizedBox = namedtuple('NormalizedBox', ['corner', 'phase', 'size'])
 
 
 @pytest.fixture
-def squares_equal(normalize_squares):
-    def inner(squares1, squares2):
-        assert normalize_squares(squares1) == normalize_squares(squares2)
+def boxes_equal(normalize_boxes):
+    def inner(boxes1, boxes2):
+        assert normalize_boxes(boxes1) == normalize_boxes(boxes2)
 
     return inner
 
 
 @pytest.fixture
-def normalize_squares_from_idx(normalize_squares):
+def normalize_boxes_from_idx(normalize_boxes):
     def inner(idx, res):
-        squares_evaluated = [res.squares[i] for i in idx]
-        return normalize_squares(squares_evaluated)
+        boxes_evaluated = [res.boxes[i] for i in idx]
+        return normalize_boxes(boxes_evaluated)
 
     return inner
 
 
 @pytest.fixture
-def normalize_squares():
-    def inner(squares):
+def normalize_boxes():
+    def inner(boxes):
         return set(
-            NormalizedSquare(
+            NormalizedBox(
                 corner=s.corner,
                 phase=s.phase,
                 size=s.size,
-            ) for s in squares
+            ) for s in boxes
         )
 
     return inner

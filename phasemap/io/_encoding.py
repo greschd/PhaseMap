@@ -9,7 +9,7 @@ from fractions import Fraction
 import numpy as np
 from fsc.export import export
 
-from .._container import PhaseMap, Square, Point, Coordinate
+from .._container import PhaseMap, Box, Point, Coordinate
 
 
 @export
@@ -53,7 +53,7 @@ def _(obj):
         limits=obj.limits,
         mesh=obj.mesh,
         points=obj.points.items(),
-        squares=obj.squares,
+        boxes=obj.boxes,
         _to_split=obj._to_split,
         _to_calculate=obj._to_calculate,
         _split_next=obj._split_next
@@ -67,13 +67,13 @@ def _(obj):
 
 @encode.register(Point)
 def _(obj):
-    return dict(__point__=True, phase=obj.phase, squares=list(obj.squares))
+    return dict(__point__=True, phase=obj.phase, boxes=list(obj.boxes))
 
 
-@encode.register(Square)
+@encode.register(Box)
 def _(obj):
     return dict(
-        __square__=True,
+        __box__=True,
         corner=obj.corner,
         phase=obj.phase,
         size=obj.size,
@@ -100,7 +100,7 @@ def decode_complex(obj):
 def decode_phasemap(obj):
     res = PhaseMap(mesh=obj['mesh'], limits=obj['limits'])
     res.points = {tuple(k): v for k, v in decode(obj['points'])}
-    res.squares = decode(obj['squares'])
+    res.boxes = decode(obj['boxes'])
     res._to_split = obj['_to_split']
     res._to_calculate = obj['_to_calculate']
     res._split_next = obj['_split_next']
@@ -109,12 +109,12 @@ def decode_phasemap(obj):
 
 def decode_point(obj):
     res = Point(phase=obj['phase'])
-    res.squares = set(obj['squares'])
+    res.boxes = set(obj['boxes'])
     return res
 
 
-def decode_square(obj):
-    res = Square(corner=obj['corner'], size=obj['size'])
+def decode_box(obj):
+    res = Box(corner=obj['corner'], size=obj['size'])
     res.phase = obj['phase']
     res.points = set([tuple(p) for p in obj['points']])
     return res
