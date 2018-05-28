@@ -2,6 +2,8 @@
 # pylint: disable=redefined-outer-name,unused-wildcard-import
 
 import pytest
+import matplotlib
+matplotlib.use('Agg')
 
 import phasemap as pm
 
