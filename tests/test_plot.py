@@ -11,6 +11,7 @@ from phases import phase3
 from plottest_helpers import *
 
 
+@pytest.mark.plot
 @pytest.mark.parametrize('scale_val', [None, (-3, 3)])
 @pytest.mark.parametrize('plot_fct', [pm.plot.boxes, pm.plot.points])
 def test_plots(assert_image_equal, plot_fct, scale_val):

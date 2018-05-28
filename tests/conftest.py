@@ -11,10 +11,20 @@ import phasemap
 
 def pytest_addoption(parser):
     parser.addoption(
-        '--no-plot-compare',
-        action='store_true',
-        help='disable comparing the generated plots'
+        '--no-plot-tests', action='store_true', help='disable the plot tests'
     )
+
+
+def pytest_configure(config):
+    # register additional marker
+    config.addinivalue_line("markers", "plot: mark tests which create plots")
+
+
+def pytest_runtest_setup(item):
+    plot_marker = item.get_marker("plot")
+    if plot_marker is not None:
+        if item.config.getoption("--no-plot-tests"):
+            pytest.skip("Skipping plot tests.")
 
 
 @pytest.fixture
