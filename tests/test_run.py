@@ -99,3 +99,9 @@ def test_restart_nocalc(results_equal, num_steps):
         init_result=res,
     )
     results_equal(res, res_restart)
+
+
+@pytest.mark.parametrize('init_mesh', [1, (2, 2), (3, 2, 1)])
+def test_invalid_mesh(init_mesh):
+    with pytest.raises(ValueError):
+        pm.run(phase1, limits=[(0, 1), (0, 1), (0, 1)], init_mesh=init_mesh)
