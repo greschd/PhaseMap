@@ -14,10 +14,9 @@ import matplotlib.pyplot as plt
 plt.set_cmap('viridis')
 
 logger = logging.getLogger('phasemap')
-logger.setLevel(logging.INFO)
-DEFAULT_HANDLER = logging.StreamHandler(sys.stdout)
-logger.addHandler(DEFAULT_HANDLER)
-POINT_SIZE = 1
+logger.setLevel(logging.DEBUG)
+
+POINT_SIZE = 5
 
 
 def phase_fct(pos):
@@ -73,7 +72,7 @@ def plot_combined(res):
 
 
 if __name__ == '__main__':
-    res = run(8)
+    res = run(5)
     plot_squares(res)
     plot_points(res)
     plot_combined(res)

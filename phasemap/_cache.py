@@ -1,12 +1,13 @@
 from collections.abc import Awaitable
 
-from fsc.export import export
-
 NOT_FOUND = object()
 
 
-@export
 class FuncCache:
+    """
+    Caches calls to a (possibly async) function.
+    """
+
     def __init__(self, func, data=None):
         self.func = func
         if data is None:

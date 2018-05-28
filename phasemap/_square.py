@@ -2,7 +2,16 @@ import numpy as np
 
 from ._coordinate import Coordinate
 
-PHASE_UNDEFINED = object()
+
+class _Sentinel:
+    def __init__(self, value):
+        self._value = value
+
+    def __repr__(self):
+        return repr(self._value)
+
+
+PHASE_UNDEFINED = _Sentinel('undefined phase')
 
 
 class Square:
@@ -25,6 +34,11 @@ class Square:
     def __eq__(self, other):
         return np.all(self.corner == other.corner
                       ) and np.all(self.size == other.size)
+
+    def __repr__(self):
+        return 'Box(corner={0.corner}, size={0.size}, phase={0.phase})'.format(
+            self
+        )
 
     def contains_coord(self, coord):
         return np.all(self.corner <= coord

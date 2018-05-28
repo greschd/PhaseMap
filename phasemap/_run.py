@@ -20,6 +20,7 @@ def run(
     limits,
     init_mesh=5,
     num_steps=5,
+    # TODO: Implement init_result.
     # init_result=None
 ):
     return _RunImpl(
@@ -131,6 +132,7 @@ class _RunImpl:
         self._split_futures[square] = fut
 
     async def _split_square(self, square):
+        LOGGER.debug('Splitting {}.'.format(square))
         coordinate_stencil = np.array([[Fraction(1, 2)] * self._dim] + list(
             itertools.product([0, 1], repeat=self._dim)
         ))
