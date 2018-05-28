@@ -7,7 +7,9 @@ from collections import ChainMap
 
 import numpy as np
 from fsc.export import export
+from fsc.async_tools import PeriodicTask
 
+from . import io as _io
 from ._box import Box, PHASE_UNDEFINED
 from ._cache import FuncCache
 from ._coordinate import Coordinate
@@ -16,7 +18,16 @@ from ._logging_setup import LOGGER
 
 
 @export
-def run(fct, limits, init_mesh=5, num_steps=5, init_result=None):
+def run(
+    fct,
+    limits,
+    init_mesh=5,
+    num_steps=5,
+    init_result=None,
+    save_file=None,
+    load=False,
+    load_quiet=True
+):
     """Run the PhaseMap algorithm.
 
     Create an initial set of boxes, and then recursively split boxes of undefined phase until they reach a given minimum size.
@@ -33,18 +44,41 @@ def run(fct, limits, init_mesh=5, num_steps=5, init_result=None):
         The maximum number of times each box is split.
     init_result: Result
         Input result, which is used to cache function evaluations.
+    save_file: str
+        Path of the file where the intermediate results should be stored.
+    load: bool
+        Determines whether the initial result is loaded from the ``save_file``.
+    load_quiet: bool
+        Determines if the error is suppressed when the initial result cannot be loaded from the ``save_file``.
 
     Returns
     -------
     Result:
         Contains the resulting boxes and points, and the given 'limits'.
     """
+    if save_file is not None and load:
+        if init_result is not None:
+            raise ValueError(
+                "Inconsistent input: 'init_result' and 'load' cannot be set simultaneously."
+            )
+        try:
+            init_result = _io.load(save_file)
+        except IOError as err:
+            if not load_quiet:
+                raise err
+
+    if init_result is not None:
+        init_points = init_result.points
+    else:
+        init_points = None
+
     return _RunImpl(
         fct=fct,
         limits=limits,
         init_mesh=init_mesh,
         num_steps=num_steps,
-        init_points=getattr(init_result, 'points', None)
+        init_points=init_points,
+        save_file=save_file,
     ).execute()
 
 
@@ -56,7 +90,9 @@ class _RunImpl:
         init_mesh=5,
         num_steps=5,
         init_points=None,
+        save_file=None
     ):
+        self._save_file = save_file
         self._init_dimensions(
             limits=limits, init_mesh=init_mesh, num_steps=num_steps
         )
@@ -87,8 +123,9 @@ class _RunImpl:
         return self.result
 
     async def _run(self):
-        while not self._check_done():
-            await asyncio.sleep(0.)
+        async with PeriodicTask(self._save, delay=5.):
+            while not self._check_done():
+                await asyncio.sleep(0.)
 
     def _check_done(self):
         for box, fut in list(self._split_futures_pending.items()):
@@ -181,3 +218,8 @@ class _RunImpl:
         # remove old box
         self.result.boxes.discard(box)
         box.delete_from_neighbours()
+
+    def _save(self):
+        if self._save_file is None:
+            return
+        _io.save(self.result, self._save_file)

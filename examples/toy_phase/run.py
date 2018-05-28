@@ -45,6 +45,7 @@ def run(num_steps):
         [(0, 1), (0, 1)],
         num_steps=num_steps,
         init_mesh=2,
+        save_file='res.json',
     )
 
 
@@ -70,7 +71,6 @@ def plot_combined(res):
 
 if __name__ == '__main__':
     res = run(5)
-    pm.io.save(res, 'res.json')
     plot_boxes(res)
     plot_points(res)
     plot_combined(res)
