@@ -80,7 +80,7 @@ def boxes(result, *, axes=None, scale_val=None, cmap=None, **kwargs):
         # don't do this in the signature, otherwise it gets set at import time
         cmap = plt.get_cmap()
 
-    all_vals = sorted(set(result.points.values()))
+    all_vals = sorted(set(result.points.values())) or [0]
     sqrs = [s for s in result.boxes if s.phase not in (None, PHASE_UNDEFINED)]
     vals = [s.phase for s in sqrs]
 
@@ -134,7 +134,7 @@ def points(result, *, axes=None, scale_val=None, cmap=None, **kwargs):
         cmap = plt.get_cmap()
 
     pts = result.points
-    all_vals = sorted(set(pts.values()))
+    all_vals = sorted(set(pts.values())) or [0]
 
     norm = Normalize()
     if scale_val is None:

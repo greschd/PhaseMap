@@ -28,6 +28,7 @@ def run(  # pylint: disable=too-many-arguments
     load=False,
     load_quiet=True,
     serializer='auto',
+    save_interval=5.,
 ):
     """Run the PhaseMap algorithm.
 
@@ -46,13 +47,15 @@ def run(  # pylint: disable=too-many-arguments
     init_result: Result
         Input result, which is used to cache function evaluations.
     save_file: str
-        Path of the file where the intermediate results should be stored.
+        Path of the file where the intermediate results should be stored. A format string can also be passed, and will be formatted with an incrementing index.
     load: bool
         Determines whether the initial result is loaded from the ``save_file``.
     load_quiet: bool
         Determines if the error is suppressed when the initial result cannot be loaded from the ``save_file``.
     serializer: module
         Serializer used to save and load the result.
+    save_interval: float
+        Minimum time between saving the result.
 
     Returns
     -------
@@ -83,11 +86,12 @@ def run(  # pylint: disable=too-many-arguments
         init_points=init_points,
         save_file=save_file,
         serializer=serializer,
+        save_interval=save_interval,
     ).execute()
 
 
 class _RunImpl:
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments
         self,
         fct,
         limits,
@@ -96,9 +100,13 @@ class _RunImpl:
         init_points=None,
         save_file=None,
         serializer='auto',
+        save_interval=5.,
     ):
         self._save_file = save_file
         self._serializer = serializer
+        self._save_interval = save_interval
+        self._save_count = 0
+        self._needs_saving = False
         self._init_dimensions(
             limits=limits, init_mesh=init_mesh, num_steps=num_steps
         )
@@ -129,7 +137,7 @@ class _RunImpl:
         return self.result
 
     async def _run(self):
-        async with PeriodicTask(self._save, delay=5.):
+        async with PeriodicTask(self._save, delay=self._save_interval):
             while not self._check_done():
                 await asyncio.sleep(0.)
 
@@ -224,8 +232,16 @@ class _RunImpl:
         # remove old box
         self.result.boxes.discard(box)
         box.delete_from_neighbours()
+        self._needs_saving = True
 
     def _save(self):
         if self._save_file is None:
             return
-        _io.save(self.result, self._save_file, serializer=self._serializer)
+        if self._needs_saving:
+            _io.save(
+                self.result,
+                self._save_file.format(self._save_count),
+                serializer=self._serializer
+            )
+            self._save_count += 1
+            self._needs_saving = False
