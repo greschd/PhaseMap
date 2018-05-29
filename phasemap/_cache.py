@@ -24,6 +24,7 @@ class FuncCache:
             fut = asyncio.ensure_future(self.func(inp))
             self.awaitables[inp] = fut
             result = await fut
+            self.awaitables.pop(inp)
         self.data[inp] = result
         return result
 

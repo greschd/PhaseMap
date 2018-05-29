@@ -22,3 +22,6 @@ tests/.cache
 .coverage
 .coverage*
 htmlcov
+
+# profiling files
+*.lprof
