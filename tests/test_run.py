@@ -1,5 +1,7 @@
 import json
+import asyncio
 import tempfile
+from collections import Counter
 
 import pytest
 import phasemap as pm
@@ -168,3 +170,24 @@ def test_restart_nocalc(results_equal, num_steps):
 def test_invalid_mesh(init_mesh):
     with pytest.raises(ValueError):
         pm.run(phase1, limits=[(0, 1), (0, 1), (0, 1)], init_mesh=init_mesh)
+
+
+def test_caching():
+    def _call_count(func):
+        count = Counter()
+
+        async def inner(inp):
+            count.update([inp])
+            await asyncio.sleep(0.)
+            return func(inp)
+
+        return inner, count
+
+    func, count = _call_count(phase3)
+    pm.run(
+        func,
+        [(0, 1), (0, 1)],
+        num_steps=5,
+        init_mesh=2,
+    )
+    assert all(val <= 1 for val in count.values())
