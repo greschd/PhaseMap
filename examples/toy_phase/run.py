@@ -5,6 +5,7 @@
 # Date:    07.10.2016 14:47:06 CEST
 # File:    run.py
 
+import os
 import sys
 import logging
 
@@ -40,12 +41,14 @@ def phase_fct(pos):
 
 
 def run(num_steps):
+    os.makedirs('results', exist_ok=True)
     return pm.run(
         phase_fct,
         [(0, 1), (0, 1)],
         num_steps=num_steps,
         init_mesh=2,
-        save_file='res.json',
+        save_file='results/res_{}.json',
+        save_interval=0.,
     )
 
 
@@ -70,7 +73,7 @@ def plot_combined(res):
 
 
 if __name__ == '__main__':
-    res = run(5)
+    res = run(8)
     plot_boxes(res)
     plot_points(res)
     plot_combined(res)

@@ -1,0 +1,83 @@
+import os
+import functools
+
+import numpy as np
+import phasemap as pm
+
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from matplotlib.colorbar import ColorbarBase
+from matplotlib.colors import Normalize
+
+RESULTS_DIR = 'results'
+POINT_SIZE = 1.
+VALS = (-2, 0, 1, 3)
+
+
+def get_idx(name):
+    return int(name.split('.')[0].split('_')[1])
+
+
+def get_filenames():
+    return sorted(os.listdir(RESULTS_DIR), key=get_idx)
+
+
+def get_results():
+    for name in get_filenames():
+        yield pm.io.load(os.path.join(RESULTS_DIR, name))
+
+
+def init():
+    fig, (ax, cbar_ax) = plt.subplots(
+        ncols=2, gridspec_kw=dict(width_ratios=(0.95, 0.05))
+    )
+    ax.set_aspect(1.)
+    fig.subplots_adjust(right=0.9)
+
+    norm = Normalize()
+    norm.autoscale(VALS)
+    color_vals = [norm(c) for c in VALS]
+    c_bar = ColorbarBase(
+        cbar_ax,
+        values=VALS,
+        cmap=plt.get_cmap(),
+        norm=norm,
+        boundaries=range(5),
+        ticklocation='right',
+        ticks=[x + 0.5 for x in range(4)],
+    )
+    c_bar.solids.set_edgecolor("k")
+    c_bar.set_ticklabels(VALS)
+    return fig, ax
+
+
+def plot(res, ax):
+    ax.cla()
+    pm.plot.boxes(
+        res,
+        axes=ax,
+        zorder=0,
+        add_cbar=False,
+        lw=0.1,
+        edgecolor='k',
+        scale_val=VALS,
+    )
+    pm.plot.points(
+        res,
+        axes=ax,
+        edgecolors='k',
+        lw=0.1,
+        add_cbar=False,
+        scale_val=VALS,
+        s=POINT_SIZE
+    )
+
+
+if __name__ == '__main__':
+    os.makedirs('plots', exist_ok=True)
+    fig, ax = init()
+    plot_func = functools.partial(plot, ax=ax)
+    ani = animation.FuncAnimation(
+        fig, plot_func, get_results, interval=400, repeat=False
+    )
+    ani.save('video.mp4', dpi=300)

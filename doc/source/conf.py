@@ -34,7 +34,7 @@ extensions = [
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
-    'msgpack': ('http://pythonhosted.org/msgpack-python', None),
+    'msgpack': ('https://msgpack-python.readthedocs.io/en/latest', None),
     'z2pack': ('http://z2pack.ethz.ch/doc', None),
     'matplotlib': ('http://matplotlib.org', None)
 }

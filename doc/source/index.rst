@@ -15,6 +15,7 @@
     .. * Dominik Gresch *"Thesis Title."*, PhD Thesis, ETH Zurich, 20XX.
 
 |
+
 .. rubric:: Parts of the documentation
 
 | :ref:`phasemap_tutorial`
