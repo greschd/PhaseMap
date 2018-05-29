@@ -5,22 +5,33 @@ NOT_FOUND = object()
 
 class FuncCache:
     """
-    Caches calls to a (possibly async) function.
+    Caches calls to a function or coroutine.
     """
 
     def __init__(self, func, data=None):
-        self.func = func
-        if data is None:
-            self.data = dict()
-        else:
-            self.data = data
+        self.func = _wrap_to_coroutine(func)
+        self.data = data if data is not None else dict()
+        self.awaitables = dict()
 
     async def __call__(self, inp):
-        try:
+        if inp in self.data:
             return self.data[inp]
-        except KeyError:
-            result = self.func(inp)
-            if isinstance(result, Awaitable):
-                result = await result
-            self.data[inp] = result
-            return result
+
+        if inp in self.awaitables:
+            result = await self.awaitables[inp]
+        else:
+            coro = self.func(inp)
+            self.awaitables[inp] = coro
+            result = await coro
+        self.data[inp] = result
+        return result
+
+
+def _wrap_to_coroutine(func):
+    async def inner(inp):
+        res = func(inp)
+        if isinstance(res, Awaitable):
+            res = await res
+        return res
+
+    return inner
