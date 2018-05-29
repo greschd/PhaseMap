@@ -1,3 +1,4 @@
+import asyncio
 from collections.abc import Awaitable
 
 NOT_FOUND = object()
@@ -18,11 +19,11 @@ class FuncCache:
             return self.data[inp]
 
         if inp in self.awaitables:
-            result = await self.awaitables[inp]
+            result = await asyncio.wait_for(self.awaitables[inp], timeout=None)
         else:
-            coro = self.func(inp)
-            self.awaitables[inp] = coro
-            result = await coro
+            fut = asyncio.ensure_future(self.func(inp))
+            self.awaitables[inp] = fut
+            result = await fut
         self.data[inp] = result
         return result
 
