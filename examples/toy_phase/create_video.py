@@ -12,6 +12,7 @@ from matplotlib.colors import Normalize
 RESULTS_DIR = 'results'
 POINT_SIZE = 1.
 VALS = (-2, 0, 1, 3)
+CUTOFF = None
 
 
 def get_idx(name):
@@ -19,7 +20,7 @@ def get_idx(name):
 
 
 def get_filenames():
-    return sorted(os.listdir(RESULTS_DIR), key=get_idx)
+    return sorted(os.listdir(RESULTS_DIR), key=get_idx)[:CUTOFF]
 
 
 def get_results():
@@ -78,6 +79,6 @@ if __name__ == '__main__':
     fig, ax = init()
     plot_func = functools.partial(plot, ax=ax)
     ani = animation.FuncAnimation(
-        fig, plot_func, get_results, interval=400, repeat=False
+        fig, plot_func, get_results, interval=200, repeat=False
     )
-    ani.save('video.mp4', dpi=300)
+    ani.save('video.mp4', dpi=300, bitrate=2000)

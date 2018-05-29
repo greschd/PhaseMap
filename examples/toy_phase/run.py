@@ -14,7 +14,7 @@ import phasemap as pm
 import matplotlib.pyplot as plt
 plt.set_cmap('viridis')
 
-POINT_SIZE = 5
+POINT_SIZE = 1
 
 
 def phase_fct(pos):

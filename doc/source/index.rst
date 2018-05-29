@@ -10,9 +10,18 @@
 
     is a tool for calculating phase diagrams. It uses a quadtree algorithm that tracks the phase boundary. The key advantage of this approach is that it **scales** with the **dimension of the phase boundary** instead of the full phase space. This is especially important when evaluating a single point in the phase space is an expensive operation.
 
-    .. .. rubric:: Please cite
-    ..
-    .. * Dominik Gresch *"Thesis Title."*, PhD Thesis, ETH Zurich, 20XX.
+    Here's an example of a (made-up) phase diagram computed with PhaseMap:
+
+.. raw:: html
+
+    <video width="500" controls="controls">
+        <source src="_static/video.mp4" type="video/mp4" />
+    </video>
+
+
+.. .. rubric:: Please cite
+..
+.. * Dominik Gresch *"Thesis Title."*, PhD Thesis, ETH Zurich, 20XX.
 
 |
 
