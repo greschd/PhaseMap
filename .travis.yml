@@ -14,8 +14,8 @@ matrix:
 
 install:
   - pip install git+https://github.com/FrescolinoGroup/pyasynctools.git#egg=fsc.async-tools
-  - pip install .[test]
+  - pip install .[dev]
 
 script:
   - if [ "$TEST_TYPE" == "compliance" ] ; then pre-commit run --all-files ; fi
-  - if [ "$TEST_TYPE" == "test" ] ; then cd tests; py.test ; fi
+  - if [ "$TEST_TYPE" == "test" ] ; then cd tests; py.test --no-plot-tests ; fi
