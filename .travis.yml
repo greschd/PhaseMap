@@ -13,6 +13,7 @@ matrix:
       env: TEST_TYPE="compliance"
 
 install:
+  - pip install git+https://github.com/FrescolinoGroup/pyasynctools.git#egg=fsc.async-tools
   - pip install .[test]
 
 script:
