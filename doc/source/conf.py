@@ -29,7 +29,7 @@ import phasemap
 # ones.
 extensions = [
     'sphinx.ext.autodoc', 'sphinx.ext.mathjax', 'sphinx.ext.intersphinx',
-    'sphinx.ext.napoleon'
+    'sphinx.ext.napoleon', 'IPython.sphinxext.ipython_directive'
 ]
 
 intersphinx_mapping = {

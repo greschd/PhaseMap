@@ -57,7 +57,7 @@ def plot(res, ax):
     ax.cla()
     pm.plot.boxes(
         res,
-        axes=ax,
+        ax=ax,
         zorder=0,
         add_cbar=False,
         lw=0.1,
@@ -66,7 +66,7 @@ def plot(res, ax):
     )
     pm.plot.points(
         res,
-        axes=ax,
+        ax=ax,
         edgecolors='k',
         lw=0.1,
         add_cbar=False,

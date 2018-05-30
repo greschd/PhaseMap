@@ -45,7 +45,7 @@ def phase(val):
 if __name__ == '__main__':
     plt.set_cmap('viridis')
     res = pm.get_phase_map(
-        phase, [(-1.1, 1.1), (-1.1, 1.1)], num_steps=6, init_mesh=3
+        phase, [(-1.1, 1.1), (-1.1, 1.1)], num_steps=6, mesh=3
     )
     A = np.zeros(res.mesh, dtype=int) - 1
     for k, v in res.items():

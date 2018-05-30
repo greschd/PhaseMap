@@ -21,7 +21,7 @@ from ._logging_setup import LOGGER
 def run(  # pylint: disable=too-many-arguments
     fct,
     limits,
-    init_mesh=5,
+    mesh=5,
     num_steps=5,
     init_result=None,
     save_file=None,
@@ -40,7 +40,7 @@ def run(  # pylint: disable=too-many-arguments
         The function which evaluates the phase at a given point. Can be either a synchronous or asynchronous (async def) function.
     limits:
         Boundaries of the region where the phase diagram is evaluated.
-    init_mesh:
+    mesh:
         Size of the initial grid, either as an integer, or a list of integers (one for each dimension).
     num_steps: int
         The maximum number of times each box is split.
@@ -81,7 +81,7 @@ def run(  # pylint: disable=too-many-arguments
     return _RunImpl(
         fct=fct,
         limits=limits,
-        init_mesh=init_mesh,
+        mesh=mesh,
         num_steps=num_steps,
         init_points=init_points,
         save_file=save_file,
@@ -95,7 +95,7 @@ class _RunImpl:
         self,
         fct,
         limits,
-        init_mesh=5,
+        mesh=5,
         num_steps=5,
         init_points=None,
         save_file=None,
@@ -107,9 +107,7 @@ class _RunImpl:
         self._save_interval = save_interval
         self._save_count = 0
         self._squares_need_saving = False
-        self._init_dimensions(
-            limits=limits, init_mesh=init_mesh, num_steps=num_steps
-        )
+        self._init_dimensions(limits=limits, mesh=mesh, num_steps=num_steps)
 
         self._func = FuncCache(
             lambda coord: fct(self._coordinate_to_position(coord)),
@@ -157,30 +155,28 @@ class _RunImpl:
                 self._split_futures_done[box] = fut
         return not self._split_futures_pending
 
-    def _init_dimensions(self, limits, init_mesh, num_steps):
+    def _init_dimensions(self, limits, mesh, num_steps):
         self._limit_corner = np.array([low for low, high in limits])
         self._limit_size = np.array([high - low for low, high in limits])
         self._dim = len(limits)
 
-        self._validate_init_mesh(init_mesh)
+        self._validate_mesh(mesh)
 
-        self._max_size = Coordinate([
-            Fraction(1, m - 1) for m in self._init_mesh
-        ])
+        self._max_size = Coordinate([Fraction(1, m - 1) for m in self._mesh])
         self._min_size = self._max_size / 2**num_steps
 
-    def _validate_init_mesh(self, init_mesh):
-        if isinstance(init_mesh, numbers.Integral):
-            init_mesh = [init_mesh] * self._dim
+    def _validate_mesh(self, mesh):
+        if isinstance(mesh, numbers.Integral):
+            mesh = [mesh] * self._dim
         else:
-            if len(init_mesh) != self._dim:
+            if len(mesh) != self._dim:
                 raise ValueError(
-                    "Length of 'init_mesh' {} does not match the dimension {} of the 'limits'.".
-                    format(len(init_mesh), self._dim)
+                    "Length of 'mesh' {} does not match the dimension {} of the 'limits'.".
+                    format(len(mesh), self._dim)
                 )
-        if any(m < 2 for m in init_mesh):
+        if any(m < 2 for m in mesh):
             raise ValueError('Mesh must be >= 2 for each dimension.')
-        self._init_mesh = init_mesh  # pylint: disable=attribute-defined-outside-init
+        self._mesh = mesh  # pylint: disable=attribute-defined-outside-init
 
     def _coordinate_to_position(self, coord):
         return self._limit_corner + coord * self._limit_size
@@ -188,7 +184,7 @@ class _RunImpl:
     def _get_initial_boxes(self):
         corners = itertools.product(
             *[[i * s for i in range(m - 1)]
-              for s, m in zip(self._max_size, self._init_mesh)]
+              for s, m in zip(self._max_size, self._mesh)]
         )
         boxes = [Box(corner=c, size=self._max_size) for c in corners]
         for i, sq1 in enumerate(boxes):

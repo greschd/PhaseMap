@@ -125,7 +125,7 @@ if __name__ == '__main__':
         phase_fct,
         [(0, 1), (0, 1)],
         num_steps=NUM_STEPS,
-        init_mesh=2,
+        mesh=2,
     )
 
     BORDEAUX = '#770044'

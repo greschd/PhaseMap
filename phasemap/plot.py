@@ -17,25 +17,25 @@ from ._box import PHASE_UNDEFINED
 
 
 @decorator.decorator
-def _plot(func, result, *, axes=None, add_cbar=True, **kwargs):
-    # create axes if it does not exist
-    if axes is None:
+def _plot(func, result, *, ax=None, add_cbar=True, **kwargs):
+    # create ax if it does not exist
+    if ax is None:
         fig = plt.figure(figsize=[4, 4])
-        axes = fig.add_subplot(111)
+        ax = fig.add_subplot(111)
     # else just get the figure
     else:
-        fig = axes.figure
+        fig = ax.figure
 
     xlim = [0, 1]
     ylim = [0, 1]
-    axes.set_xlim(xlim)
-    axes.set_ylim(ylim)
-    axes.set_xticks(xlim)
-    axes.set_yticks(ylim)
-    axes.set_xticklabels(result.limits[0])
-    axes.set_yticklabels(result.limits[1])
+    ax.set_xlim(xlim)
+    ax.set_ylim(ylim)
+    ax.set_xticks(xlim)
+    ax.set_yticks(ylim)
+    ax.set_xticklabels(result.limits[0])
+    ax.set_yticklabels(result.limits[1])
 
-    axes, cmap, norm, vals = func(result, axes=axes, **kwargs)
+    ax, cmap, norm, vals = func(result, ax=ax, **kwargs)
 
     if add_cbar:
         fig.subplots_adjust(right=0.9)
@@ -57,7 +57,7 @@ def _plot(func, result, *, axes=None, add_cbar=True, **kwargs):
 
 @export
 @_plot
-def boxes(result, *, axes=None, scale_val=None, cmap=None, **kwargs):
+def boxes(result, *, ax=None, scale_val=None, cmap=None, **kwargs):
     """
     Plots the phase diagram as a collection of boxes, which are colored according to the estimate of the phase in a given box.
 
@@ -65,7 +65,7 @@ def boxes(result, *, axes=None, scale_val=None, cmap=None, **kwargs):
     ----------
     result: .Result
         Result of the :func:`.run` phase diagram calculation.
-    axes: :py:mod:`matplotlib <matplotlib.pyplot>` axes
+    ax: :py:mod:`matplotlib <matplotlib.pyplot>` ax
         Axes where the plot is drawn.
     add_cbar: bool
         Determines whether a colorbar is added to the figure.
@@ -94,7 +94,7 @@ def boxes(result, *, axes=None, scale_val=None, cmap=None, **kwargs):
 
     rect_properties = ChainMap(kwargs, dict(lw=0))
     for color, box in zip(box_colors, sqrs):
-        axes.add_patch(
+        ax.add_patch(
             Rectangle(
                 xy=box.corner,
                 width=box.size[0],
@@ -105,12 +105,12 @@ def boxes(result, *, axes=None, scale_val=None, cmap=None, **kwargs):
             )
         )
 
-    return axes, cmap, norm, all_vals
+    return ax, cmap, norm, all_vals
 
 
 @export
 @_plot
-def points(result, *, axes=None, scale_val=None, cmap=None, **kwargs):
+def points(result, *, ax=None, scale_val=None, cmap=None, **kwargs):
     """
     Plots the phase diagram as a collection of boxes, which are colored according to the estimate of the phase in a given box.
 
@@ -118,7 +118,7 @@ def points(result, *, axes=None, scale_val=None, cmap=None, **kwargs):
     ----------
     result: Result
         Result of the :func:`.run` phase diagram calculation.
-    axes: :py:mod:`matplotlib <matplotlib.pyplot>` axes
+    ax: :py:mod:`matplotlib <matplotlib.pyplot>` ax
         Axes where the plot is drawn.
     add_cbar: bool
         Determines whether a colorbar is added to the figure.
@@ -127,7 +127,7 @@ def points(result, *, axes=None, scale_val=None, cmap=None, **kwargs):
     cmap:
         The colormap which is used to plot the phases. The colormap should take values normalized to [0, 1] and return a 4-tuple specifying the RGBA value (again normalized to [0, 1].
     kwargs:
-        Keyword arguments passed to :py:meth:`scatter <matplotlib.axes.Axes.scatter>`.
+        Keyword arguments passed to :py:meth:`scatter <matplotlib.ax.Axes.scatter>`.
     """
     if cmap is None:
         # don't do this in the signature, otherwise it gets set at import time
@@ -147,6 +147,6 @@ def points(result, *, axes=None, scale_val=None, cmap=None, **kwargs):
         point_colors[cmap(norm(phase))].append(coord)
 
     for color, coordinates in point_colors.items():
-        axes.scatter(*np.array(coordinates).T, color=color, **kwargs)
+        ax.scatter(*np.array(coordinates).T, color=color, **kwargs)
 
-    return axes, cmap, norm, all_vals
+    return ax, cmap, norm, all_vals

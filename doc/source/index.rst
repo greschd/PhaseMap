@@ -36,7 +36,7 @@
 
 .. rubric:: Getting in touch
 
-The development version of PhaseMap is hosted on `GitHub <http://github.com/Z2PackDev/PhaseMap>`_ . Post an issue there or contact `me <http://github.com/greschd>`_ directly with questions / suggestions / feedback about PhaseMap.
+The development version of PhaseMap is hosted on `GitHub <http://github.com/greschd/PhaseMap>`_ . Post an issue there or contact `me <http://github.com/greschd>`_ directly with questions / suggestions / feedback about PhaseMap.
 
 .. rubric:: Indices and tables
 
