@@ -75,7 +75,6 @@ def plot(res, ax):
 
 
 if __name__ == '__main__':
-    os.makedirs('plots', exist_ok=True)
     fig, ax = init()
     plot_func = functools.partial(plot, ax=ax)
     ani = animation.FuncAnimation(

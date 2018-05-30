@@ -106,7 +106,7 @@ class _RunImpl:
         self._serializer = serializer
         self._save_interval = save_interval
         self._save_count = 0
-        self._needs_saving = False
+        self._squares_need_saving = False
         self._init_dimensions(
             limits=limits, init_mesh=init_mesh, num_steps=num_steps
         )
@@ -131,6 +131,15 @@ class _RunImpl:
         )
         for sqr in self.result.boxes:
             self._schedule_split_box(sqr)
+
+    @property
+    def needs_saving(self):
+        return self._squares_need_saving or self._func.needs_saving
+
+    @needs_saving.setter
+    def needs_saving(self, value):
+        self._squares_need_saving = value
+        self._func.needs_saving = value
 
     def execute(self):
         self._loop.run_until_complete(self._run())
@@ -232,16 +241,16 @@ class _RunImpl:
         # remove old box
         self.result.boxes.discard(box)
         box.delete_from_neighbours()
-        self._needs_saving = True
+        self.needs_saving = True
 
     def _save(self):
         if self._save_file is None:
             return
-        if self._needs_saving:
+        if self.needs_saving:
             _io.save(
                 self.result,
                 self._save_file.format(self._save_count),
                 serializer=self._serializer
             )
             self._save_count += 1
-            self._needs_saving = False
+            self.needs_saving = False
