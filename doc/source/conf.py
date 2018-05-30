@@ -29,7 +29,8 @@ import phasemap
 # ones.
 extensions = [
     'sphinx.ext.autodoc', 'sphinx.ext.mathjax', 'sphinx.ext.intersphinx',
-    'sphinx.ext.napoleon', 'IPython.sphinxext.ipython_directive'
+    'sphinx.ext.napoleon', 'sphinx.ext.viewcode',
+    'IPython.sphinxext.ipython_directive'
 ]
 
 intersphinx_mapping = {
@@ -39,7 +40,7 @@ intersphinx_mapping = {
     'matplotlib': ('http://matplotlib.org', None)
 }
 
-nitpick_ignore = [('py:obj', 'module')]
+nitpick_ignore = [('py:obj', 'module'), ('py:class', 'module')]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

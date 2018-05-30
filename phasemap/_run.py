@@ -74,6 +74,11 @@ def run(  # pylint: disable=too-many-arguments
                 raise err
 
     if init_result is not None:
+        if not np.allclose(limits, init_result.limits):
+            raise ValueError(
+                "Limits {} of the 'init_result' do not match the given limits {}".
+                format(init_result.limits, limits)
+            )
         init_points = init_result.points
     else:
         init_points = None

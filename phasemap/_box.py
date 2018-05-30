@@ -23,9 +23,16 @@ PHASE_UNDEFINED = Sentinel('undefined phase')
 
 class Box:
     """
-    - corner is the vertex with the lowest indices
-    - phase is None if there is no point in the box or there are points with different phases
-    - the points are stored by their index (position)
+    Class describing a "box" (or n-dimensional hyperrectangle).
+
+    Attributes
+    ----------
+    corner: Coordinate
+        The vertex with the lowest indices.
+    size: Coordinate
+        Size of the box.
+    phase:
+        The phase of the box, determined by the evaluated points it contains: If all points have the same phase, the box will have that phase. Otherwise, the phase of the box is undefined.
     """
 
     def __init__(self, *, corner, size):

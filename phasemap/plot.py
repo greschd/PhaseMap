@@ -127,7 +127,7 @@ def points(result, *, ax=None, scale_val=None, cmap=None, **kwargs):
     cmap:
         The colormap which is used to plot the phases. The colormap should take values normalized to [0, 1] and return a 4-tuple specifying the RGBA value (again normalized to [0, 1].
     kwargs:
-        Keyword arguments passed to :py:meth:`scatter <matplotlib.ax.Axes.scatter>`.
+        Keyword arguments passed to :py:meth:`scatter <matplotlib.axes.Axes.scatter>`.
     """
     if cmap is None:
         # don't do this in the signature, otherwise it gets set at import time
