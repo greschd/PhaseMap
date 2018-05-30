@@ -16,6 +16,8 @@ import sphinx_rtd_theme
 
 on_rtd = os.environ.get('READTHEDOCS') == 'True'
 if on_rtd:
+    import matplotlib
+    matplotlib.use('agg')
     from unittest.mock import MagicMock
 
     class Mock(MagicMock):
