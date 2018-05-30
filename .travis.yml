@@ -13,9 +13,10 @@ matrix:
       env: TEST_TYPE="compliance"
 
 install:
+  - pip install -U pytest
   - pip install git+https://github.com/FrescolinoGroup/pyasynctools.git#egg=fsc.async-tools
   - pip install .[dev]
 
 script:
   - if [ "$TEST_TYPE" == "compliance" ] ; then pre-commit run --all-files ; fi
-  - if [ "$TEST_TYPE" == "test" ] ; then cd tests; py.test --no-plot-tests ; fi
+  - if [ "$TEST_TYPE" == "test" ] ; then cd tests; pytest --no-plot-tests ; fi
