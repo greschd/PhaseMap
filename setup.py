@@ -18,15 +18,16 @@ setup(
     url='http://z2pack.ethz.ch/phasemap',
     author='Dominik Gresch',
     author_email='greschd@gmx.ch',
-    description='Algorithm for mapping phase diagrams',
+    description='Algorithm for calculating phase diagrams',
     install_requires=[
-        'numpy', 'matplotlib', 'msgpack-python', 'decorator', 'fsc.export',
+        'numpy', 'matplotlib', 'decorator', 'fsc.export',
         'fsc.iohelper>=1.0.2', 'fsc.async-tools'
     ],
     extras_require={
         'dev': [
-            'yapf==0.21', 'pre-commit', 'pytest', 'pytest-cov', 'pylint',
-            'prospector', 'sphinx', 'sphinx-rtd-theme', 'ipython'
+            'yapf==0.21', 'msgpack-python', 'pre-commit', 'pytest',
+            'pytest-cov', 'pylint', 'prospector', 'sphinx', 'sphinx-rtd-theme',
+            'ipython'
         ]
     },
     long_description=README,
