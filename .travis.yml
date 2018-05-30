@@ -1,0 +1,20 @@
+language: python
+cache: pip
+python:
+  - "3.5"
+  - "3.6"
+
+env:
+  - TEST_TYPE="test"
+
+matrix:
+  include:
+    - python: 3.6
+      env: TEST_TYPE="compliance"
+
+install:
+  - pip install .[test]
+
+script:
+  - if [ "$TEST_TYPE" == "compliance" ] ; then pre-commit run --all-files ; fi
+  - if [ "$TEST_TYPE" == "test" ] ; then cd tests; py.test ; fi

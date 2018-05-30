@@ -12,6 +12,13 @@ with open('./phasemap/__init__.py', 'r') as f:
     MATCH_EXPR = "__version__[^'\"]+(['\"])([^'\"]+)"
     VERSION = re.search(MATCH_EXPR, f.read()).group(2).strip()
 
+EXTRAS_REQUIRE = dict(
+    dev=['yapf==0.21', 'pre-commit', 'pylint', 'prospector'],
+    test=['msgpack', 'pytest', 'pytest-cov'],
+    doc=['sphinx', 'sphinx-rtd-theme', 'ipython']
+)
+EXTRAS_REQUIRE['dev'] += EXTRAS_REQUIRE['test'] + EXTRAS_REQUIRE['doc']
+
 setup(
     name='phasemap',
     version=VERSION,
@@ -23,13 +30,7 @@ setup(
         'numpy', 'matplotlib', 'decorator', 'fsc.export',
         'fsc.iohelper>=1.0.2', 'fsc.async-tools'
     ],
-    extras_require={
-        'dev': [
-            'yapf==0.21', 'msgpack-python', 'pre-commit', 'pytest',
-            'pytest-cov', 'pylint', 'prospector', 'sphinx', 'sphinx-rtd-theme',
-            'ipython'
-        ]
-    },
+    extras_require=EXTRAS_REQUIRE,
     long_description=README,
     classifiers=[
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
