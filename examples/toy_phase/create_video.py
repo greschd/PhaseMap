@@ -1,5 +1,6 @@
 import os
 import functools
+import contextlib
 
 import numpy as np
 import phasemap as pm
@@ -75,9 +76,11 @@ def plot(res, ax):
 
 
 if __name__ == '__main__':
+    with contextlib.suppress(FileNotFoundError):
+        os.remove('video.mp4')
     fig, ax = init()
     plot_func = functools.partial(plot, ax=ax)
     ani = animation.FuncAnimation(
-        fig, plot_func, get_results, interval=200, repeat=False
+        fig, plot_func, get_results, interval=120, repeat=False
     )
-    ani.save('video.mp4', dpi=300, bitrate=2000)
+    ani.save('video.mp4', dpi=300, bitrate=2000, writer='ffmpeg_file')
