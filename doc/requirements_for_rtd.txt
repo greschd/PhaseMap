@@ -1,4 +1,5 @@
 ipython
+matplotlib
 fsc.export
 fsc.iohelper
 git+https://github.com/FrescolinoGroup/pyasynctools.git#egg=fsc.async-tools
