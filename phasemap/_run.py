@@ -23,6 +23,7 @@ def run(  # pylint: disable=too-many-arguments
     limits,
     mesh=5,
     num_steps=5,
+    all_corners=False,
     init_result=None,
     save_file=None,
     load=False,
@@ -44,6 +45,8 @@ def run(  # pylint: disable=too-many-arguments
         Size of the initial grid, either as an integer, or a list of integers (one for each dimension).
     num_steps: int
         The maximum number of times each box is split.
+    all_corners: bool
+        Determines whether all corners of a box should be calculated, or only the vertices and middle point of the parent box.
     init_result: Result
         Input result, which is used to cache function evaluations.
     save_file: str
@@ -88,6 +91,7 @@ def run(  # pylint: disable=too-many-arguments
         limits=limits,
         mesh=mesh,
         num_steps=num_steps,
+        all_corners=all_corners,
         init_points=init_points,
         save_file=save_file,
         serializer=serializer,
@@ -102,6 +106,7 @@ class _RunImpl:
         limits,
         mesh=5,
         num_steps=5,
+        all_corners=False,
         init_points=None,
         save_file=None,
         serializer='auto',
@@ -113,6 +118,7 @@ class _RunImpl:
         self._save_count = 0
         self._squares_need_saving = False
         self._init_dimensions(limits=limits, mesh=mesh, num_steps=num_steps)
+        self._all_corners = all_corners
 
         self._func = FuncCache(
             lambda coord: fct(self._coordinate_to_position(coord)),
@@ -207,9 +213,16 @@ class _RunImpl:
 
     async def _split_box(self, box):
         LOGGER.debug('Splitting {}.'.format(box))
-        coordinate_stencil = np.array([[Fraction(1, 2)] * self._dim] + list(
-            itertools.product([0, 1], repeat=self._dim)
-        ))
+        if self._all_corners:
+            coordinate_stencil = np.array(
+                list(
+                    itertools.product([0, Fraction(1, 2), 1], repeat=self._dim)
+                )
+            )
+        else:
+            coordinate_stencil = np.array([
+                [Fraction(1, 2)] * self._dim
+            ] + list(itertools.product([0, 1], repeat=self._dim)))
         coords = box.corner + coordinate_stencil * box.size
         phases = await asyncio.gather(*[self._func(c) for c in coords])
         corner_stencil = np.array(
