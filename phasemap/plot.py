@@ -57,7 +57,15 @@ def _plot(func, result, *, ax=None, add_cbar=True, **kwargs):
 
 @export
 @_plot
-def boxes(result, *, ax=None, scale_val=None, cmap=None, **kwargs):
+def boxes(
+    result,
+    *,
+    ax=None,
+    scale_val=None,
+    plot_undefined=False,
+    cmap=None,
+    **kwargs
+):
     """
     Plots the phase diagram as a collection of boxes, which are colored according to the estimate of the phase in a given box.
 
@@ -71,6 +79,8 @@ def boxes(result, *, ax=None, scale_val=None, cmap=None, **kwargs):
         Determines whether a colorbar is added to the figure.
     scale_val: list
         Values to which the colormap is scaled. By default, the colormap is scaled to the set of values which occur in the boxes.
+    plot_undefined: bool
+        Specifies whether the boxes of undefined phase should be plotted (in white).
     cmap:
         The colormap which is used to plot the phases. The colormap should take values normalized to [0, 1] and return a 4-tuple specifying the RGBA value (again normalized to [0, 1].
     kwargs:
@@ -104,7 +114,16 @@ def boxes(result, *, ax=None, scale_val=None, cmap=None, **kwargs):
                 )
             )
         )
-
+    if plot_undefined:
+        for box in [b for b in result.boxes if b.phase is PHASE_UNDEFINED]:
+            ax.add_patch(
+                Rectangle(
+                    xy=box.corner,
+                    width=box.size[0],
+                    height=box.size[1],
+                    **ChainMap(rect_properties, dict(facecolor='white'))
+                )
+            )
     return ax, cmap, norm, all_vals
 
 
