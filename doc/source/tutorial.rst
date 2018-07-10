@@ -63,33 +63,22 @@ To create a plot that shows the boxes in the result, use the :func:`phasemap.plo
        ...: plt.register_cmap('custom_cmap', ListedColormap(['#003399', '#EE6600'], name='custom_cmap'))
        ...: plt.set_cmap('custom_cmap')
 
+    @savefig tutorial_plot_boxes.png
     In [0]: pm.plot.boxes(res)
-
-    In [0]: plt.savefig('source/_static/tutorial_plot_boxes.png', bbox_inches='tight')
-
-This produces the following image:
-
-.. image:: _static/tutorial_plot_boxes.png
 
 Alternatively, you can plot the points where the function was evaluated with :func:`phasemap.plot.points`:
 
 .. ipython::
 
+    @savefig tutorial_plot_points.png
     In [0]: pm.plot.points(res, s=2.)
-
-    In [0]: plt.savefig('source/_static/tutorial_plot_points.png', bbox_inches='tight')
-
-.. image:: _static/tutorial_plot_points.png
 
 Plotting the result of the calculation with a higher ``num_steps`` produces the following image:
 
 .. ipython::
 
+    @savefig tutorial_plot_boxes2.png
     In [0]: pm.plot.boxes(res2)
-
-    In [0]: plt.savefig('source/_static/tutorial_plot_boxes2.png', bbox_inches='tight')
-
-.. image:: _static/tutorial_plot_boxes2.png
 
 Saving Results
 --------------
