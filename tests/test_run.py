@@ -191,3 +191,11 @@ def test_caching():
         mesh=2,
     )
     assert all(val <= 1 for val in count.values())
+
+
+def test_raises():
+    def func(val):  # pylint: disable=unused-argument
+        raise ValueError('test succeeded.')
+
+    with pytest.raises(ValueError):
+        pm.run(func, limits=[(0, 1)])

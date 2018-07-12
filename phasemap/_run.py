@@ -160,10 +160,20 @@ class _RunImpl:
                 await asyncio.sleep(0.)
 
     def _check_done(self):
-        for box, fut in list(self._split_futures_pending.items()):
-            if fut.done():
-                self._split_futures_pending.pop(box)
-                self._split_futures_done[box] = fut
+        done_tasks = [(box, fut)
+                      for (box, fut) in self._split_futures_pending.items()
+                      if fut.done()]
+
+        # Retrieve all exceptions to avoid asyncio 'exception never retrieved'
+        # warning, but can only raise one.
+        exceptions = [fut.exception() for _, fut in done_tasks]
+        exceptions = [exc for exc in exceptions if exc is not None]
+        if exceptions:
+            raise exceptions[0]
+
+        for box, fut in done_tasks:
+            self._split_futures_pending.pop(box)
+            self._split_futures_done[box] = fut
         return not self._split_futures_pending
 
     def _init_dimensions(self, limits, mesh, num_steps):
