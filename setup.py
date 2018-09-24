@@ -13,7 +13,9 @@ with open('./phasemap/__init__.py', 'r') as f:
     VERSION = re.search(MATCH_EXPR, f.read()).group(2).strip()
 
 EXTRAS_REQUIRE = dict(
-    dev=['yapf==0.24', 'pre-commit', 'pylint', 'prospector'],
+    dev=[
+        'yapf==0.24', 'pre-commit==1.8.2', 'pylint==2.1.1', 'prospector==1.1.2'
+    ],
     test=['msgpack', 'pytest', 'pytest-cov'],
     doc=['sphinx', 'sphinx-rtd-theme', 'ipython']
 )
