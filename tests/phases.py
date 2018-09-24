@@ -13,19 +13,19 @@ def phase1(coord):
 
 def phase2(coord):
     x, y, *_ = coord
-    if x >= 0 and x < 0.3:
-        if y > 0.4 and y < 0.6:
+    if 0 <= x < 0.3:
+        if 0.4 < y < 0.6:
             return 1
 
-    if x > 0.4 and x < 0.6:
-        if y >= 0 and y < 0.6:
+    if 0.4 < x < 0.6:
+        if 0 <= y < 0.6:
             return 1
-    if x > 0.4 and x < 0.6:
+    if 0.4 < x < 0.6:
         if y >= 0.6:
             return 2
 
-    if x >= 0 and x < 0.1:
-        if y >= 0 and y < 0.1:
+    if 0 <= x < 0.1:
+        if 0 <= y < 0.1:
             return 1
 
     if (x - 0.5)**2 + (y - 0.5)**2 < 0.1:
@@ -48,7 +48,7 @@ def phase3(coord):
             return -2
 
     if 0 <= x < 0.1:
-        if y >= 0 and y < 0.1:
+        if 0 <= y < 0.1:
             return 1
 
     if (x - 0.5)**2 + (y - 0.5)**2 < 0.1:

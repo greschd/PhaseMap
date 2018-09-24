@@ -15,7 +15,7 @@ class Sentinel:
         return self
 
     def __repr__(self):
-        return 'Sentinel({!r})'.format(self._value)
+        return 'Sentinel({!r})'.format(self._value)  # pylint: disable=no-member
 
 
 PHASE_UNDEFINED = Sentinel('undefined phase')
