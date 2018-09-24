@@ -79,8 +79,8 @@ def run(  # pylint: disable=too-many-arguments
     if init_result is not None:
         if not np.allclose(limits, init_result.limits):
             raise ValueError(
-                "Limits {} of the 'init_result' do not match the given limits {}".
-                format(init_result.limits, limits)
+                "Limits {} of the 'init_result' do not match the given limits {}"
+                .format(init_result.limits, limits)
             )
         init_points = init_result.points
     else:
@@ -192,8 +192,8 @@ class _RunImpl:
         else:
             if len(mesh) != self._dim:
                 raise ValueError(
-                    "Length of 'mesh' {} does not match the dimension {} of the 'limits'.".
-                    format(len(mesh), self._dim)
+                    "Length of 'mesh' {} does not match the dimension {} of the 'limits'."
+                    .format(len(mesh), self._dim)
                 )
         if any(m < 2 for m in mesh):
             raise ValueError('Mesh must be >= 2 for each dimension.')
@@ -230,9 +230,10 @@ class _RunImpl:
                 )
             )
         else:
-            coordinate_stencil = np.array([
-                [Fraction(1, 2)] * self._dim
-            ] + list(itertools.product([0, 1], repeat=self._dim)))
+            coordinate_stencil = np.array(
+                [[Fraction(1, 2)] * self._dim] +
+                list(itertools.product([0, 1], repeat=self._dim))
+            )
         coords = box.corner + coordinate_stencil * box.size
         phases = await asyncio.gather(*[self._func(c) for c in coords])
         corner_stencil = np.array(
