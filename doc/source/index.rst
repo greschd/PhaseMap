@@ -51,4 +51,5 @@ The development version of PhaseMap is hosted on `GitHub <http://github.com/gres
     :hidden:
 
     tutorial.rst
+    examples.rst
     reference.rst
