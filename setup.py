@@ -43,9 +43,9 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: Physics',
-        'Development Status :: 4 - Beta'
+        'Development Status :: 5 - Production/Stable'
     ],
-    license='GPL',
+    license='Apache 2.0',
     keywords=['phase', 'map', 'diagram', 'scaling'],
     packages=['phasemap', 'phasemap.io']
 )
