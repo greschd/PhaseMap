@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+
+# © 2015-2018, ETH Zurich, Institut für Theoretische Physik
+# Author: Dominik Gresch <greschd@gmx.ch>
+
 __version__ = '1.0.0'
 
 from ._run import *

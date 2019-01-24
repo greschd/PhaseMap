@@ -1,3 +1,6 @@
+.. © 2015-2018, ETH Zurich, Institut für Theoretische Physik
+.. Author: Dominik Gresch <greschd@gmx.ch>
+
 .. image:: images/logo_on_white.png
     :width: 400px
     :alt: PhaseMap

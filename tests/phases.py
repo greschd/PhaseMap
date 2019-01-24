@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+
+# © 2015-2018, ETH Zurich, Institut für Theoretische Physik
+# Author: Dominik Gresch <greschd@gmx.ch>
+
+
 def circle(x, y):
     return 2 if x**2 + y**2 < 1 else 0
 
