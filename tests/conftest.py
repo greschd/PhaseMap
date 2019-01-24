@@ -21,7 +21,10 @@ def pytest_configure(config):
 
 
 def pytest_runtest_setup(item):
-    plot_marker = item.get_marker("plot")
+    try:
+        plot_marker = item.get_marker("plot")
+    except AttributeError:
+        plot_marker = item.get_closest_marker("plot")
     if plot_marker is not None:
         if item.config.getoption("--no-plot-tests"):
             pytest.skip("Skipping plot tests.")
