@@ -22,10 +22,11 @@
     </video>
 
 
-.. .. rubric:: Please cite
-..
-.. * Dominik Gresch *"Thesis Title."*, PhD Thesis, ETH Zurich, 20XX.
+|
 
+.. rubric:: Please cite:
+
+| *Identifying Topological Semimetals*, D. Gresch,  `PhD Thesis <https://doi.org/10.3929/ethz-b-000308602>`_.
 |
 
 .. rubric:: Parts of the documentation
