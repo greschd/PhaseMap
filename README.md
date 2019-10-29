@@ -2,6 +2,6 @@
 
 PhaseMap is a tool for mapping phase diagrams. The purpose of the tool is to concentrate the evaluations on the space around the phase boundaries, thus requiring less evaluations.
 
-Documentation: https://phasemap.readthedocs.io
+Documentation: http://z2pack.ethz.ch/phasemap
 
-[![Build Status](https://travis-ci.org/greschd/PhaseMap.svg?branch=master)](https://travis-ci.org/greschd/PhaseMap) [![Documentation Status](https://readthedocs.org/projects/phasemap/badge/?version=latest)](https://phasemap.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](https://travis-ci.org/greschd/PhaseMap.svg?branch=master)](https://travis-ci.org/greschd/PhaseMap)
