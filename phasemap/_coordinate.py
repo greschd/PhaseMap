@@ -12,7 +12,6 @@ class Coordinate(np.ndarray):
     """
     Array class describing the relative position within the calculation window.
     """
-
     def __new__(cls, coord):
         coord_list = [Fraction(x) for x in coord]
         self = super().__new__(cls, shape=(len(coord_list), ), dtype=object)

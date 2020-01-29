@@ -19,7 +19,7 @@ with open('./phasemap/__init__.py', 'r') as f:
 
 EXTRAS_REQUIRE = dict(
     dev=[
-        'yapf==0.24', 'pre-commit==1.8.2', 'pylint==2.1.1', 'prospector==1.1.2'
+        'yapf==0.29', 'pre-commit==2.0.0', 'pylint==2.4.4', 'prospector==1.2.0'
     ],
     test=['msgpack', 'pytest', 'pytest-cov'],
     doc=['sphinx', 'sphinx-rtd-theme', 'ipython']
@@ -37,15 +37,16 @@ setup(
         'numpy', 'matplotlib', 'decorator', 'fsc.export',
         'fsc.iohelper>=1.0.2', 'fsc.async-tools'
     ],
+    python_requires='>=3.6',
     extras_require=EXTRAS_REQUIRE,
     long_description=README,
     classifiers=[
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English', 'Operating System :: Unix',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: Physics',
         'Development Status :: 5 - Production/Stable'
