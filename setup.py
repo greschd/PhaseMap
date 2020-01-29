@@ -37,13 +37,13 @@ setup(
         'numpy', 'matplotlib', 'decorator', 'fsc.export',
         'fsc.iohelper>=1.0.2', 'fsc.async-tools'
     ],
+    python_requires='>=3.6',
     extras_require=EXTRAS_REQUIRE,
     long_description=README,
     classifiers=[
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English', 'Operating System :: Unix',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',

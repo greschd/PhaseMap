@@ -39,7 +39,6 @@ class Box:
     phase:
         The phase of the box, determined by the evaluated points it contains: If all points have the same phase, the box will have that phase. Otherwise, the phase of the box is undefined.
     """
-
     def __init__(self, *, corner, size):
         self.corner = Coordinate(corner)
         self.phase = None
