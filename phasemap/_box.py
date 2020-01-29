@@ -15,7 +15,7 @@ class Sentinel:
         if value in cls.__INSTANCES:
             return cls.__INSTANCES[value]
         self = super().__new__(cls)
-        self._value = value  # pylint: disable=protected-access
+        self._value = value
         cls.__INSTANCES[value] = self
         return self
 

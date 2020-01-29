@@ -56,18 +56,17 @@ def compare_data(request, test_name, scope="session"):
                 )
             )
             raise ValueError('Reference data does not exist.')
-        else:
-            val = json.loads(
-                json.dumps(val, default=phasemap.io._encoding.encode),
+        val = json.loads(
+            json.dumps(val, default=phasemap.io._encoding.encode),
+            object_hook=phasemap.io._encoding.decode
+        )
+        assert compare_fct(
+            val,
+            json.loads(
+                json.dumps(data, default=phasemap.io._encoding.encode),
                 object_hook=phasemap.io._encoding.decode
             )
-            assert compare_fct(
-                val,
-                json.loads(
-                    json.dumps(data, default=phasemap.io._encoding.encode),
-                    object_hook=phasemap.io._encoding.decode
-                )
-            )  # get rid of json-specific quirks
+        )  # get rid of json-specific quirks
 
     return inner
 

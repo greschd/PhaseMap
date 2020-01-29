@@ -170,6 +170,6 @@ def points(result, *, ax=None, scale_val=None, cmap=None, **kwargs):
         point_colors[cmap(norm(phase))].append(coord)
 
     for color, coordinates in point_colors.items():
-        ax.scatter(*np.array(coordinates).T, color=color, **kwargs)
+        ax.scatter(*np.array(coordinates).T, color=color, **kwargs)  # pylint: disable=not-an-iterable
 
     return ax, cmap, norm, all_vals

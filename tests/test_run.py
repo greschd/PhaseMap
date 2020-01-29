@@ -38,7 +38,7 @@ def test_save_file(results_equal):
 
 
 def test_init_result(results_equal):
-    def error(x):  # pylint: disable=unused-argument
+    def error(x):
         raise ValueError
 
     res1 = pm.run(phase1, limits=[(-1, 1)] * 2, num_steps=2)
@@ -47,7 +47,7 @@ def test_init_result(results_equal):
 
 
 def test_load(results_equal):
-    def error(x):  # pylint: disable=unused-argument
+    def error(x):
         raise ValueError
 
     with tempfile.NamedTemporaryFile() as tmpf:
@@ -199,7 +199,7 @@ def test_caching():
 
 
 def test_raises():
-    def func(val):  # pylint: disable=unused-argument
+    def func(val):
         raise ValueError('test succeeded.')
 
     with pytest.raises(ValueError):

@@ -90,7 +90,7 @@ def _(obj):
 @singledispatch
 def decode(obj):
     """
-    Decodes JSON / msgpack objects into the corresponding Z2Pack types.
+    Decodes JSON / msgpack objects into the corresponding PhaseMap types.
     """
     return obj
 
@@ -101,8 +101,7 @@ def decode_complex(obj):
 
 def decode_result(obj):
     return Result(
-        points={k: v
-                for k, v in obj['points']},
+        points=dict(obj['points']),
         boxes=obj['boxes'],
         limits=obj['limits'],
     )

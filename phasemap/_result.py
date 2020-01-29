@@ -15,5 +15,5 @@ class Result(types.SimpleNamespace):
         super().__init__(
             points=points,
             boxes=set(boxes),
-            limits=[(low, high) for low, high in limits]
+            limits=[(low, high) for low, high in limits]  # pylint: disable=unnecessary-comprehension
         )

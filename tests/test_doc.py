@@ -21,7 +21,7 @@ def test_all_doc():
             del sys.modules[key]
     fsc.export.test_doc()
     try:
-        import phasemap  # pylint: disable=unused-variable
+        import phasemap  # pylint: disable=import-outside-toplevel,unused-import
     finally:
         # reset to the previous phasemap -- just doing import breaks pickle
         for key in list(sys.modules.keys()):
