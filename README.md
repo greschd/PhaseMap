@@ -4,4 +4,4 @@ PhaseMap is a tool for mapping phase diagrams. The purpose of the tool is to con
 
 Documentation: http://z2pack.ethz.ch/phasemap
 
-[![Build Status](https://travis-ci.org/greschd/PhaseMap.svg?branch=master)](https://travis-ci.org/greschd/PhaseMap)
+[![Build Status](https://travis-ci.org/greschd/PhaseMap.svg)](https://travis-ci.org/greschd/PhaseMap)
