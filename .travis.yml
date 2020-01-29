@@ -6,13 +6,16 @@ python:
   - "3.8"
 env:
   - TEST_TYPE="test"
+    INSTALL_TYPE="test"
+  - TEST_TYPE="test"
+    INSTALL_TYPE="test_sdist"
 jobs:
   include:
-    - python: 3.7
-      env: TEST_TYPE="compliance"
+    - python: "3.7"
+      env:
+        - TEST_TYPE="precommit"
+          INSTALL_TYPE="dev"
 install:
-  - pip install -U pytest
-  - pip install .[dev]
+  - ./.travis-data/install_script.sh
 script:
-  - if [ "$TEST_TYPE" == "compliance" ] ; then pre-commit run --all-files ; fi
-  - if [ "$TEST_TYPE" == "test" ] ; then cd tests; pytest --no-plot-tests ; fi
+  - ./.travis-data/test_script.sh
