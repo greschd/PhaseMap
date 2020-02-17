@@ -4,4 +4,5 @@ PhaseMap is a tool for mapping phase diagrams. The purpose of the tool is to con
 
 Documentation: http://phasemap.greschd.ch
 
+[![Documentation Status](https://readthedocs.org/projects/phasemap/badge/?version=latest)](https://phasemap.greschd.ch/en/latest/?badge=latest)
 [![Build Status](https://travis-ci.org/greschd/PhaseMap.svg)](https://travis-ci.org/greschd/PhaseMap)
