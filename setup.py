@@ -29,7 +29,7 @@ EXTRAS_REQUIRE['dev'] += EXTRAS_REQUIRE['test'] + EXTRAS_REQUIRE['doc']
 setup(
     name='phasemap',
     version=VERSION,
-    url='http://z2pack.ethz.ch/phasemap',
+    url='http://phasemap.greschd.ch',
     author='Dominik Gresch',
     author_email='greschd@gmx.ch',
     description='Algorithm for calculating phase diagrams',
