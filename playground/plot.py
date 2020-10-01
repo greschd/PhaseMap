@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
@@ -13,12 +12,18 @@ import numpy as np
 def sqr_to_coord(sqr):
     edge, size = sqr.corner, sqr.size
     return [
-        edge[0], edge[1], edge[0] + size, edge[1], edge[0] + size,
-        edge[1] + size, edge[0], edge[1] + size
+        edge[0],
+        edge[1],
+        edge[0] + size,
+        edge[1],
+        edge[0] + size,
+        edge[1] + size,
+        edge[0],
+        edge[1] + size,
     ]
 
 
-def plot(sqr_list, max_size, base_mult, AP, savefile='test.svg'):
+def plot(sqr_list, max_size, base_mult, AP, savefile="test.svg"):
     mult = base_mult
     max_size *= mult
 
@@ -35,7 +40,7 @@ def plot(sqr_list, max_size, base_mult, AP, savefile='test.svg'):
         gp.add(
             util.svg.polygon(
                 fill=col_dict[sqr.phase],
-                points="{},{} {},{} {},{} {},{}".format(*coord)
+                points="{},{} {},{} {},{} {},{}".format(*coord),
             )
         )
 

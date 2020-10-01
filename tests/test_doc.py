@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
 
@@ -11,8 +9,8 @@ import fsc.export
 # This should never appear in any serious code ;)
 # To out-manoeuver pickle's caching, and force re-loading phasemap
 def test_all_doc():
-    old_name = 'phasemap'
-    new_name = 'hoopy_phasemap'
+    old_name = "phasemap"
+    new_name = "hoopy_phasemap"
     for key in list(sys.modules.keys()):
         # move previous phasemap to hoopy_phasemap
         if key.startswith(old_name):

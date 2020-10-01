@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
 
@@ -9,7 +7,7 @@ from fsc.iohelper import SerializerDispatch
 
 from . import _encoding
 
-__all__ = ['save', 'load']
+__all__ = ["save", "load"]
 
 IO_HANDLER = SerializerDispatch(_encoding, exclude=[pickle])
 

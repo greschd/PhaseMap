@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
 
@@ -33,8 +31,8 @@ def run(  # pylint: disable=too-many-arguments
     save_file=None,
     load=False,
     load_quiet=True,
-    serializer='auto',
-    save_interval=5.,
+    serializer="auto",
+    save_interval=5.0,
 ):
     """Run the PhaseMap algorithm.
 
@@ -77,15 +75,16 @@ def run(  # pylint: disable=too-many-arguments
             )
         try:
             init_result = _io.load(save_file, serializer=serializer)
-        except IOError as err:
+        except OSError as err:
             if not load_quiet:
                 raise err
 
     if init_result is not None:
         if not np.allclose(limits, init_result.limits):
             raise ValueError(
-                "Limits {} of the 'init_result' do not match the given limits {}"
-                .format(init_result.limits, limits)
+                "Limits {} of the 'init_result' do not match the given limits {}".format(
+                    init_result.limits, limits
+                )
             )
         init_points = init_result.points
     else:
@@ -114,8 +113,8 @@ class _RunImpl:
         all_corners=False,
         init_points=None,
         save_file=None,
-        serializer='auto',
-        save_interval=5.,
+        serializer="auto",
+        save_interval=5.0,
     ):
         self._save_file = save_file
         self._serializer = serializer
@@ -127,14 +126,14 @@ class _RunImpl:
 
         self._func = FuncCache(
             lambda coord: fct(self._coordinate_to_position(coord)),
-            data=copy.deepcopy(init_points)
+            data=copy.deepcopy(init_points),
         )
         self.result = Result(
             boxes=set(self._get_initial_boxes()),
             # Note: 'points' needs to be the same object, not a copy. Otherwise
             # it will not update when the '_func' is called.
             points=self._func.data,
-            limits=limits
+            limits=limits,
         )
 
         self._loop = asyncio.get_event_loop()
@@ -162,12 +161,14 @@ class _RunImpl:
     async def _run(self):
         async with PeriodicTask(self._save, delay=self._save_interval):
             while not self._check_done():
-                await asyncio.sleep(0.)
+                await asyncio.sleep(0.0)
 
     def _check_done(self):
-        done_tasks = [(box, fut)
-                      for (box, fut) in self._split_futures_pending.items()
-                      if fut.done()]
+        done_tasks = [
+            (box, fut)
+            for (box, fut) in self._split_futures_pending.items()
+            if fut.done()
+        ]
 
         # Retrieve all exceptions to avoid asyncio 'exception never retrieved'
         # warning, but can only raise one.
@@ -189,7 +190,7 @@ class _RunImpl:
         self._validate_mesh(mesh)
 
         self._max_size = Coordinate([Fraction(1, m - 1) for m in self._mesh])
-        self._min_size = self._max_size / 2**num_steps
+        self._min_size = self._max_size / 2 ** num_steps
 
     def _validate_mesh(self, mesh):
         if isinstance(mesh, numbers.Integral):
@@ -197,11 +198,12 @@ class _RunImpl:
         else:
             if len(mesh) != self._dim:
                 raise ValueError(
-                    "Length of 'mesh' {} does not match the dimension {} of the 'limits'."
-                    .format(len(mesh), self._dim)
+                    "Length of 'mesh' {} does not match the dimension {} of the 'limits'.".format(
+                        len(mesh), self._dim
+                    )
                 )
         if any(m < 2 for m in mesh):
-            raise ValueError('Mesh must be >= 2 for each dimension.')
+            raise ValueError("Mesh must be >= 2 for each dimension.")
         self._mesh = mesh  # pylint: disable=attribute-defined-outside-init
 
     def _coordinate_to_position(self, coord):
@@ -209,12 +211,11 @@ class _RunImpl:
 
     def _get_initial_boxes(self):
         corners = itertools.product(
-            *[[i * s for i in range(m - 1)]
-              for s, m in zip(self._max_size, self._mesh)]
+            *[[i * s for i in range(m - 1)] for s, m in zip(self._max_size, self._mesh)]
         )
         boxes = [Box(corner=c, size=self._max_size) for c in corners]
         for i, sq1 in enumerate(boxes):
-            for sq2 in boxes[i + 1:]:
+            for sq2 in boxes[i + 1 :]:
                 sq1.process_possible_neighbour(sq2)
         return boxes
 
@@ -227,17 +228,15 @@ class _RunImpl:
         self._split_futures[box] = fut
 
     async def _split_box(self, box):
-        LOGGER.debug('Splitting {}.'.format(box))
+        LOGGER.debug(f"Splitting {box}.")
         if self._all_corners:
             coordinate_stencil = np.array(
-                list(
-                    itertools.product([0, Fraction(1, 2), 1], repeat=self._dim)
-                )
+                list(itertools.product([0, Fraction(1, 2), 1], repeat=self._dim))
             )
         else:
             coordinate_stencil = np.array(
-                [[Fraction(1, 2)] * self._dim] +
-                list(itertools.product([0, 1], repeat=self._dim))
+                [[Fraction(1, 2)] * self._dim]
+                + list(itertools.product([0, 1], repeat=self._dim))
             )
         coords = box.corner + coordinate_stencil * box.size
         phases = await asyncio.gather(*[self._func(c) for c in coords])
@@ -265,7 +264,7 @@ class _RunImpl:
             for old_nb in old_neighbours:
                 new_sq.process_possible_neighbour(old_nb)
         for i, new_sq1 in enumerate(new_boxes):
-            for new_sq2 in new_boxes[i + 1:]:
+            for new_sq2 in new_boxes[i + 1 :]:
                 new_sq1.process_certain_neighbour(new_sq2)
 
         # remove old box
@@ -280,7 +279,7 @@ class _RunImpl:
             _io.save(
                 self.result,
                 self._save_file.format(self._save_count),
-                serializer=self._serializer
+                serializer=self._serializer,
             )
             self._save_count += 1
             self.needs_saving = False

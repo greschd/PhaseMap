@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
-
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
+
+import typing as ty
 
 import numpy as np
 
@@ -9,21 +9,21 @@ from ._coordinate import Coordinate
 
 
 class Sentinel:
-    __INSTANCES = dict()
+    __INSTANCES: ty.Dict[str, "Sentinel"] = dict()
 
-    def __new__(cls, value):
+    def __new__(cls, value: str) -> "Sentinel":
         if value in cls.__INSTANCES:
             return cls.__INSTANCES[value]
-        self = super().__new__(cls)
-        self._value = value
+        self = ty.cast("Sentinel", super().__new__(cls))
+        self._value = value  # type: ignore
         cls.__INSTANCES[value] = self
         return self
 
     def __repr__(self):
-        return 'Sentinel({!r})'.format(self._value)  # pylint: disable=no-member
+        return f"Sentinel({self._value!r})"  # pylint: disable=no-member
 
 
-PHASE_UNDEFINED = Sentinel('undefined phase')
+PHASE_UNDEFINED = Sentinel("undefined phase")
 
 
 class Box:
@@ -39,6 +39,7 @@ class Box:
     phase:
         The phase of the box, determined by the evaluated points it contains: If all points have the same phase, the box will have that phase. Otherwise, the phase of the box is undefined.
     """
+
     def __init__(self, *, corner, size):
         self.corner = Coordinate(corner)
         self.phase = None
@@ -50,23 +51,17 @@ class Box:
         return hash((self.corner, self.size))
 
     def __eq__(self, other):
-        return np.all(self.corner == other.corner
-                      ) and np.all(self.size == other.size)
+        return np.all(self.corner == other.corner) and np.all(self.size == other.size)
 
     def __repr__(self):
-        return 'Box(corner={0.corner}, size={0.size}, phase={0.phase})'.format(
-            self
-        )
+        return "Box(corner={0.corner}, size={0.size}, phase={0.phase})".format(self)
 
     def contains_coord(self, coord):
         # Faster than pure numpy operations because of the slow 'Fraction'.
         # In this way, the remaining operations are not performed if one
         # expression evaluates to False.
-        return (
-            all(c1 <= c2 for c1, c2 in zip(self.corner, coord)) and all(
-                c2 <= c1 + s
-                for c1, c2, s in zip(self.corner, coord, self.size)
-            )
+        return all(c1 <= c2 for c1, c2 in zip(self.corner, coord)) and all(
+            c2 <= c1 + s for c1, c2, s in zip(self.corner, coord, self.size)
         )
 
     def add_point(self, coord, phase):
@@ -81,8 +76,8 @@ class Box:
 
     def is_neighbour(self, other):
         return all(
-            c1 + s1 >= c2 and c2 + s2 >= c1 for c1, s1, c2, s2 in
-            zip(self.corner, self.size, other.corner, other.size)
+            c1 + s1 >= c2 and c2 + s2 >= c1
+            for c1, s1, c2, s2 in zip(self.corner, self.size, other.corner, other.size)
         )
 
     def process_possible_neighbour(self, box):

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
 
@@ -15,14 +13,14 @@ import matplotlib.animation as animation
 from matplotlib.colorbar import ColorbarBase
 from matplotlib.colors import Normalize
 
-RESULTS_DIR = 'results'
-POINT_SIZE = 1.
+RESULTS_DIR = "results"
+POINT_SIZE = 1.0
 VALS = (-2, 0, 1, 3)
 CUTOFF = None
 
 
 def get_idx(name):
-    return int(name.split('.')[0].split('_')[1])
+    return int(name.split(".")[0].split("_")[1])
 
 
 def get_filenames():
@@ -38,7 +36,7 @@ def init():
     fig, (ax, cbar_ax) = plt.subplots(
         ncols=2, gridspec_kw=dict(width_ratios=(0.95, 0.05))
     )
-    ax.set_aspect(1.)
+    ax.set_aspect(1.0)
     fig.subplots_adjust(right=0.9)
 
     norm = Normalize()
@@ -50,7 +48,7 @@ def init():
         cmap=plt.get_cmap(),
         norm=norm,
         boundaries=range(5),
-        ticklocation='right',
+        ticklocation="right",
         ticks=[x + 0.5 for x in range(4)],
     )
     c_bar.solids.set_edgecolor("k")
@@ -66,26 +64,20 @@ def plot(res, ax):
         zorder=0,
         add_cbar=False,
         lw=0.1,
-        edgecolor='k',
+        edgecolor="k",
         scale_val=VALS,
     )
     pm.plot.points(
-        res,
-        ax=ax,
-        edgecolors='k',
-        lw=0.1,
-        add_cbar=False,
-        scale_val=VALS,
-        s=POINT_SIZE
+        res, ax=ax, edgecolors="k", lw=0.1, add_cbar=False, scale_val=VALS, s=POINT_SIZE
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     with contextlib.suppress(FileNotFoundError):
-        os.remove('video.mp4')
+        os.remove("video.mp4")
     fig, ax = init()
     plot_func = functools.partial(plot, ax=ax)
     ani = animation.FuncAnimation(
         fig, plot_func, get_results, interval=120, repeat=False
     )
-    ani.save('video.mp4', dpi=300, bitrate=2000, writer='ffmpeg_file')
+    ani.save("video.mp4", dpi=300, bitrate=2000, writer="ffmpeg_file")

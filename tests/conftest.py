@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
 
@@ -16,7 +14,7 @@ import phasemap
 
 def pytest_addoption(parser):
     parser.addoption(
-        '--no-plot-tests', action='store_true', help='disable the plot tests'
+        "--no-plot-tests", action="store_true", help="disable the plot tests"
     )
 
 
@@ -38,33 +36,34 @@ def pytest_runtest_setup(item):
 @pytest.fixture
 def test_name(request):
     """Returns module_name.function_name for a given test"""
-    return request.module.__name__ + '/' + request._parent_request._pyfuncitem.name  # pylint: disable=protected-access
+    return (
+        request.module.__name__ + "/" + request._parent_request._pyfuncitem.name
+    )  # pylint: disable=protected-access
 
 
 @pytest.fixture
 def compare_data(request, test_name, scope="session"):
     """Returns a function which either saves some data to a file or (if that file exists already) compares it to pre-existing data using a given comparison function."""
+
     def inner(compare_fct, data, tag=None):
-        full_name = test_name + (tag or '')
+        full_name = test_name + (tag or "")
         val = request.config.cache.get(full_name, None)
         if val is None:
             request.config.cache.set(
                 full_name,
-                json.loads(
-                    json.dumps(data, default=phasemap.io._encoding.encode)
-                )
+                json.loads(json.dumps(data, default=phasemap.io._encoding.encode)),
             )
-            raise ValueError('Reference data does not exist.')
+            raise ValueError("Reference data does not exist.")
         val = json.loads(
             json.dumps(val, default=phasemap.io._encoding.encode),
-            object_hook=phasemap.io._encoding.decode
+            object_hook=phasemap.io._encoding.decode,
         )
         assert compare_fct(
             val,
             json.loads(
                 json.dumps(data, default=phasemap.io._encoding.encode),
-                object_hook=phasemap.io._encoding.decode
-            )
+                object_hook=phasemap.io._encoding.decode,
+            ),
         )  # get rid of json-specific quirks
 
     return inner
@@ -107,9 +106,7 @@ def boxes_equal():
 def sample():
     def inner(name):
         return os.path.join(
-            os.path.join(
-                os.path.dirname(os.path.abspath(__file__)), 'samples'
-            ), name
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "samples"), name
         )
 
     return inner

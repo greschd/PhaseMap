@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
 
@@ -22,7 +20,7 @@ def error(x):
     raise ValueError(x)
 
 
-@pytest.mark.parametrize('func', [echo, echo_async])
+@pytest.mark.parametrize("func", [echo, echo_async])
 def test_func_cache(func):
     async def run():
         func_cache = FuncCache(func)

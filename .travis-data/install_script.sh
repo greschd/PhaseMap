@@ -12,10 +12,10 @@ case "$INSTALL_TYPE" in
         pip install .[dev]
         ;;
     test)
-        pip install .[test]
+        pip install .[dev]
         ;;
     test_sdist)
         python setup.py sdist
-        ls -1 dist/ | xargs -I % pip install dist/%[test]
+        ls -1 dist/ | xargs -I % pip install dist/%[dev]
         ;;
 esac

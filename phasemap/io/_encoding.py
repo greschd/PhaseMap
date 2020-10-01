@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
 
@@ -25,36 +23,36 @@ def encode(obj):
     """
     Encodes PhaseMap types into JSON / msgpack - compatible types.
     """
-    raise TypeError('cannot JSONify {} object {}'.format(type(obj), obj))
+    raise TypeError("cannot JSONify {} object {}".format(type(obj), obj))
 
 
 @encode.register(np.bool_)
-def _(obj):
+def _encode_bool(obj):
     return bool(obj)
 
 
 @encode.register(Fraction)
-def _(obj):
+def _encode_fraction(obj):
     return dict(__fraction__=True, n=obj.numerator, d=obj.denominator)
 
 
 @encode.register(numbers.Real)
-def _(obj):
+def _encode_real(obj):
     return float(obj)
 
 
 @encode.register(numbers.Complex)
-def _(obj):
+def _encode_complex(obj):
     return dict(__complex__=True, real=encode(obj.real), imag=encode(obj.imag))
 
 
 @encode.register(Iterable)
-def _(obj):
+def _encode_iterable(obj):
     return list(obj)
 
 
 @encode.register(Result)
-def _(obj):
+def _encode_result(obj):
     return dict(
         __result__=True,
         points=obj.points.items(),
@@ -64,12 +62,12 @@ def _(obj):
 
 
 @encode.register(Coordinate)
-def _(obj):
+def _encode_coordinate(obj):
     return dict(__coord__=True, c=list(obj))
 
 
 @encode.register(Box)
-def _(obj):
+def _encode_box(obj):
     return dict(
         __box__=True,
         corner=obj.corner,
@@ -79,11 +77,11 @@ def _(obj):
 
 
 @encode.register(Sentinel)
-def _(obj):
+def _encode_sentinel(obj):
     return dict(__sentinel__=True, value=obj._value)
 
 
-#-----------------------------------------------------------------------#
+# -----------------------------------------------------------------------#
 
 
 @export
@@ -96,42 +94,42 @@ def decode(obj):
 
 
 def decode_complex(obj):
-    return complex(obj['real'], obj['imag'])
+    return complex(obj["real"], obj["imag"])
 
 
 def decode_result(obj):
     return Result(
-        points=dict(obj['points']),
-        boxes=obj['boxes'],
-        limits=obj['limits'],
+        points=dict(obj["points"]),
+        boxes=obj["boxes"],
+        limits=obj["limits"],
     )
 
 
 def decode_box(obj):
-    res = Box(corner=obj['corner'], size=obj['size'])
-    res.phase = obj['phase']
+    res = Box(corner=obj["corner"], size=obj["size"])
+    res.phase = obj["phase"]
     return res
 
 
 def decode_coord(obj):
-    return Coordinate(obj['c'])
+    return Coordinate(obj["c"])
 
 
 def decode_fraction(obj):
-    return Fraction(obj['n'], obj['d'])
+    return Fraction(obj["n"], obj["d"])
 
 
 def decode_sentinel(obj):
-    return Sentinel(obj['value'])
+    return Sentinel(obj["value"])
 
 
 @decode.register(dict)
 def _(obj):
     with contextlib.suppress(AttributeError):
-        obj = {k.decode('utf-8'): v for k, v in obj.items()}
-    special_markers = [key for key in obj.keys() if key.startswith('__')]
+        obj = {k.decode("utf-8"): v for k, v in obj.items()}
+    special_markers = [key for key in obj.keys() if key.startswith("__")]
     if len(special_markers) == 1:
-        name = special_markers[0].strip('__')
-        return globals()['decode_' + name](obj)
+        name = special_markers[0].strip("__")
+        return globals()["decode_" + name](obj)
     else:
         return obj

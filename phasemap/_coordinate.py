@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
 
@@ -12,9 +10,10 @@ class Coordinate(np.ndarray):
     """
     Array class describing the relative position within the calculation window.
     """
+
     def __new__(cls, coord):
         coord_list = [Fraction(x) for x in coord]
-        self = super().__new__(cls, shape=(len(coord_list), ), dtype=object)
+        self = super().__new__(cls, shape=(len(coord_list),), dtype=object)
         self[:] = coord_list
         self.flags.writeable = False
         return self

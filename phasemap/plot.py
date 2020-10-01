@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
 """
@@ -125,7 +123,7 @@ def boxes(
                     xy=box.corner,
                     width=box.size[0],
                     height=box.size[1],
-                    **ChainMap(rect_properties, dict(facecolor='white'))
+                    **ChainMap(rect_properties, dict(facecolor="white"))
                 )
             )
     return ax, cmap, norm, all_vals

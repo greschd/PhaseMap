@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
 
@@ -14,5 +12,5 @@ class Result(types.SimpleNamespace):
         super().__init__(
             points=points,
             boxes=set(boxes),
-            limits=[(low, high) for low, high in limits]  # pylint: disable=unnecessary-comprehension
+            limits=[(low, high) for low, high in limits],  # pylint: disable=unnecessary-comprehension
         )
