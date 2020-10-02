@@ -29,9 +29,7 @@ def test_phase(compare_result_equal, num_steps, phase, limits):
 
 def test_save_file(results_equal):
     with tempfile.NamedTemporaryFile() as tmpf:
-        res = pm.run(
-            phase1, limits=[(-1, 1)] * 2, num_steps=2, save_file=tmpf.name
-        )
+        res = pm.run(phase1, limits=[(-1, 1)] * 2, num_steps=2, save_file=tmpf.name)
         assert results_equal(res, pm.io.load(tmpf.name, serializer=json))
 
 
@@ -49,9 +47,7 @@ def test_load(results_equal):
         raise ValueError
 
     with tempfile.NamedTemporaryFile() as tmpf:
-        res1 = pm.run(
-            phase1, limits=[(-1, 1)] * 2, num_steps=2, save_file=tmpf.name
-        )
+        res1 = pm.run(phase1, limits=[(-1, 1)] * 2, num_steps=2, save_file=tmpf.name)
         res2 = pm.run(
             error,
             limits=[(-1, 1)] * 2,
@@ -101,9 +97,7 @@ def test_complex_phase(compare_result_equal):
     compare_result_equal(res)
 
 
-@pytest.mark.parametrize(
-    "phase, limits", [(phase1, [(-1, 1), (-1, 1), (-1, 1)])]
-)
+@pytest.mark.parametrize("phase, limits", [(phase1, [(-1, 1), (-1, 1), (-1, 1)])])
 def test_3d(compare_result_equal, phase, limits):
     res = pm.run(
         phase,
