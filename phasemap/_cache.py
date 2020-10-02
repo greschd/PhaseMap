@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
 
@@ -13,6 +11,7 @@ class FuncCache:
     """
     Caches calls to a function or coroutine.
     """
+
     def __init__(self, func, data=None):
         self.func = _wrap_to_coroutine(func)
         self.data = data if data is not None else dict()

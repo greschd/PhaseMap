@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
 """
@@ -62,13 +60,7 @@ def _plot(func, result, *, ax=None, add_cbar=True, **kwargs):
 @export
 @_plot
 def boxes(
-    result,
-    *,
-    ax=None,
-    scale_val=None,
-    plot_undefined=False,
-    cmap=None,
-    **kwargs
+    result, *, ax=None, scale_val=None, plot_undefined=False, cmap=None, **kwargs
 ):
     """
     Plots the phase diagram as a collection of boxes, which are colored according to the estimate of the phase in a given box.
@@ -113,9 +105,7 @@ def boxes(
                 xy=box.corner,
                 width=box.size[0],
                 height=box.size[1],
-                **ChainMap(
-                    rect_properties, dict(facecolor=color, edgecolor=color)
-                )
+                **ChainMap(rect_properties, dict(facecolor=color, edgecolor=color))
             )
         )
     if plot_undefined:
@@ -125,7 +115,7 @@ def boxes(
                     xy=box.corner,
                     width=box.size[0],
                     height=box.size[1],
-                    **ChainMap(rect_properties, dict(facecolor='white'))
+                    **ChainMap(rect_properties, dict(facecolor="white"))
                 )
             )
     return ax, cmap, norm, all_vals
@@ -170,6 +160,10 @@ def points(result, *, ax=None, scale_val=None, cmap=None, **kwargs):
         point_colors[cmap(norm(phase))].append(coord)
 
     for color, coordinates in point_colors.items():
-        ax.scatter(*np.array(coordinates).T, color=color, **kwargs)  # pylint: disable=not-an-iterable
+        ax.scatter(
+            *np.array(coordinates).T,  # pylint: disable=not-an-iterable
+            color=color,
+            **kwargs
+        )
 
     return ax, cmap, norm, all_vals

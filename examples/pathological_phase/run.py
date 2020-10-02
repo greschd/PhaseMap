@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
@@ -35,29 +34,29 @@ def run(num_steps, mesh=2):
         [(0, 1), (0, 1)],
         num_steps=num_steps,
         mesh=mesh,
-        save_interval=0.,
+        save_interval=0.0,
     )
 
 
 def plot_boxes(res):
     pm.plot.boxes(res)
-    plt.savefig('boxes.pdf', bbox_inches='tight')
+    plt.savefig("boxes.pdf", bbox_inches="tight")
 
 
 def plot_points(res):
-    pm.plot.points(res, s=POINT_SIZE, lw=0.)
-    plt.savefig('points.pdf', bbox_inches='tight')
+    pm.plot.points(res, s=POINT_SIZE, lw=0.0)
+    plt.savefig("points.pdf", bbox_inches="tight")
 
 
 def plot_combined(res):
     fig, ax = plt.subplots(figsize=[4.2, 4])
-    ax.set_aspect(1.)
-    pm.plot.boxes(res, ax=ax, zorder=0, add_cbar=False, lw=0.1, edgecolor='k')
-    pm.plot.points(res, ax=ax, edgecolors='k', lw=0.1, s=POINT_SIZE)
-    plt.savefig('combined.pdf', bbox_inches='tight')
+    ax.set_aspect(1.0)
+    pm.plot.boxes(res, ax=ax, zorder=0, add_cbar=False, lw=0.1, edgecolor="k")
+    pm.plot.points(res, ax=ax, edgecolors="k", lw=0.1, s=POINT_SIZE)
+    plt.savefig("combined.pdf", bbox_inches="tight")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     res = run(5, mesh=2)
     # res = run(5, mesh=3)
     # res = run(5, mesh=4)

@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools >= 46.4.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pylint.basic]
+good-names = [
+    "i",
+    "j",
+    "k",
+    "ex",
+    "Run",
+    "_",
+    " _INPUT_FILE_NAME",
+    " _OUTPUT_FILE_NAME",
+    "t",
+    "x",
+    "y",
+    "z",
+    "f",
+    "kx",
+    "ky",
+    "kz",
+    "k1",
+    "k2",
+    "s",
+    "c",
+    "n",
+    "p",
+    "ax"
+]
+
+[tool.pylint.messages_control]
+disable = [
+    "too-few-public-methods",
+    "too-many-public-methods",
+    "bad-continuation",
+    "wrong-import-position",
+    "line-too-long",
+    "locally-disabled",
+    "wildcard-import",
+    "locally-enabled",
+    "too-many-instance-attributes",
+    "fixme",
+    "missing-docstring",
+    "no-else-return",
+    "len-as-condition",
+    "logging-format-interpolation",
+    "logging-fstring-interpolation",
+    "duplicate-code"
+]
+
+[tool.pylint.design]
+max-locals = 20

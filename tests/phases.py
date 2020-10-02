@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-
 # © 2015-2018, ETH Zurich, Institut für Theoretische Physik
 # Author: Dominik Gresch <greschd@gmx.ch>
 
 
 def circle(x, y):
-    return 2 if x**2 + y**2 < 1 else 0
+    return 2 if x ** 2 + y ** 2 < 1 else 0
 
 
 def line(x, y):
@@ -34,7 +32,7 @@ def phase2(coord):
         if 0 <= y < 0.1:
             return 1
 
-    if (x - 0.5)**2 + (y - 0.5)**2 < 0.1:
+    if (x - 0.5) ** 2 + (y - 0.5) ** 2 < 0.1:
         return 3
 
     return 0
@@ -57,7 +55,7 @@ def phase3(coord):
         if 0 <= y < 0.1:
             return 1
 
-    if (x - 0.5)**2 + (y - 0.5)**2 < 0.1:
+    if (x - 0.5) ** 2 + (y - 0.5) ** 2 < 0.1:
         return 3
 
     return 0
