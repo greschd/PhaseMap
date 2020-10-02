@@ -41,11 +41,12 @@ disable = [
     "locally-enabled",
     "too-many-instance-attributes",
     "fixme",
-    "logging-format-interpolation",
     "missing-docstring",
     "no-else-return",
     "len-as-condition",
-    "logging-fstring-interpolation"
+    "logging-format-interpolation",
+    "logging-fstring-interpolation",
+    "duplicate-code"
 ]
 
 [tool.pylint.design]
