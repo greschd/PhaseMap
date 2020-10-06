@@ -109,6 +109,7 @@ For long-running calculations, we would like to store intermediate results durin
        ...:     mesh=3,
        ...:     save_file=FILE_PATH
        ...: );
+
     In [0]: res_loaded = pm.io.load(FILE_PATH)
 
 This is especially useful if the calculation might time out. The result can be used as input to a new calculation either by setting ``load=True`` to load the result from the ``save_file``, or by explicitly passing it as ``init_result``. Since all phase evaluations were done previously, the phase function is not actually called here. We show this by passing a broken phase function:
